@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { Quote } from 'lucide-react';
+import { Quote, ToyBrick } from 'lucide-react';
 import { z } from 'zod';
 import { generateInformativeLabels } from '@/ai/flows/generate-informative-labels';
 import type { HominidStage } from '@/lib/hominids';
@@ -14,15 +14,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-
-type HominidStageWithData = HominidStage & {
-  imageUrl: string;
-  imageHint: string;
-};
-
-interface EvoluFaceProps {
-  hominidStages: HominidStageWithData[];
-}
 
 type GenerateInformativeLabelsInput = z.infer<
   typeof GenerateInformativeLabelsInputSchema
@@ -40,6 +31,14 @@ const GenerateInformativeLabelsInputSchema = z.object({
       'Descripción de los rasgos faciales en la etapa actual del homínido.'
     ),
 });
+type HominidStageWithData = HominidStage & {
+  imageUrl: string;
+  imageHint: string;
+};
+
+interface EvoluFaceProps {
+  hominidStages: HominidStageWithData[];
+}
 
 export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const [sliderValue, setSliderValue] = useState(0);
@@ -146,6 +145,29 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
           </div>
         </CardFooter>
       </Card>
+      {currentStage.modelEmbedUrl && (
+        <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8">
+          <CardHeader className="text-center">
+            <CardTitle className="font-headline text-xl font-bold text-primary flex items-center justify-center gap-2">
+              <ToyBrick className="h-6 w-6" />
+              Modelo 3D del Cráneo
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="aspect-square w-full h-auto rounded-lg overflow-hidden border">
+              <iframe
+                key={currentStage.name}
+                title={`Modelo 3D de ${currentStage.name}`}
+                src={currentStage.modelEmbedUrl}
+                width="100%"
+                height="100%"
+                allowFullScreen
+                className="border-0"
+              ></iframe>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </>
   );
 }
