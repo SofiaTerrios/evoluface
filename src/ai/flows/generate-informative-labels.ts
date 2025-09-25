@@ -5,8 +5,6 @@
  * que describen cambios evolutivos clave en los rasgos faciales durante las transformaciones de los homínidos.
  *
  * - generateInformativeLabels - Una función que genera etiquetas para las transformaciones faciales.
- * - GenerateInformativeLabelsInput - El tipo de entrada para la función generateInformativeLabels.
- * - GenerateInformativeLabelsOutput - El tipo de retorno para la función generateInformativeLabels.
  */
 
 import {ai} from '@/ai/genkit';
@@ -22,9 +20,6 @@ const GenerateInformativeLabelsInputSchema = z.object({
       'Descripción de los rasgos faciales en la etapa actual del homínido.'
     ),
 });
-type GenerateInformativeLabelsInput = z.infer<
-  typeof GenerateInformativeLabelsInputSchema
->;
 
 const GenerateInformativeLabelsOutputSchema = z.object({
   label: z
@@ -33,13 +28,10 @@ const GenerateInformativeLabelsOutputSchema = z.object({
       'Una etiqueta informativa que describe un cambio evolutivo clave en los rasgos faciales para la etapa actual del homínido.'
     ),
 });
-type GenerateInformativeLabelsOutput = z.infer<
-  typeof GenerateInformativeLabelsOutputSchema
->;
 
 export async function generateInformativeLabels(
-  input: GenerateInformativeLabelsInput
-): Promise<GenerateInformativeLabelsOutput> {
+  input: z.infer<typeof GenerateInformativeLabelsInputSchema>
+): Promise<z.infer<typeof GenerateInformativeLabelsOutputSchema>> {
   return generateInformativeLabelsFlow(input);
 }
 
@@ -47,7 +39,7 @@ const prompt = ai.definePrompt({
   name: 'generateInformativeLabelsPrompt',
   input: {schema: GenerateInformativeLabelsInputSchema},
   output: {schema: GenerateInformativeLabelsOutputSchema},
-  prompt: `Eres un experto en evolución humana. Generarás una etiqueta informativa en español que describa un cambio evolutivo clave en los rasgos faciales para una etapa de homínido dada.
+  prompt: `Eres un experto en evolución humana. Generarás una etiqueta informativa en español que describa un cambio evolutivo clave en los rasgos faciales para una etapa de homínido dada. La descripción debe ser diferente cada vez.
 
 Etapa del Homínido: {{{hominidStage}}}
 Rasgos Faciales: {{{facialFeatures}}}

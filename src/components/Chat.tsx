@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { answerEvolutionQuestion } from '@/ai/flows/answer-evolution-question';
+import { z } from 'zod';
 import {
   Sheet,
   SheetContent,
@@ -27,6 +28,26 @@ type Message = {
   audio?: string;
 };
 
+const AnswerEvolutionQuestionInputSchema = z.object({
+  question: z.string().describe('La pregunta sobre la evolución humana.'),
+});
+
+type AnswerEvolutionQuestionInput = z.infer<
+  typeof AnswerEvolutionQuestionInputSchema
+>;
+
+const AnswerEvolutionQuestionOutputSchema = z.object({
+  answer: z.string().describe('La respuesta a la pregunta.'),
+  audio: z
+    .string()
+    .optional()
+    .describe('La respuesta en formato de audio (data URI).'),
+});
+
+type AnswerEvolutionQuestionOutput = z.infer<
+  typeof AnswerEvolutionQuestionOutputSchema
+>;
+
 export function Chat({ isOpen, onOpenChange }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -37,20 +58,18 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-
   const scrollToBottom = () => {
     if (scrollAreaRef.current) {
-        const scrollableView = scrollAreaRef.current.querySelector('div');
-        if(scrollableView) {
-            scrollableView.scrollTop = scrollableView.scrollHeight;
-        }
+      const scrollableView = scrollAreaRef.current.querySelector('div');
+      if (scrollableView) {
+        scrollableView.scrollTop = scrollableView.scrollHeight;
+      }
     }
   };
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
 
   const handleSend = async () => {
     if (!input.trim() && audioChunksRef.current.length === 0) return;
@@ -93,7 +112,11 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
               : msg
           )
         );
-        if (chunk.audio && audioRef.current && audioRef.current.src !== chunk.audio) {
+        if (
+          chunk.audio &&
+          audioRef.current &&
+          audioRef.current.src !== chunk.audio
+        ) {
           audioRef.current.src = chunk.audio;
           audioRef.current.play();
         }
@@ -118,7 +141,9 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
   const startRecording = async () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         mediaRecorderRef.current = new MediaRecorder(stream);
         audioChunksRef.current = [];
 
@@ -134,7 +159,7 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
         mediaRecorderRef.current.start();
         setIsRecording(true);
       } catch (err) {
-        console.error("Error starting recording:", err);
+        console.error('Error starting recording:', err);
         // You could show a toast to the user here
       }
     }
@@ -167,7 +192,6 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
     }
   }, [isOpen, isRecording]);
 
-
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent className="flex flex-col w-full sm:max-w-lg">
@@ -198,7 +222,7 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
                       : 'bg-muted'
                   }`}
                 >
-                   {message.text ? (
+                  {message.text ? (
                     <p className="text-sm">{message.text}</p>
                   ) : (
                     <Loader2 className="h-5 w-5 animate-spin" />
@@ -238,7 +262,12 @@ export function Chat({ isOpen, onOpenChange }: ChatProps) {
               type="submit"
               size="icon"
               onClick={handleSend}
-              disabled={isLoading || (!input.trim() && !isRecording && audioChunksRef.current.length === 0)}
+              disabled={
+                isLoading ||
+                (!input.trim() &&
+                  !isRecording &&
+                  audioChunksRef.current.length === 0)
+              }
             >
               <Send className="h-5 w-5" />
             </Button>

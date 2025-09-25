@@ -1,11 +1,18 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { Quote, MessageCircle } from 'lucide-react';
+import { z } from 'zod';
 import { generateInformativeLabels } from '@/ai/flows/generate-informative-labels';
 import type { HominidStage } from '@/lib/hominids';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Chat } from '@/components/Chat';
@@ -18,6 +25,22 @@ type HominidStageWithData = HominidStage & {
 interface EvoluFaceProps {
   hominidStages: HominidStageWithData[];
 }
+
+const GenerateInformativeLabelsInputSchema = z.object({
+  hominidStage: z
+    .string()
+    .describe(
+      'La etapa actual del homínido (por ejemplo, Homo habilis, Homo erectus).'
+    ),
+  facialFeatures: z
+    .string()
+    .describe(
+      'Descripción de los rasgos faciales en la etapa actual del homínido.'
+    ),
+});
+type GenerateInformativeLabelsInput = z.infer<
+  typeof GenerateInformativeLabelsInputSchema
+>;
 
 export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const [sliderValue, setSliderValue] = useState(0);
@@ -48,7 +71,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
       setLoadingLabel(false);
     }
   }, []);
-  
+
   useEffect(() => {
     getLabelForStage(currentStage);
   }, [currentStage, getLabelForStage]);
@@ -100,30 +123,38 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
               );
             })}
           </div>
-          
-          <div className="relative text-center min-h-[6rem] flex items-center justify-center p-4 bg-background/50 rounded-lg">
-             <Quote className="absolute top-2 left-2 h-6 w-6 text-primary/30" aria-hidden="true" />
-             <blockquote key={currentStage.name} className="text-base italic text-foreground">
-               {displayedLabel}
-             </blockquote>
-             <Quote className="absolute bottom-2 right-2 h-6 w-6 text-primary/30 transform scale-x-[-1]" aria-hidden="true"/>
-          </div>
 
+          <div className="relative text-center min-h-[6rem] flex items-center justify-center p-4 bg-background/50 rounded-lg">
+            <Quote
+              className="absolute top-2 left-2 h-6 w-6 text-primary/30"
+              aria-hidden="true"
+            />
+            <blockquote
+              key={currentStage.name}
+              className="text-base italic text-foreground"
+            >
+              {displayedLabel}
+            </blockquote>
+            <Quote
+              className="absolute bottom-2 right-2 h-6 w-6 text-primary/30 transform scale-x-[-1]"
+              aria-hidden="true"
+            />
+          </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-2 pt-6">
-           <Slider
-              value={[sliderValue]}
-              onValueChange={(value) => setSliderValue(value[0])}
-              min={0}
-              max={hominidStages.length - 1}
-              step={0.01}
-              className="w-full"
-              aria-label="Línea de tiempo de la evolución"
-            />
-            <div className="w-full flex justify-between text-xs text-muted-foreground px-1">
-              <span>Antiguo</span>
-              <span>Moderno</span>
-            </div>
+          <Slider
+            value={[sliderValue]}
+            onValueChange={value => setSliderValue(value[0])}
+            min={0}
+            max={hominidStages.length - 1}
+            step={0.01}
+            className="w-full"
+            aria-label="Línea de tiempo de la evolución"
+          />
+          <div className="w-full flex justify-between text-xs text-muted-foreground px-1">
+            <span>Antiguo</span>
+            <span>Moderno</span>
+          </div>
         </CardFooter>
       </Card>
       <Chat isOpen={isChatOpen} onOpenChange={setChatOpen} />
