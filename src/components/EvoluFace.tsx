@@ -60,18 +60,22 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
     setLatestNews('Buscando noticias...');
 
     try {
+      const faceInput: GenerateInformativeLabelsInput = {
+        hominidStage: stage.name,
+        facialFeatures: stage.facialFeatures,
+      };
+      const modelInput: GenerateInformativeLabelsInput = {
+        hominidStage: stage.name,
+        facialFeatures: `Cráneo: ${stage.facialFeatures}`,
+      };
+      const newsInput: LatestNewsInput = {
+        hominidStage: stage.name,
+      };
+
       const [labelResult, modelResult, newsResult] = await Promise.all([
-        generateInformativeLabels({
-          hominidStage: stage.name,
-          facialFeatures: stage.facialFeatures,
-        } as GenerateInformativeLabelsInput),
-        generateInformativeLabels({
-          hominidStage: stage.name,
-          facialFeatures: `Cráneo: ${stage.facialFeatures}`,
-        } as GenerateInformativeLabelsInput),
-        fetchLatestNews({
-          hominidStage: stage.name,
-        } as LatestNewsInput),
+        generateInformativeLabels(faceInput),
+        generateInformativeLabels(modelInput),
+        fetchLatestNews(newsInput),
       ]);
 
       setFaceLabel(labelResult.label);
