@@ -22,7 +22,7 @@ const GenerateInformativeLabelsInputSchema = z.object({
       'Descripción de los rasgos faciales en la etapa actual del homínido.'
     ),
 });
-export type GenerateInformativeLabelsInput = z.infer<
+type GenerateInformativeLabelsInput = z.infer<
   typeof GenerateInformativeLabelsInputSchema
 >;
 
@@ -33,7 +33,7 @@ const GenerateInformativeLabelsOutputSchema = z.object({
       'Una etiqueta informativa que describe un cambio evolutivo clave en los rasgos faciales para la etapa actual del homínido.'
     ),
 });
-export type GenerateInformativeLabelsOutput = z.infer<
+type GenerateInformativeLabelsOutput = z.infer<
   typeof GenerateInformativeLabelsOutputSchema
 >;
 

@@ -14,7 +14,7 @@ const AnswerEvolutionQuestionInputSchema = z.object({
   question: z.string().describe('La pregunta sobre la evolución humana.'),
 });
 
-export type AnswerEvolutionQuestionInput = z.infer<
+type AnswerEvolutionQuestionInput = z.infer<
   typeof AnswerEvolutionQuestionInputSchema
 >;
 
@@ -23,7 +23,7 @@ const AnswerEvolutionQuestionOutputSchema = z.object({
   audio: z.string().optional().describe('La respuesta en formato de audio (data URI).'),
 });
 
-export type AnswerEvolutionQuestionOutput = z.infer<
+type AnswerEvolutionQuestionOutput = z.infer<
   typeof AnswerEvolutionQuestionOutputSchema
 >;
 
@@ -31,16 +31,7 @@ export async function answerEvolutionQuestion(
   input: AnswerEvolutionQuestionInput,
   onChange: (chunk: AnswerEvolutionQuestionOutput) => void
 ): Promise<void> {
-  const { stream } = answerEvolutionQuestionFlow(input);
-
-  for await (const chunk of stream) {
-    onChange(chunk);
-  }
-}
-
-const prompt = `Eres un experto en evolución humana y paleoantropología. Responde la siguiente pregunta de forma clara y concisa.`;
-
-const answerEvolutionQuestionFlow = ai.defineFlow(
+  const answerEvolutionQuestionFlow = ai.defineFlow(
   {
     name: 'answerEvolutionQuestionFlow',
     inputSchema: AnswerEvolutionQuestionInputSchema,
@@ -51,46 +42,44 @@ const answerEvolutionQuestionFlow = ai.defineFlow(
       prompt: `${prompt}\n\nPregunta: ${question}`,
     });
 
+    let fullAnswer = '';
     // Stream the text response
-    (async () => {
-      for await (const chunk of stream) {
-        if (chunk.text) {
-          answerEvolutionQuestionFlow.stream({ answer: chunk.text });
-        }
+    for await (const chunk of stream) {
+      if (chunk.text) {
+        fullAnswer += chunk.text;
+        onChange({ answer: fullAnswer });
       }
-    })();
-
-    // Wait for the full text response to generate audio
-    const fullResponse = await response;
-    const answer = fullResponse.text;
-
+    }
+    
     const { media } = await ai.generate({
-      model: 'googleai/gemini-2.5-flash-preview-tts',
-      config: {
-        responseModalities: ['AUDIO'],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: { voiceName: 'Algenib' },
-          },
+        model: 'googleai/gemini-2.5-flash-preview-tts',
+        config: {
+            responseModalities: ['AUDIO'],
+            speechConfig: {
+                voiceConfig: {
+                    prebuiltVoiceConfig: { voiceName: 'Algenib' },
+                },
+            },
         },
-      },
-      prompt: answer,
+        prompt: fullAnswer,
     });
 
     if (media) {
-      const audioBuffer = Buffer.from(
-        media.url.substring(media.url.indexOf(',') + 1),
-        'base64'
-      );
-      const audioBase64 = await toWav(audioBuffer);
-      answerEvolutionQuestionFlow.stream({ answer, audio: `data:audio/wav;base64,${audioBase64}` });
+        const audioBuffer = Buffer.from(
+            media.url.substring(media.url.indexOf(',') + 1),
+            'base64'
+        );
+        const audioBase64 = await toWav(audioBuffer);
+        onChange({ answer: fullAnswer, audio: `data:audio/wav;base64,${audioBase64}` });
     } else {
-        answerEvolutionQuestionFlow.stream({ answer });
+        onChange({ answer: fullAnswer });
     }
-
-    return answerEvolutionQuestionFlow.output();
   }
 );
+  await answerEvolutionQuestionFlow(input);
+}
+
+const prompt = `Eres un experto en evolución humana y paleoantropología. Responde la siguiente pregunta de forma clara y concisa.`;
 
 async function toWav(
   pcmData: Buffer,
