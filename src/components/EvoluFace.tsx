@@ -53,7 +53,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const ceilIndex = Math.ceil(sliderValue);
   const progress = sliderValue - floorIndex;
 
-  const getAIGeneratedContent = useCallback(async (stage: HominidStage) => {
+  const getAIGeneratedContent = useCallback(async (stage: HominidStageWithData) => {
     setLoading({ face: true, model: true, news: true });
     setFaceLabel('Generando...');
     setModelLabel('Generando...');

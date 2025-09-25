@@ -30,12 +30,6 @@ const GenerateInformativeLabelsOutputSchema = z.object({
     ),
 });
 
-export async function generateInformativeLabels(
-  input: GenerateInformativeLabelsInput
-): Promise<z.infer<typeof GenerateInformativeLabelsOutputSchema>> {
-  return generateInformativeLabelsFlow(input);
-}
-
 const prompt = ai.definePrompt({
   name: 'generateInformativeLabelsPrompt',
   input: {schema: GenerateInformativeLabelsInputSchema},
@@ -59,3 +53,9 @@ const generateInformativeLabelsFlow = ai.defineFlow(
     return output!;
   }
 );
+
+export async function generateInformativeLabels(
+  input: GenerateInformativeLabelsInput
+): Promise<z.infer<typeof GenerateInformativeLabelsOutputSchema>> {
+  return generateInformativeLabelsFlow(input);
+}

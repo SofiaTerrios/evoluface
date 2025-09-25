@@ -17,16 +17,9 @@ const LatestNewsInputSchema = z.object({
 });
 export type LatestNewsInput = z.infer<typeof LatestNewsInputSchema>;
 
-
 const LatestNewsOutputSchema = z.object({
   news: z.string().describe('A summary of recent news or discoveries about the hominid, in Spanish.'),
 });
-
-export async function fetchLatestNews(
-  input: LatestNewsInput
-): Promise<z.infer<typeof LatestNewsOutputSchema>> {
-  return latestNewsFlow(input);
-}
 
 const prompt = ai.definePrompt({
   name: 'latestNewsPrompt',
@@ -46,3 +39,9 @@ const latestNewsFlow = ai.defineFlow(
     return output!;
   }
 );
+
+export async function fetchLatestNews(
+  input: LatestNewsInput
+): Promise<z.infer<typeof LatestNewsOutputSchema>> {
+  return latestNewsFlow(input);
+}
