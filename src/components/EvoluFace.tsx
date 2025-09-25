@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ToyBrick, GalleryHorizontal } from 'lucide-react';
+import { ToyBrick, GalleryHorizontal, Newspaper } from 'lucide-react';
 import type { HominidStage } from '@/lib/hominids';
 import {
   Card,
@@ -16,6 +16,12 @@ import { Slider } from '@/components/ui/slider';
 import HominidViewer from './HominidViewer';
 import Link from 'next/link';
 import { Button } from './ui/button';
+import { Skeleton } from './ui/skeleton';
+import {
+  fetchLatestNews,
+  type FetchLatestNewsInput,
+  type FetchLatestNewsOutput,
+} from '@/ai/flows/fetch-latest-news';
 
 export type HominidStageWithData = HominidStage & {
   imageUrl: string;
@@ -36,6 +42,26 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const floorIndex = Math.floor(sliderValue);
   const ceilIndex = Math.ceil(sliderValue);
   const progress = sliderValue - floorIndex;
+
+  const [news, setNews] = useState<FetchLatestNewsOutput | null>(null);
+  const [isLoadingNews, setIsLoadingNews] = useState(true);
+
+  useEffect(() => {
+    async function getNews() {
+      if (!currentStage.name) return;
+      setIsLoadingNews(true);
+      try {
+        const newsData = await fetchLatestNews({ hominidName: currentStage.name } as FetchLatestNewsInput);
+        setNews(newsData);
+      } catch (error) {
+        console.error('Error fetching news:', error);
+        setNews({ news: 'No se pudieron obtener las últimas noticias.' });
+      } finally {
+        setIsLoadingNews(false);
+      }
+    }
+    getNews();
+  }, [currentStage.name]);
 
   return (
     <>
@@ -122,6 +148,28 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
           </CardContent>
         </Card>
       )}
+
+      <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8">
+        <CardHeader>
+          <CardTitle className="font-headline text-xl font-bold text-primary flex items-center gap-2">
+            <Newspaper className="h-6 w-6" />
+            Últimas Noticias
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {isLoadingNews ? (
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              {news?.news}
+            </p>
+          )}
+        </CardContent>
+      </Card>
     </>
   );
 }
