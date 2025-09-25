@@ -8,11 +8,11 @@ body {
 
 @layer base {
   :root {
-    --background: 36 43% 97%; /* Beige claro */
+    --background: 15 17% 80%; /* Marrón claro para tarjetas */
     --foreground: 0 0% 17%; /* Gris oscuro */
-    --card: 15 17% 80%; /* Marrón claro para tarjetas */
+    --card: 36 43% 97%; /* Beige claro */
     --card-foreground: 0 0% 17%;
-    --popover: 15 17% 80%;
+    --popover: 36 43% 97%;
     --popover-foreground: 0 0% 17%;
     --primary: 15 65% 50%; /* Naranja rojizo (menos saturado) */
     --primary-foreground: 0 0% 98%;
@@ -43,11 +43,11 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 36 43% 97%; /* Beige claro */
-    --foreground: 0 0% 17%; /* Gris oscuro */
-    --card: 15 17% 25%; /* Marrón oscuro para tarjetas */
+    --background: 15 17% 25%; /* Marrón oscuro para tarjetas */
+    --foreground: 36 43% 97%; /* Beige claro */
+    --card: 10 10% 18%; /* Gris oscuro para las tarjetas */
     --card-foreground: 36 43% 97%;
-    --popover: 0 0% 17%;
+    --popover: 10 10% 18%;
     --popover-foreground: 36 43% 97%;
     --primary: 15 65% 50%; /* Naranja rojizo (menos saturado) */
     --primary-foreground: 0 0% 98%;
