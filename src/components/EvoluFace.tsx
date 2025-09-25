@@ -83,8 +83,8 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
             aria-label="Evolution timeline slider"
           />
           <div className="w-full flex justify-between text-xs text-muted-foreground px-1">
-            <span>Modern</span>
             <span>Ancient</span>
+            <span>Modern</span>
           </div>
       </CardFooter>
     </Card>
