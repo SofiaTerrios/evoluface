@@ -8,9 +8,9 @@ body {
 
 @layer base {
   :root {
-    --background: 15 17% 80%; /* Marrón claro para tarjetas */
+    --background: 15 17% 80%; /* Marrón claro para fondo */
     --foreground: 0 0% 17%; /* Gris oscuro */
-    --card: 36 43% 97%; /* Beige claro */
+    --card: 36 43% 97%; /* Beige claro para tarjetas */
     --card-foreground: 0 0% 17%;
     --popover: 36 43% 97%;
     --popover-foreground: 0 0% 17%;
@@ -43,7 +43,7 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 15 17% 25%; /* Marrón oscuro para tarjetas */
+    --background: 15 17% 25%; /* Marrón oscuro para fondo */
     --foreground: 36 43% 97%; /* Beige claro */
     --card: 10 10% 18%; /* Gris oscuro para las tarjetas */
     --card-foreground: 36 43% 97%;
