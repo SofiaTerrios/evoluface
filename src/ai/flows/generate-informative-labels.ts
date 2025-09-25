@@ -1,12 +1,12 @@
 'use server';
 
 /**
- * @fileOverview This file defines a Genkit flow for generating informative labels
- *  describing key evolutionary changes in facial features during hominid transformations.
+ * @fileOverview Este archivo define un flujo de Genkit para generar etiquetas informativas
+ * que describen cambios evolutivos clave en los rasgos faciales durante las transformaciones de los homínidos.
  *
- * - generateInformativeLabels - A function that generates labels for facial transformations.
- * - GenerateInformativeLabelsInput - The input type for the generateInformativeLabels function.
- * - GenerateInformativeLabelsOutput - The return type for the generateInformativeLabels function.
+ * - generateInformativeLabels - Una función que genera etiquetas para las transformaciones faciales.
+ * - GenerateInformativeLabelsInput - El tipo de entrada para la función generateInformativeLabels.
+ * - GenerateInformativeLabelsOutput - El tipo de retorno para la función generateInformativeLabels.
  */
 
 import {ai} from '@/ai/genkit';
@@ -15,11 +15,11 @@ import {z} from 'genkit';
 const GenerateInformativeLabelsInputSchema = z.object({
   hominidStage: z
     .string()
-    .describe('The current hominid stage (e.g., Homo habilis, Homo erectus).'),
+    .describe('La etapa actual del homínido (por ejemplo, Homo habilis, Homo erectus).'),
   facialFeatures: z
     .string()
     .describe(
-      'Description of the facial features in the current hominid stage.'
+      'Descripción de los rasgos faciales en la etapa actual del homínido.'
     ),
 });
 export type GenerateInformativeLabelsInput = z.infer<
@@ -30,7 +30,7 @@ const GenerateInformativeLabelsOutputSchema = z.object({
   label: z
     .string()
     .describe(
-      'An informative label describing a key evolutionary change in facial features for the current hominid stage.'
+      'Una etiqueta informativa que describe un cambio evolutivo clave en los rasgos faciales para la etapa actual del homínido.'
     ),
 });
 export type GenerateInformativeLabelsOutput = z.infer<
@@ -47,12 +47,12 @@ const prompt = ai.definePrompt({
   name: 'generateInformativeLabelsPrompt',
   input: {schema: GenerateInformativeLabelsInputSchema},
   output: {schema: GenerateInformativeLabelsOutputSchema},
-  prompt: `You are an expert in human evolution. You will generate an informative label describing a key evolutionary change in facial features for a given hominid stage.
+  prompt: `Eres un experto en evolución humana. Generarás una etiqueta informativa en español que describa un cambio evolutivo clave en los rasgos faciales para una etapa de homínido dada.
 
-Hominid Stage: {{{hominidStage}}}
-Facial Features: {{{facialFeatures}}}
+Etapa del Homínido: {{{hominidStage}}}
+Rasgos Faciales: {{{facialFeatures}}}
 
-Informative Label:`,
+Etiqueta Informativa:`,
 });
 
 const generateInformativeLabelsFlow = ai.defineFlow(

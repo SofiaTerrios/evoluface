@@ -41,7 +41,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
       setLabels(prev => ({ ...prev, [stage.name]: result.label }));
     } catch (error) {
       console.error(`Failed to generate label for ${stage.name}:`, error);
-      setLabels(prev => ({ ...prev, [stage.name]: 'Could not generate label.' }));
+      setLabels(prev => ({ ...prev, [stage.name]: 'No se pudo generar la etiqueta.' }));
     } finally {
       setLoadingLabel(false);
     }
@@ -52,7 +52,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   }, [currentStage, getLabelForStage]);
 
   const displayedLabel = useMemo(() => {
-    return labels[currentStage.name] || (loadingLabel ? 'Generating...' : '');
+    return labels[currentStage.name] || (loadingLabel ? 'Generando...' : '');
   }, [labels, currentStage.name, loadingLabel]);
 
   return (
@@ -77,7 +77,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
               <Image
                 key={stage.name}
                 src={stage.imageUrl}
-                alt={`Face of ${stage.name}`}
+                alt={`Rostro de ${stage.name}`}
                 width={800}
                 height={800}
                 className="absolute inset-0 h-full w-full object-cover transition-opacity duration-100"
@@ -106,11 +106,11 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
             max={hominidStages.length - 1}
             step={0.01}
             className="w-full"
-            aria-label="Evolution timeline slider"
+            aria-label="Línea de tiempo de la evolución"
           />
           <div className="w-full flex justify-between text-xs text-muted-foreground px-1">
-            <span>Ancient</span>
-            <span>Modern</span>
+            <span>Antiguo</span>
+            <span>Moderno</span>
           </div>
       </CardFooter>
     </Card>

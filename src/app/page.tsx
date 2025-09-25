@@ -22,7 +22,7 @@ export default async function Home() {
           EvoluFace
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          Slide to travel through time and see the evolution of the human face.
+          Desliza para viajar en el tiempo y ver la evolución del rostro humano.
         </p>
       </div>
       <EvoluFace hominidStages={hominidStagesWithData} />
