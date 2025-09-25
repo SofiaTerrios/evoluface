@@ -29,7 +29,7 @@ export const HOMINID_STAGES: HominidStage[] = [
     imagePlaceholderId: 'evoluface-homo-erectus',
     facialFeatures:
       'Rostro menos prognático, mandíbulas y dientes más pequeños. Todavía presenta un prominente arco superciliar, y la frente es baja e inclinada.',
-    modelEmbedUrl: 'https://3d.si.edu/object/3d/homo-erectus-cranium-dmanisi-skull-3-d2700:b66f24a3-4556-4554-850c-71644781b01a',
+    modelEmbedUrl: 'https://3d-api.si.edu/voyager/3d_package:6faf8121-250c-47cb-a5cc-139d7b16c570',
   },
   {
     name: 'Homo Heidelbergensis',
