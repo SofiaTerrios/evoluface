@@ -30,9 +30,9 @@ export default function HominidsPage() {
             <CardContent>
               <div className="aspect-video w-full h-auto rounded-lg overflow-hidden border">
                 <HominidViewer
+                  key={item.id}
                   iframeUrl={item.iframeUrl}
                   description={item.description}
-                  key={item.id}
                 />
               </div>
             </CardContent>

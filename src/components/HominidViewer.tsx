@@ -3,13 +3,15 @@
 type HominidViewerProps = {
   iframeUrl: string;
   description: string;
-  key: string;
 };
 
-export default function HominidViewer({ iframeUrl, description, key }: HominidViewerProps) {
+export default function HominidViewer({
+  iframeUrl,
+  description,
+}: HominidViewerProps) {
   return (
     <iframe
-      key={key}
+      key={iframeUrl} // Use iframeUrl as key for re-rendering
       src={iframeUrl}
       title={description}
       width="100%"
