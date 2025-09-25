@@ -105,7 +105,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
               );
             })}
           </div>
-          <blockquote className="text-center italic text-sm text-accent-foreground/80 p-4">
+          <blockquote className="text-center italic text-sm text-card-foreground p-4">
             &ldquo;{currentStage.facialFeatures}&rdquo;
           </blockquote>
         </CardContent>
@@ -137,7 +137,6 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
           <CardContent>
             <div className="aspect-square w-full h-auto rounded-lg overflow-hidden border">
               <HominidViewer
-                key={currentStage.name}
                 iframeUrl={currentStage.modelEmbedUrl}
                 description={currentStage.modelDescription}
               />

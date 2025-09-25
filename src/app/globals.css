@@ -8,24 +8,24 @@ body {
 
 @layer base {
   :root {
-    --background: 15 17% 80%; /* Marrón claro para fondo */
-    --foreground: 0 0% 17%; /* Gris oscuro */
-    --card: 36 43% 97%; /* Beige claro para tarjetas */
-    --card-foreground: 0 0% 17%;
-    --popover: 36 43% 97%;
-    --popover-foreground: 0 0% 17%;
+    --background: 15 17% 25%; /* Marrón oscuro para fondo */
+    --foreground: 36 43% 97%; /* Beige claro */
+    --card: 36 43% 97%; /* Beige claro para las tarjetas */
+    --card-foreground: 0 0% 10%; /* Gris oscuro para el texto de las tarjetas */
+    --popover: 10 10% 18%;
+    --popover-foreground: 36 43% 97%;
     --primary: 15 65% 50%; /* Naranja rojizo (menos saturado) */
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 89.8%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 89.8%;
-    --muted-foreground: 0 0% 45.1%;
+    --secondary: 220 10% 25%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 220 10% 25%;
+    --muted-foreground: 0 0% 63.9%;
     --accent: 15 65% 50%; /* Naranja rojizo (menos saturado) */
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 85%;
-    --input: 0 0% 85%;
+    --border: 220 10% 25%;
+    --input: 220 10% 25%;
     --ring: 15 65% 50%; /* Naranja rojizo (menos saturado) */
     --chart-1: 15 65% 50%; /* Naranja rojizo (menos saturado) */
     --chart-2: 202 35% 40%; /* Azul petróleo (menos saturado) */
@@ -46,7 +46,7 @@ body {
     --background: 15 17% 25%; /* Marrón oscuro para fondo */
     --foreground: 36 43% 97%; /* Beige claro */
     --card: 36 43% 97%; /* Beige claro para las tarjetas */
-    --card-foreground: 0 0% 17%; /* Gris oscuro para el texto de las tarjetas */
+    --card-foreground: 0 0% 10%; /* Gris oscuro para el texto de las tarjetas */
     --popover: 10 10% 18%;
     --popover-foreground: 36 43% 97%;
     --primary: 15 65% 50%; /* Naranja rojizo (menos saturado) */
