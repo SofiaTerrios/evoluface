@@ -1,16 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { Quote, ToyBrick, GalleryHorizontal, Newspaper } from 'lucide-react';
-import {
-  generateInformativeLabels,
-  type GenerateInformativeLabelsInput,
-} from '@/ai/flows/generate-informative-labels';
-import {
-  fetchLatestNews,
-  type LatestNewsInput,
-} from '@/ai/flows/fetch-latest-news';
+import { ToyBrick, GalleryHorizontal } from 'lucide-react';
 import type { HominidStage } from '@/lib/hominids';
 import {
   Card,
@@ -37,14 +29,6 @@ interface EvoluFaceProps {
 
 export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const [sliderValue, setSliderValue] = useState(0);
-  const [faceLabel, setFaceLabel] = useState<string>('');
-  const [modelLabel, setModelLabel] = useState<string>('');
-  const [latestNews, setLatestNews] = useState<string>('');
-  const [loading, setLoading] = useState({
-    face: false,
-    model: false,
-    news: false,
-  });
 
   const currentStageIndex = Math.round(sliderValue);
   const currentStage = hominidStages[currentStageIndex];
@@ -52,48 +36,6 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const floorIndex = Math.floor(sliderValue);
   const ceilIndex = Math.ceil(sliderValue);
   const progress = sliderValue - floorIndex;
-
-  const getAIGeneratedContent = useCallback(async (stage: HominidStageWithData) => {
-    setLoading({ face: true, model: true, news: true });
-    setFaceLabel('Generando...');
-    setModelLabel('Generando...');
-    setLatestNews('Buscando noticias...');
-
-    try {
-      const faceInput: GenerateInformativeLabelsInput = {
-        hominidStage: stage.name,
-        facialFeatures: stage.facialFeatures,
-      };
-      const modelInput: GenerateInformativeLabelsInput = {
-        hominidStage: stage.name,
-        facialFeatures: `Cráneo: ${stage.facialFeatures}`,
-      };
-      const newsInput: LatestNewsInput = {
-        hominidStage: stage.name,
-      };
-
-      const [labelResult, modelResult, newsResult] = await Promise.all([
-        generateInformativeLabels(faceInput),
-        generateInformativeLabels(modelInput),
-        fetchLatestNews(newsInput),
-      ]);
-
-      setFaceLabel(labelResult.label);
-      setModelLabel(modelResult.label);
-      setLatestNews(newsResult.news);
-    } catch (error) {
-      console.error('Failed to generate AI content:', error);
-      setFaceLabel('No se pudo generar la etiqueta.');
-      setModelLabel('No se pudo generar la etiqueta.');
-      setLatestNews('No se pudieron obtener las noticias.');
-    } finally {
-      setLoading({ face: false, model: false, news: false });
-    }
-  }, []);
-
-  useEffect(() => {
-    getAIGeneratedContent(currentStage);
-  }, [currentStage, getAIGeneratedContent]);
 
   return (
     <>
@@ -137,23 +79,6 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
               );
             })}
           </div>
-
-          <div className="relative text-center min-h-[6rem] flex items-center justify-center p-4 bg-background/50 rounded-lg">
-            <Quote
-              className="absolute top-2 left-2 h-6 w-6 text-primary/30"
-              aria-hidden="true"
-            />
-            <blockquote
-              key={`${currentStage.name}-face`}
-              className="text-base italic text-foreground"
-            >
-              {faceLabel}
-            </blockquote>
-            <Quote
-              className="absolute bottom-2 right-2 h-6 w-6 text-primary/30 transform scale-x-[-1]"
-              aria-hidden="true"
-            />
-          </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-2 pt-6">
           <Slider
@@ -188,41 +113,9 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
                 description={currentStage.modelDescription}
               />
             </div>
-            <div className="relative text-center mt-4 min-h-[4rem] flex items-center justify-center p-4 bg-background/50 rounded-lg">
-              <Quote
-                className="absolute top-2 left-2 h-6 w-6 text-primary/30"
-                aria-hidden="true"
-              />
-              <blockquote
-                key={`${currentStage.name}-model`}
-                className="text-base italic text-foreground"
-              >
-                {modelLabel}
-              </blockquote>
-              <Quote
-                className="absolute bottom-2 right-2 h-6 w-6 text-primary/30 transform scale-x-[-1]"
-                aria-hidden="true"
-              />
-            </div>
           </CardContent>
         </Card>
       )}
-
-      <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8">
-        <CardHeader className="text-center">
-          <CardTitle className="font-headline text-xl font-bold text-primary flex items-center justify-center gap-2">
-            <Newspaper className="h-6 w-6" />
-            Últimas Noticias
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="relative text-center min-h-[6rem] flex items-center justify-center p-4 bg-background/50 rounded-lg">
-            <p key={`${currentStage.name}-news`} className="text-base text-foreground">
-              {latestNews}
-            </p>
-          </div>
-        </CardContent>
-      </Card>
     </>
   );
 }
