@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { Quote, ToyBrick, GalleryHorizontal } from 'lucide-react';
-import { z } from 'zod';
+import { Quote, ToyBrick, GalleryHorizontal, Newspaper } from 'lucide-react';
 import { generateInformativeLabels } from '@/ai/flows/generate-informative-labels';
+import { fetchLatestNews } from '@/ai/flows/fetch-latest-news';
 import type { HominidStage } from '@/lib/hominids';
 import {
   Card,
@@ -17,10 +17,7 @@ import { Slider } from '@/components/ui/slider';
 import HominidViewer from './HominidViewer';
 import Link from 'next/link';
 import { Button } from './ui/button';
-
-type GenerateInformativeLabelsInput = z.infer<
-  typeof GenerateInformativeLabelsInputSchema
->;
+import { z } from 'zod';
 
 const GenerateInformativeLabelsInputSchema = z.object({
   hominidStage: z
@@ -34,6 +31,17 @@ const GenerateInformativeLabelsInputSchema = z.object({
       'Descripción de los rasgos faciales en la etapa actual del homínido.'
     ),
 });
+type GenerateInformativeLabelsInput = z.infer<
+  typeof GenerateInformativeLabelsInputSchema
+>;
+
+const LatestNewsInputSchema = z.object({
+  hominidStage: z
+    .string()
+    .describe('The hominid stage (e.g., Homo habilis, Homo erectus).'),
+});
+type LatestNewsInput = z.infer<typeof LatestNewsInputSchema>;
+
 export type HominidStageWithData = HominidStage & {
   imageUrl: string;
   imageHint: string;
@@ -47,8 +55,14 @@ interface EvoluFaceProps {
 
 export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const [sliderValue, setSliderValue] = useState(0);
-  const [label, setLabel] = useState<string>('');
-  const [loadingLabel, setLoadingLabel] = useState(false);
+  const [faceLabel, setFaceLabel] = useState<string>('');
+  const [modelLabel, setModelLabel] = useState<string>('');
+  const [latestNews, setLatestNews] = useState<string>('');
+  const [loading, setLoading] = useState({
+    face: false,
+    model: false,
+    news: false,
+  });
 
   const currentStageIndex = Math.round(sliderValue);
   const currentStage = hominidStages[currentStageIndex];
@@ -57,30 +71,43 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const ceilIndex = Math.ceil(sliderValue);
   const progress = sliderValue - floorIndex;
 
-  const getLabelForStage = useCallback(async (stage: HominidStage) => {
-    setLoadingLabel(true);
-    setLabel('Generando...');
+  const getAIGeneratedContent = useCallback(async (stage: HominidStage) => {
+    setLoading({ face: true, model: true, news: true });
+    setFaceLabel('Generando...');
+    setModelLabel('Generando...');
+    setLatestNews('Buscando noticias...');
+
     try {
-      const result = await generateInformativeLabels({
-        hominidStage: stage.name,
-        facialFeatures: stage.facialFeatures,
-      });
-      setLabel(result.label);
+      const [labelResult, modelResult, newsResult] = await Promise.all([
+        generateInformativeLabels({
+          hominidStage: stage.name,
+          facialFeatures: stage.facialFeatures,
+        }),
+        generateInformativeLabels({
+          hominidStage: stage.name,
+          facialFeatures: `Cráneo: ${stage.facialFeatures}`,
+        }),
+        fetchLatestNews({
+          hominidStage: stage.name,
+        }),
+      ]);
+
+      setFaceLabel(labelResult.label);
+      setModelLabel(modelResult.label);
+      setLatestNews(newsResult.news);
     } catch (error) {
-      console.error(`Failed to generate label for ${stage.name}:`, error);
-      setLabel('No se pudo generar la etiqueta.');
+      console.error('Failed to generate AI content:', error);
+      setFaceLabel('No se pudo generar la etiqueta.');
+      setModelLabel('No se pudo generar la etiqueta.');
+      setLatestNews('No se pudieron obtener las noticias.');
     } finally {
-      setLoadingLabel(false);
+      setLoading({ face: false, model: false, news: false });
     }
   }, []);
 
   useEffect(() => {
-    getLabelForStage(currentStage);
-  }, [currentStage, getLabelForStage]);
-
-  const displayedLabel = useMemo(() => {
-    return label || (loadingLabel ? 'Generando...' : '');
-  }, [label, loadingLabel]);
+    getAIGeneratedContent(currentStage);
+  }, [currentStage, getAIGeneratedContent]);
 
   return (
     <>
@@ -131,10 +158,10 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
               aria-hidden="true"
             />
             <blockquote
-              key={currentStage.name}
+              key={`${currentStage.name}-face`}
               className="text-base italic text-foreground"
             >
-              {displayedLabel}
+              {faceLabel}
             </blockquote>
             <Quote
               className="absolute bottom-2 right-2 h-6 w-6 text-primary/30 transform scale-x-[-1]"
@@ -158,6 +185,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
           </div>
         </CardFooter>
       </Card>
+
       {currentStage.modelEmbedUrl && currentStage.modelDescription && (
         <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8">
           <CardHeader className="text-center">
@@ -174,9 +202,41 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
                 description={currentStage.modelDescription}
               />
             </div>
+            <div className="relative text-center mt-4 min-h-[4rem] flex items-center justify-center p-4 bg-background/50 rounded-lg">
+              <Quote
+                className="absolute top-2 left-2 h-6 w-6 text-primary/30"
+                aria-hidden="true"
+              />
+              <blockquote
+                key={`${currentStage.name}-model`}
+                className="text-base italic text-foreground"
+              >
+                {modelLabel}
+              </blockquote>
+              <Quote
+                className="absolute bottom-2 right-2 h-6 w-6 text-primary/30 transform scale-x-[-1]"
+                aria-hidden="true"
+              />
+            </div>
           </CardContent>
         </Card>
       )}
+
+      <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8">
+        <CardHeader className="text-center">
+          <CardTitle className="font-headline text-xl font-bold text-primary flex items-center justify-center gap-2">
+            <Newspaper className="h-6 w-6" />
+            Últimas Noticias
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="relative text-center min-h-[6rem] flex items-center justify-center p-4 bg-background/50 rounded-lg">
+            <p key={`${currentStage.name}-news`} className="text-base text-foreground">
+              {latestNews}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </>
   );
 }
