@@ -51,7 +51,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
       if (!currentStage.name) return;
       setIsLoadingNews(true);
       try {
-        const newsData = await fetchLatestNews({ hominidName: currentStage.name } as FetchLatestNewsInput);
+        const newsData = await fetchLatestNews({ hominidName: currentStage.name });
         setNews(newsData);
       } catch (error) {
         console.error('Error fetching news:', error);
