@@ -1,26 +1,26 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { Quote } from 'lucide-react';
-
+import { generateInformativeLabels } from '@/ai/flows/generate-informative-labels';
 import type { HominidStage } from '@/lib/hominids';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import { cn } from '@/lib/utils';
 
-type HominidStageWithLabel = HominidStage & {
-  label: string;
+type HominidStageWithData = HominidStage & {
   imageUrl: string;
   imageHint: string;
 };
 
 interface EvoluFaceProps {
-  hominidStages: HominidStageWithLabel[];
+  hominidStages: HominidStageWithData[];
 }
 
 export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const [sliderValue, setSliderValue] = useState(0);
+  const [labels, setLabels] = useState<Record<string, string>>({});
+  const [loadingLabel, setLoadingLabel] = useState(false);
 
   const currentStageIndex = Math.round(sliderValue);
   const currentStage = hominidStages[currentStageIndex];
@@ -28,6 +28,32 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const floorIndex = Math.floor(sliderValue);
   const ceilIndex = Math.ceil(sliderValue);
   const progress = sliderValue - floorIndex;
+
+  const getLabelForStage = useCallback(async (stage: HominidStage) => {
+    if (labels[stage.name] || loadingLabel) return;
+
+    setLoadingLabel(true);
+    try {
+      const result = await generateInformativeLabels({
+        hominidStage: stage.name,
+        facialFeatures: stage.facialFeatures,
+      });
+      setLabels(prev => ({ ...prev, [stage.name]: result.label }));
+    } catch (error) {
+      console.error(`Failed to generate label for ${stage.name}:`, error);
+      setLabels(prev => ({ ...prev, [stage.name]: 'Could not generate label.' }));
+    } finally {
+      setLoadingLabel(false);
+    }
+  }, [labels, loadingLabel]);
+  
+  useEffect(() => {
+    getLabelForStage(currentStage);
+  }, [currentStage, getLabelForStage]);
+
+  const displayedLabel = useMemo(() => {
+    return labels[currentStage.name] || (loadingLabel ? 'Generating...' : '');
+  }, [labels, currentStage.name, loadingLabel]);
 
   return (
     <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl">
@@ -65,8 +91,8 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
         
         <div className="relative text-center min-h-[6rem] flex items-center justify-center p-4 bg-background/50 rounded-lg">
            <Quote className="absolute top-2 left-2 h-6 w-6 text-primary/30" aria-hidden="true" />
-           <blockquote className="text-base italic text-foreground">
-             {currentStage.label}
+           <blockquote key={currentStage.name} className="text-base italic text-foreground">
+             {displayedLabel}
            </blockquote>
            <Quote className="absolute bottom-2 right-2 h-6 w-6 text-primary/30 transform scale-x-[-1]" aria-hidden="true"/>
         </div>

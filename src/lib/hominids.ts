@@ -25,6 +25,12 @@ export const HOMINID_STAGES: HominidStage[] = [
     facialFeatures: 'Less prognathic face, smaller jaws and teeth. A prominent brow ridge is still present, and the forehead is low and sloping.',
   },
   {
+    name: 'Homo Heidelbergensis',
+    years: '400,000 – 40,000 years ago',
+    imagePlaceholderId: 'evoluface-homo-heidelbergensis',
+    facialFeatures: 'Large, projecting mid-face, angled cheekbones, and a very large nose. Prominent brow ridge and a relatively flat, elongated skull.',
+  },
+  {
     name: 'Homo Neanderthalensis',
     years: '400,000 – 40,000 years ago',
     imagePlaceholderId: 'evoluface-neanderthal',
