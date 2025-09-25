@@ -45,8 +45,8 @@ body {
   .dark {
     --background: 15 17% 25%; /* Marrón oscuro para fondo */
     --foreground: 36 43% 97%; /* Beige claro */
-    --card: 10 10% 18%; /* Gris oscuro para las tarjetas */
-    --card-foreground: 36 43% 97%;
+    --card: 36 43% 97%; /* Beige claro para las tarjetas */
+    --card-foreground: 0 0% 17%; /* Gris oscuro para el texto de las tarjetas */
     --popover: 10 10% 18%;
     --popover-foreground: 36 43% 97%;
     --primary: 15 65% 50%; /* Naranja rojizo (menos saturado) */
