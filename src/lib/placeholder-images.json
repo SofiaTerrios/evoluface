@@ -1,22 +1,10 @@
 {
   "placeholderImages": [
     {
-      "id": "evoluface-homo-sapiens",
-      "description": "A portrait of a modern Homo Sapiens.",
-      "imageUrl": "https://images.unsplash.com/photo-1633096780993-d4552d4103c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBodW1hbnxlbnwwfHx8fDE3NTg3NTY1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "modern human"
-    },
-    {
-      "id": "evoluface-neanderthal",
-      "description": "A reconstruction of a Homo Neanderthalensis face.",
-      "imageUrl": "https://images.unsplash.com/photo-1665245080999-3a5f0113b6d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxuZWFuZGVydGhhbCUyMG1hbnxlbnwwfHx8fDE3NTg3NTY1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "neanderthal man"
-    },
-    {
-      "id": "evoluface-homo-erectus",
-      "description": "A reconstruction of a Homo Erectus face.",
-      "imageUrl": "https://images.unsplash.com/photo-1733768296211-17e2233b3630?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxlYXJseSUyMGhvbWluaWR8ZW58MHx8fHwxNzU4NzU2MDA2fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "early hominid"
+      "id": "evoluface-australopithecus",
+      "description": "A reconstruction of an Australopithecus Afarensis face.",
+      "imageUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhcGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTg4MjE1NTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "australopithecus face"
     },
     {
       "id": "evoluface-homo-habilis",
@@ -25,10 +13,22 @@
       "imageHint": "homo habilis"
     },
     {
-      "id": "evoluface-australopithecus",
-      "description": "A reconstruction of an Australopithecus Afarensis face.",
-      "imageUrl": "https://images.unsplash.com/photo-1629813133316-e5d315354a55?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhdXN0cmFsb3BpdGhlY3VzJTIwZmFjZXxlbnwwfHx8fDE3NTg3NTY1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "australopithecus face"
+      "id": "evoluface-homo-erectus",
+      "description": "A reconstruction of a Homo Erectus face.",
+      "imageUrl": "https://images.unsplash.com/photo-1733768296211-17e2233b3630?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxlYXJseSUyMGhvbWluaWR8ZW58MHx8fHwxNzU4NzU2MDA2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "early hominid"
+    },
+    {
+      "id": "evoluface-neanderthal",
+      "description": "A reconstruction of a Homo Neanderthalensis face.",
+      "imageUrl": "https://images.unsplash.com/photo-1665245080999-3a5f0113b6d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxuZWFuZGVydGhhbCUyMG1hbnxlbnwwfHx8fDE3NTg3NTY1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "neanderthal man"
+    },
+    {
+      "id": "evoluface-homo-sapiens",
+      "description": "A portrait of a modern Homo Sapiens.",
+      "imageUrl": "https://images.unsplash.com/photo-1633096780993-d4552d4103c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBodW1hbnxlbnwwfHx8fDE3NTg3NTY1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern human"
     }
   ]
 }
