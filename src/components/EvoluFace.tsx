@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { Quote, ToyBrick } from 'lucide-react';
+import { Quote, ToyBrick, GalleryHorizontal } from 'lucide-react';
 import { z } from 'zod';
 import { generateInformativeLabels } from '@/ai/flows/generate-informative-labels';
 import type { HominidStage } from '@/lib/hominids';
@@ -15,6 +15,8 @@ import {
 } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import HominidViewer from './HominidViewer';
+import Link from 'next/link';
+import { Button } from './ui/button';
 
 type GenerateInformativeLabelsInput = z.infer<
   typeof GenerateInformativeLabelsInputSchema
@@ -82,6 +84,14 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
 
   return (
     <>
+      <div className="flex justify-end w-full max-w-md md:max-w-lg mb-4">
+        <Button asChild variant="outline">
+          <Link href="/hominids">
+            <GalleryHorizontal className="mr-2 h-4 w-4" />
+            Ver Galería 3D
+          </Link>
+        </Button>
+      </div>
       <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative">
         <CardHeader className="text-center">
           <CardTitle className="font-headline text-2xl font-bold text-primary">

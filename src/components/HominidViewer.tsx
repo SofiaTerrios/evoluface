@@ -6,9 +6,10 @@ type HominidViewerProps = {
   key: string;
 };
 
-export default function HominidViewer({ iframeUrl, description }: HominidViewerProps) {
+export default function HominidViewer({ iframeUrl, description, key }: HominidViewerProps) {
   return (
     <iframe
+      key={key}
       src={iframeUrl}
       title={description}
       width="100%"
