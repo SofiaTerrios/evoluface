@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { Quote, MessageCircle } from 'lucide-react';
+import { Quote } from 'lucide-react';
 import { z } from 'zod';
 import { generateInformativeLabels } from '@/ai/flows/generate-informative-labels';
 import type { HominidStage } from '@/lib/hominids';
@@ -14,8 +14,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import { Button } from '@/components/ui/button';
-import { Chat } from '@/components/Chat';
 
 type HominidStageWithData = HominidStage & {
   imageUrl: string;
@@ -25,6 +23,10 @@ type HominidStageWithData = HominidStage & {
 interface EvoluFaceProps {
   hominidStages: HominidStageWithData[];
 }
+
+type GenerateInformativeLabelsInput = z.infer<
+  typeof GenerateInformativeLabelsInputSchema
+>;
 
 const GenerateInformativeLabelsInputSchema = z.object({
   hominidStage: z
@@ -38,15 +40,11 @@ const GenerateInformativeLabelsInputSchema = z.object({
       'Descripción de los rasgos faciales en la etapa actual del homínido.'
     ),
 });
-type GenerateInformativeLabelsInput = z.infer<
-  typeof GenerateInformativeLabelsInputSchema
->;
 
 export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const [sliderValue, setSliderValue] = useState(0);
   const [label, setLabel] = useState<string>('');
   const [loadingLabel, setLoadingLabel] = useState(false);
-  const [isChatOpen, setChatOpen] = useState(false);
 
   const currentStageIndex = Math.round(sliderValue);
   const currentStage = hominidStages[currentStageIndex];
@@ -83,15 +81,6 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   return (
     <>
       <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute top-4 right-4 z-10"
-          onClick={() => setChatOpen(true)}
-        >
-          <MessageCircle className="h-6 w-6 text-primary" />
-          <span className="sr-only">Abrir chat</span>
-        </Button>
         <CardHeader className="text-center">
           <CardTitle className="font-headline text-2xl font-bold text-primary">
             {currentStage.name}
@@ -157,7 +146,6 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
           </div>
         </CardFooter>
       </Card>
-      <Chat isOpen={isChatOpen} onOpenChange={setChatOpen} />
     </>
   );
 }
