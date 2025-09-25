@@ -116,6 +116,9 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
                 description={currentStage.modelDescription}
               />
             </div>
+             <CardDescription className="text-center p-4 text-sm">
+                {currentStage.craniumFeatures}
+            </CardDescription>
           </CardContent>
         </Card>
       )}
