@@ -20,6 +20,7 @@ const GenerateInformativeLabelsInputSchema = z.object({
       'Descripción de los rasgos faciales en la etapa actual del homínido.'
     ),
 });
+export type GenerateInformativeLabelsInput = z.infer<typeof GenerateInformativeLabelsInputSchema>;
 
 const GenerateInformativeLabelsOutputSchema = z.object({
   label: z
@@ -30,7 +31,7 @@ const GenerateInformativeLabelsOutputSchema = z.object({
 });
 
 export async function generateInformativeLabels(
-  input: z.infer<typeof GenerateInformativeLabelsInputSchema>
+  input: GenerateInformativeLabelsInput
 ): Promise<z.infer<typeof GenerateInformativeLabelsOutputSchema>> {
   return generateInformativeLabelsFlow(input);
 }

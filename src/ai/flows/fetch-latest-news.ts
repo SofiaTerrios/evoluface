@@ -15,13 +15,15 @@ const LatestNewsInputSchema = z.object({
     .string()
     .describe('The hominid stage (e.g., Homo habilis, Homo erectus).'),
 });
+export type LatestNewsInput = z.infer<typeof LatestNewsInputSchema>;
+
 
 const LatestNewsOutputSchema = z.object({
   news: z.string().describe('A summary of recent news or discoveries about the hominid, in Spanish.'),
 });
 
 export async function fetchLatestNews(
-  input: z.infer<typeof LatestNewsInputSchema>
+  input: LatestNewsInput
 ): Promise<z.infer<typeof LatestNewsOutputSchema>> {
   return latestNewsFlow(input);
 }

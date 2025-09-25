@@ -1,10 +1,16 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { Quote, ToyBrick, GalleryHorizontal, Newspaper } from 'lucide-react';
-import { generateInformativeLabels } from '@/ai/flows/generate-informative-labels';
-import { fetchLatestNews } from '@/ai/flows/fetch-latest-news';
+import {
+  generateInformativeLabels,
+  type GenerateInformativeLabelsInput,
+} from '@/ai/flows/generate-informative-labels';
+import {
+  fetchLatestNews,
+  type LatestNewsInput,
+} from '@/ai/flows/fetch-latest-news';
 import type { HominidStage } from '@/lib/hominids';
 import {
   Card,
@@ -17,30 +23,6 @@ import { Slider } from '@/components/ui/slider';
 import HominidViewer from './HominidViewer';
 import Link from 'next/link';
 import { Button } from './ui/button';
-import { z } from 'zod';
-
-const GenerateInformativeLabelsInputSchema = z.object({
-  hominidStage: z
-    .string()
-    .describe(
-      'La etapa actual del homínido (por ejemplo, Homo habilis, Homo erectus).'
-    ),
-  facialFeatures: z
-    .string()
-    .describe(
-      'Descripción de los rasgos faciales en la etapa actual del homínido.'
-    ),
-});
-type GenerateInformativeLabelsInput = z.infer<
-  typeof GenerateInformativeLabelsInputSchema
->;
-
-const LatestNewsInputSchema = z.object({
-  hominidStage: z
-    .string()
-    .describe('The hominid stage (e.g., Homo habilis, Homo erectus).'),
-});
-type LatestNewsInput = z.infer<typeof LatestNewsInputSchema>;
 
 export type HominidStageWithData = HominidStage & {
   imageUrl: string;
@@ -82,14 +64,14 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
         generateInformativeLabels({
           hominidStage: stage.name,
           facialFeatures: stage.facialFeatures,
-        }),
+        } as GenerateInformativeLabelsInput),
         generateInformativeLabels({
           hominidStage: stage.name,
           facialFeatures: `Cráneo: ${stage.facialFeatures}`,
-        }),
+        } as GenerateInformativeLabelsInput),
         fetchLatestNews({
           hominidStage: stage.name,
-        }),
+        } as LatestNewsInput),
       ]);
 
       setFaceLabel(labelResult.label);
