@@ -48,17 +48,14 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
         </Button>
       </div>
       <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative">
-        <CardHeader className="text-center">
+        <CardHeader className="text-center pb-2">
           <CardTitle className="font-headline text-2xl font-bold text-primary">
             {currentStage.name}
           </CardTitle>
           <p className="text-sm text-muted-foreground">{currentStage.years}</p>
-          <CardDescription className="text-sm text-accent-foreground/80 h-10 flex items-center justify-center">
-            {currentStage.facialFeatures}
-          </CardDescription>
         </CardHeader>
         <CardContent className="px-4 md:px-6">
-          <div className="relative mx-auto h-64 w-64 md:h-80 md:w-80 aspect-square mb-6 rounded-full overflow-hidden shadow-inner border-4 border-card-foreground/10">
+          <div className="relative mx-auto h-64 w-64 md:h-80 md:w-80 aspect-square mb-4 rounded-full overflow-hidden shadow-inner border-4 border-card-foreground/10">
             {hominidStages.map((stage, index) => {
               let opacity = 0;
               if (index === floorIndex) {
@@ -82,8 +79,11 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
               );
             })}
           </div>
+          <blockquote className="text-center italic text-sm text-accent-foreground/80 p-4">
+            &ldquo;{currentStage.facialFeatures}&rdquo;
+          </blockquote>
         </CardContent>
-        <CardFooter className="flex flex-col gap-2 pt-6">
+        <CardFooter className="flex flex-col gap-2 pt-4">
           <Slider
             value={[sliderValue]}
             onValueChange={value => setSliderValue(value[0])}
