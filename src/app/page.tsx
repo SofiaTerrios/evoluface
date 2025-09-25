@@ -27,9 +27,6 @@ export default async function Home() {
         <h1 className="text-4xl md:text-5xl font-headline font-bold tracking-tight text-primary">
           EvoluFace
         </h1>
-        <p className="mt-2 text-lg text-muted-foreground">
-          Desliza para viajar en el tiempo y ver la evolución del rostro humano.
-        </p>
       </div>
       <EvoluFace hominidStages={hominidStagesWithData} />
     </main>
