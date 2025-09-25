@@ -55,7 +55,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
         setNews(newsData);
       } catch (error) {
         console.error('Error fetching news:', error);
-        setNews({ news: 'No se pudieron obtener las últimas noticias.' });
+        setNews({ news: 'No se pudo generar la noticia en este momento. Inténtalo de nuevo.' });
       } finally {
         setIsLoadingNews(false);
       }

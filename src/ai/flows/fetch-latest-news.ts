@@ -25,7 +25,7 @@ const fetchLatestNewsFlow = ai.defineFlow(
   },
   async (input) => {
     const { output } = await ai.generate({
-      prompt: `Act as a science journalist. Write a single, short, and engaging news-style paragraph (no more than 3-4 sentences) about a recent discovery, an interesting and little-known fact, or a relevant scientific update concerning ${input.hominidName}. Focus on a single, compelling piece of information.`,
+      prompt: `Actúa como un periodista científico. Escribe un único párrafo de estilo noticioso, corto y atractivo (no más de 3-4 frases) sobre un descubrimiento reciente, un hecho interesante y poco conocido, o una actualización científica relevante sobre ${input.hominidName}. Céntrate en una sola pieza de información convincente.`,
       model: 'googleai/gemini-2.5-flash',
       output: {
         schema: FetchLatestNewsOutputSchema,
