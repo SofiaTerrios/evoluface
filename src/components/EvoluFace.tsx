@@ -34,6 +34,7 @@ const GenerateInformativeLabelsInputSchema = z.object({
 type HominidStageWithData = HominidStage & {
   imageUrl: string;
   imageHint: string;
+  modelEmbedUrl?: string;
 };
 
 interface EvoluFaceProps {

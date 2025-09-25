@@ -1,0 +1,34 @@
+{
+  "models": [
+    {
+      "id": "australopithecus-cranium",
+      "description": "Cráneo de Australopithecus afarensis",
+      "iframeUrl": "https://3d.si.edu/object/3d/australopithecus-afarensis-cranium-a.l.-444-2:d8c6239a-7f61-4674-9983-b7842531955b"
+    },
+    {
+      "id": "homo-habilis-cranium",
+      "description": "Cráneo de Homo habilis",
+      "iframeUrl": "https://3d.si.edu/object/3d/homo-habilis-cranium-knm-er-1813:8c142cfa-9464-45b6-953a-028a7f457788"
+    },
+    {
+      "id": "homo-erectus-cranium",
+      "description": "Cráneo de Homo erectus",
+      "iframeUrl": "https://3d-api.si.edu/voyager/3d_package:6faf8121-250c-47cb-a5cc-139d7b16c570"
+    },
+    {
+      "id": "homo-heidelbergensis-cranium",
+      "description": "Cráneo de Homo heidelbergensis",
+      "iframeUrl": "https://3d.si.edu/object/3d/homo-heidelbergensis-cranium-kabwe:2a415a7a-42ca-494b-952a-95b1842037a3"
+    },
+    {
+      "id": "neanderthal-cranium",
+      "description": "Cráneo de Homo neanderthalensis",
+      "iframeUrl": "https://3d.si.edu/object/3d/homo-neanderthalensis-cranium-la-ferrassie-1:a58c639f-43f1-43a1-9457-3a131b268297"
+    },
+    {
+      "id": "homo-sapiens-cranium",
+      "description": "Cráneo de Homo sapiens",
+      "iframeUrl": "https://3d.si.edu/object/3d/homo-sapiens-cranium-skhul-v:e1ff02a0-435e-448f-9d10-31b6b553e4c4"
+    }
+  ]
+}

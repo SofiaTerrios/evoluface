@@ -3,7 +3,7 @@ export type HominidStage = {
   years: string;
   imagePlaceholderId: string;
   facialFeatures: string;
-  modelEmbedUrl?: string;
+  model3dId?: string;
 };
 
 export const HOMINID_STAGES: HominidStage[] = [
@@ -13,7 +13,7 @@ export const HOMINID_STAGES: HominidStage[] = [
     imagePlaceholderId: 'evoluface-australopithecus',
     facialFeatures:
       'Cara prognática (proyectada hacia adelante), fuerte arco superciliar, grandes molares y un pequeño cráneo en comparación con los humanos modernos.',
-    modelEmbedUrl: 'https://3d.si.edu/object/3d/australopithecus-afarensis-cranium-a.l.-444-2:d8c6239a-7f61-4674-9983-b7842531955b',
+    model3dId: 'australopithecus-cranium',
   },
   {
     name: 'Homo Habilis',
@@ -21,7 +21,7 @@ export const HOMINID_STAGES: HominidStage[] = [
     imagePlaceholderId: 'evoluface-homo-habilis',
     facialFeatures:
       'Rostro y dientes ligeramente más pequeños que los del Australopithecus, pero aún conservando un notable arco superciliar. La caja craneana es más grande.',
-    modelEmbedUrl: 'https://3d.si.edu/object/3d/homo-habilis-cranium-knm-er-1813:8c142cfa-9464-45b6-953a-028a7f457788',
+    model3dId: 'homo-habilis-cranium',
   },
   {
     name: 'Homo Erectus',
@@ -29,7 +29,7 @@ export const HOMINID_STAGES: HominidStage[] = [
     imagePlaceholderId: 'evoluface-homo-erectus',
     facialFeatures:
       'Rostro menos prognático, mandíbulas y dientes más pequeños. Todavía presenta un prominente arco superciliar, y la frente es baja e inclinada.',
-    modelEmbedUrl: 'https://3d-api.si.edu/voyager/3d_package:6faf8121-250c-47cb-a5cc-139d7b16c570',
+    model3dId: 'homo-erectus-cranium',
   },
   {
     name: 'Homo Heidelbergensis',
@@ -37,7 +37,7 @@ export const HOMINID_STAGES: HominidStage[] = [
     imagePlaceholderId: 'evoluface-homo-heidelbergensis',
     facialFeatures:
       'Gran parte media del rostro proyectada, pómulos angulados y una nariz muy grande. Arco superciliar prominente y un cráneo relativamente plano y alargado.',
-    modelEmbedUrl: 'https://3d.si.edu/object/3d/homo-heidelbergensis-cranium-kabwe:2a415a7a-42ca-494b-952a-95b1842037a3',
+    model3dId: 'homo-heidelbergensis-cranium',
   },
   {
     name: 'Homo Neanderthalensis',
@@ -45,7 +45,7 @@ export const HOMINID_STAGES: HominidStage[] = [
     imagePlaceholderId: 'evoluface-neanderthal',
     facialFeatures:
       'Gran parte media del rostro proyectada, pómulos angulados y una nariz muy grande. Arco superciliar prominente y un cráneo relativamente plano y alargado.',
-    modelEmbedUrl: 'https://3d.si.edu/object/3d/homo-neanderthalensis-cranium-la-ferrassie-1:a58c639f-43f1-43a1-9457-3a131b268297',
+    model3dId: 'neanderthal-cranium',
   },
   {
     name: 'Homo Sapiens',
@@ -53,6 +53,6 @@ export const HOMINID_STAGES: HominidStage[] = [
     imagePlaceholderId: 'evoluface-homo-sapiens',
     facialFeatures:
       'Frente plana y casi vertical, arco superciliar pequeño o inexistente, mandíbulas y dientes más pequeños, y un mentón prominente.',
-    modelEmbedUrl: 'https://3d.si.edu/object/3d/homo-sapiens-cranium-skhul-v:e1ff02a0-435e-448f-9d10-31b6b553e4c4',
+    model3dId: 'homo-sapiens-cranium',
   },
 ];

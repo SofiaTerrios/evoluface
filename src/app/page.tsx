@@ -1,17 +1,20 @@
 import EvoluFace from '@/components/EvoluFace';
 import { HOMINID_STAGES } from '@/lib/hominids';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Models3D } from '@/lib/3d-models';
 
 export default async function Home() {
   const hominidStagesWithData = HOMINID_STAGES.map((stage) => {
     const placeholder = PlaceHolderImages.find(
       (p) => p.id === stage.imagePlaceholderId
     );
+    const model3d = Models3D.find((m) => m.id === stage.model3dId);
 
     return {
       ...stage,
       imageUrl: placeholder?.imageUrl || '',
       imageHint: placeholder?.imageHint || '',
+      modelEmbedUrl: model3d?.iframeUrl,
     };
   });
 
