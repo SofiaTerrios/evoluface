@@ -141,9 +141,9 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
                 description={currentStage.modelDescription}
               />
             </div>
-             <CardDescription className="text-center p-4 text-sm">
+             <p className="text-center p-4 text-sm text-card-foreground">
                 {currentStage.craniumFeatures}
-            </CardDescription>
+            </p>
           </CardContent>
         </Card>
       )}
@@ -163,7 +163,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
               <Skeleton className="h-4 w-3/4" />
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-card-foreground">
               {news?.news}
             </p>
           )}
