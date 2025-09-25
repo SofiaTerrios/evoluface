@@ -10,7 +10,7 @@ export const HOMINID_STAGES: HominidStage[] = [
     name: 'Australopithecus Afarensis',
     years: '3.9 – 2.9 million years ago',
     imagePlaceholderId: 'evoluface-australopithecus',
-    facialFeatures: 'Prognathic face (juts forward), strong brow ridge, large molars, and a small braincase compared to modern humans.',
+    facialFeatures: 'Cara prognática (proyectada hacia adelante), fuerte arco superciliar, grandes molares y un pequeño cráneo en comparación con los humanos modernos.',
   },
   {
     name: 'Homo Habilis',

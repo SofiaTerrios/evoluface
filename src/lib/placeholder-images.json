@@ -15,7 +15,7 @@
     {
       "id": "evoluface-homo-erectus",
       "description": "A reconstruction of a Homo Erectus face.",
-      "imageUrl": "/homo-erectus-new.jpeg",
+      "imageUrl": "/Homo erectus.jpeg",
       "imageHint": "early hominid"
     },
     {
@@ -27,13 +27,13 @@
     {
       "id": "evoluface-neanderthal",
       "description": "A reconstruction of a Homo Neanderthalensis face.",
-      "imageUrl": "/neanderthal.jpeg",
+      "imageUrl": "/Homo neanderthalensis.jpeg",
       "imageHint": "neanderthal man"
     },
     {
       "id": "evoluface-homo-sapiens",
       "description": "A portrait of a modern Homo Sapiens.",
-      "imageUrl": "https://images.unsplash.com/photo-1633096780993-d4552d4103c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBodW1hbnxlbnwwfHx8fDE3NTg3NTY1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/Homo sapiens.jpeg",
       "imageHint": "modern human"
     }
   ]
