@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
+import HominidViewer from './HominidViewer';
 
 type GenerateInformativeLabelsInput = z.infer<
   typeof GenerateInformativeLabelsInputSchema
@@ -31,10 +32,11 @@ const GenerateInformativeLabelsInputSchema = z.object({
       'Descripción de los rasgos faciales en la etapa actual del homínido.'
     ),
 });
-type HominidStageWithData = HominidStage & {
+export type HominidStageWithData = HominidStage & {
   imageUrl: string;
   imageHint: string;
   modelEmbedUrl?: string;
+  modelDescription?: string;
 };
 
 interface EvoluFaceProps {
@@ -146,7 +148,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
           </div>
         </CardFooter>
       </Card>
-      {currentStage.modelEmbedUrl && (
+      {currentStage.modelEmbedUrl && currentStage.modelDescription && (
         <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8">
           <CardHeader className="text-center">
             <CardTitle className="font-headline text-xl font-bold text-primary flex items-center justify-center gap-2">
@@ -156,15 +158,11 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
           </CardHeader>
           <CardContent>
             <div className="aspect-square w-full h-auto rounded-lg overflow-hidden border">
-              <iframe
+              <HominidViewer
                 key={currentStage.name}
-                title={`Modelo 3D de ${currentStage.name}`}
-                src={currentStage.modelEmbedUrl}
-                width="100%"
-                height="100%"
-                allowFullScreen
-                className="border-0"
-              ></iframe>
+                iframeUrl={currentStage.modelEmbedUrl}
+                description={currentStage.modelDescription}
+              />
             </div>
           </CardContent>
         </Card>
