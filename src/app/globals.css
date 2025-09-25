@@ -14,24 +14,24 @@ body {
     --card-foreground: 0 0% 17%;
     --popover: 15 17% 80%;
     --popover-foreground: 0 0% 17%;
-    --primary: 15 78% 54%; /* Naranja rojizo */
+    --primary: 15 65% 50%; /* Naranja rojizo (menos saturado) */
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 89.8%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 89.8%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 15 78% 54%; /* Naranja rojizo */
+    --accent: 15 65% 50%; /* Naranja rojizo (menos saturado) */
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 85%;
     --input: 0 0% 85%;
-    --ring: 15 78% 54%;
-    --chart-1: 15 78% 54%; /* Naranja rojizo */
-    --chart-2: 202 47% 43%; /* Azul petróleo */
-    --chart-3: 15 17% 50%; /* Marrón */
-    --chart-4: 39 100% 70%; /* Amarillo cálido */
-    --chart-5: 27 87% 67%;
+    --ring: 15 65% 50%; /* Naranja rojizo (menos saturado) */
+    --chart-1: 15 65% 50%; /* Naranja rojizo (menos saturado) */
+    --chart-2: 202 35% 40%; /* Azul petróleo (menos saturado) */
+    --chart-3: 15 20% 50%; /* Marrón */
+    --chart-4: 39 80% 65%; /* Amarillo cálido (menos saturado) */
+    --chart-5: 27 70% 67%;
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -49,24 +49,24 @@ body {
     --card-foreground: 36 43% 97%;
     --popover: 0 0% 17%;
     --popover-foreground: 36 43% 97%;
-    --primary: 15 78% 54%; /* Naranja rojizo */
+    --primary: 15 65% 50%; /* Naranja rojizo (menos saturado) */
     --primary-foreground: 0 0% 98%;
     --secondary: 220 10% 25%;
     --secondary-foreground: 0 0% 98%;
     --muted: 220 10% 25%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 15 78% 54%; /* Naranja rojizo */
+    --accent: 15 65% 50%; /* Naranja rojizo (menos saturado) */
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 10% 25%;
     --input: 220 10% 25%;
-    --ring: 15 78% 54%;
-    --chart-1: 15 78% 54%; /* Naranja rojizo */
-    --chart-2: 202 47% 43%; /* Azul petróleo */
-    --chart-3: 15 17% 50%; /* Marrón */
-    --chart-4: 39 100% 70%; /* Amarillo cálido */
-    --chart-5: 27 87% 67%;
+    --ring: 15 65% 50%; /* Naranja rojizo (menos saturado) */
+    --chart-1: 15 65% 50%; /* Naranja rojizo (menos saturado) */
+    --chart-2: 202 35% 40%; /* Azul petróleo (menos saturado) */
+    --chart-3: 15 20% 50%; /* Marrón */
+    --chart-4: 39 80% 65%; /* Amarillo cálido (menos saturado) */
+    --chart-5: 27 70% 67%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
