@@ -43,8 +43,8 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 0 0% 17%; /* Gris oscuro */
-    --foreground: 36 43% 97%; /* Beige claro */
+    --background: 36 43% 97%; /* Beige claro */
+    --foreground: 0 0% 17%; /* Gris oscuro */
     --card: 15 17% 25%; /* Marrón oscuro para tarjetas */
     --card-foreground: 36 43% 97%;
     --popover: 0 0% 17%;
