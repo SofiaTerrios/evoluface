@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { ToyBrick, GalleryHorizontal } from 'lucide-react';
 import type { HominidStage } from '@/lib/hominids';
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -15,6 +16,8 @@ import { Slider } from '@/components/ui/slider';
 import HominidViewer from './HominidViewer';
 import Link from 'next/link';
 import { Button } from './ui/button';
+import { generateInformativeLabels, type GenerateInformativeLabelsInput, type GenerateInformativeLabelsOutput } from '@/ai/flows/generate-informative-labels';
+import { Skeleton } from './ui/skeleton';
 
 export type HominidStageWithData = HominidStage & {
   imageUrl: string;
@@ -29,6 +32,8 @@ interface EvoluFaceProps {
 
 export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const [sliderValue, setSliderValue] = useState(0);
+  const [imageLabel, setImageLabel] = useState<GenerateInformativeLabelsOutput | null>(null);
+  const [loadingLabel, setLoadingLabel] = useState(false);
 
   const currentStageIndex = Math.round(sliderValue);
   const currentStage = hominidStages[currentStageIndex];
@@ -36,6 +41,32 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
   const floorIndex = Math.floor(sliderValue);
   const ceilIndex = Math.ceil(sliderValue);
   const progress = sliderValue - floorIndex;
+
+  useEffect(() => {
+    async function generateLabel() {
+      if (!currentStage) return;
+
+      setLoadingLabel(true);
+      setImageLabel(null);
+      try {
+        const input: GenerateInformativeLabelsInput = {
+          name: currentStage.name,
+          facialFeatures: currentStage.facialFeatures,
+          type: 'face'
+        };
+        const label = await generateInformativeLabels(input);
+        setImageLabel(label);
+      } catch (error) {
+        console.error('Failed to generate label:', error);
+        setImageLabel({ label: 'No se pudo generar la etiqueta.' });
+      } finally {
+        setLoadingLabel(false);
+      }
+    }
+
+    generateLabel();
+  }, [currentStage]);
+
 
   return (
     <>
@@ -53,6 +84,12 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
             {currentStage.name}
           </CardTitle>
           <p className="text-sm text-muted-foreground">{currentStage.years}</p>
+          <CardDescription className="text-sm text-accent-foreground/80 h-10 flex items-center justify-center">
+            {loadingLabel && <Skeleton className="h-4 w-3/4" />}
+            {imageLabel && !loadingLabel && (
+              <blockquote className="text-balance">{imageLabel.label}</blockquote>
+            )}
+          </CardDescription>
         </CardHeader>
         <CardContent className="px-4 md:px-6">
           <div className="relative mx-auto h-64 w-64 md:h-80 md:w-80 aspect-square mb-6 rounded-full overflow-hidden shadow-inner border-4 border-card-foreground/10">
