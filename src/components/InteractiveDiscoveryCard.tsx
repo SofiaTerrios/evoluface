@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useAnimation, PanInfo } from 'framer-motion';
-import { useRef, useEffect } from 'react';
+import { useEffect } from 'react';
 import type { Discovery } from '@/lib/discoveries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import Image from 'next/image';
@@ -57,8 +57,10 @@ export default function InteractiveDiscoveryCard({
 
     const dropZoneRect = dropZone.getBoundingClientRect();
     
-    const cardCenterX = info.point.x;
-    const cardCenterY = info.point.y;
+    // Use the center of the card for collision detection
+    const cardRect = info.target.getBoundingClientRect();
+    const cardCenterX = cardRect.left + cardRect.width / 2;
+    const cardCenterY = cardRect.top + cardRect.height / 2;
 
     return (
       cardCenterX > dropZoneRect.left &&
