@@ -2,53 +2,66 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Footprints } from 'lucide-react';
 import { HOMINID_STAGES } from '@/lib/hominids';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 
+// Omitting Heidelbergensis to match the 5-item alternating design in the image
+const timelineHominids = HOMINID_STAGES.filter(h => h.name !== 'Homo Heidelbergensis');
+
 export default function TimelinePage() {
   return (
-    <div className="bg-[#2a201c] min-h-screen text-foreground">
-      <main className="container mx-auto p-4 sm:p-8">
-        <div className="flex items-center mb-8">
-          <Button asChild variant="outline" size="icon" className="mr-4 bg-transparent border-primary/50 text-primary-foreground hover:bg-primary/10 hover:text-primary-foreground">
+    <div className="bg-[#fdfaec] min-h-screen text-stone-700">
+      <header className="container mx-auto px-4 pt-8 sm:px-8">
+         <div className="flex items-center mb-8">
+          <Button asChild variant="outline" size="icon" className="mr-4 bg-transparent border-stone-400 text-stone-600 hover:bg-stone-100 hover:text-stone-800">
             <Link href="/">
               <ArrowLeft />
               <span className="sr-only">Volver al Menú</span>
             </Link>
           </Button>
-          <div>
-            <h1 className="text-3xl md:text-4xl font-headline font-bold tracking-tight text-primary">
-              Línea de Tiempo
+          <div className="text-center md:text-left flex-grow">
+            <h1 className="text-3xl md:text-4xl font-headline font-bold tracking-tight text-stone-800">
+              Cronología de la Evolución Humana
             </h1>
-            <p className="text-muted-foreground mt-1 text-sm">
-              Un viaje a través de las especies que nos precedieron.
+            <p className="text-stone-500 mt-1">
+              Recorre millones de años de nuestra historia ancestral.
             </p>
           </div>
         </div>
-        <div className="relative w-full flex flex-col items-center gap-8">
-            <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-0.5 bg-border/50" />
-            {HOMINID_STAGES.map((stage, index) => (
-                <motion.div 
-                    key={stage.name}
-                    className="w-full max-w-2xl"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.2 }}
-                >
-                    <Card className="relative bg-card/80 backdrop-blur-sm border-white/20 shadow-lg">
-                        <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-primary ring-4 ring-background" />
-                        <CardHeader>
-                            <CardTitle className="font-headline text-2xl text-primary">{stage.name}</CardTitle>
-                            <CardDescription>{stage.years}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <p>{stage.facialFeatures}</p>
-                        </CardContent>
-                    </Card>
-                </motion.div>
-            ))}
+      </header>
+      <main className="container mx-auto px-4 pb-16">
+        <div className="relative wrap overflow-hidden p-10 h-full">
+          <div className="absolute left-1/2 -translate-x-1/2 h-full border-2 border-stone-300 rounded-full" />
+
+          {timelineHominids.map((stage, index) => (
+             <motion.div
+              key={stage.name}
+              className={`mb-8 flex justify-between items-center w-full ${
+                index % 2 === 0 ? 'flex-row-reverse left-timeline' : 'right-timeline'
+              }`}
+               initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100 }}
+               animate={{ opacity: 1, x: 0 }}
+               transition={{ duration: 0.5, delay: index * 0.2 }}
+            >
+              <div className="order-1 w-5/12"></div>
+
+              <div className="z-20 flex items-center order-1 bg-stone-300 shadow-xl w-10 h-10 rounded-full">
+                <h1 className="mx-auto font-semibold text-lg text-white">
+                  <Footprints className="text-stone-600 h-6 w-6"/>
+                </h1>
+              </div>
+              
+              <div className={`order-1 rounded-lg shadow-xl w-5/12 px-6 py-4 bg-white ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
+                  <h3 className="font-headline font-bold text-stone-800 text-xl">{stage.name}</h3>
+                  <p className="text-sm leading-snug tracking-wide text-stone-500 text-opacity-100 mb-2">{stage.years}</p>
+                  <p className="text-sm font-body text-stone-600">
+                    {stage.facialFeatures}
+                  </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </main>
     </div>
