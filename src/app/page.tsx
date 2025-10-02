@@ -7,9 +7,9 @@ import Image from 'next/image';
 
 const menuItems = [
   { id: 1, title: 'EvoluFace', href: '/evoluface' },
-  { id: 2, title: 'Próximamente', href: '#' },
-  { id: 3, title: 'Próximamente', href: '#' },
-  { id: 4, title: 'Próximamente', href: '#' },
+  { id: 2, title: 'Linea de Tiempo', href: '#' },
+  { id: 3, title: 'Video', href: '#' },
+  { id: 4, title: 'Cultura', href: '#' },
 ];
 
 const LandingPage = () => {
