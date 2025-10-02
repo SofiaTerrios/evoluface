@@ -55,7 +55,7 @@ export const HominidTimeline = ({ stages }: { stages: HominidStage[] }) => {
   })).sort((a, b) => b.start - a.start);
 
   const totalDuration = timelineData[0]?.start || 4; // Max time ago in millions
-  const timelineHeight = 2000; // px
+  const timelineHeight = 2400; // px
 
   return (
     <div className="relative w-full" style={{ height: `${timelineHeight}px` }}>
@@ -104,10 +104,10 @@ export const HominidTimeline = ({ stages }: { stages: HominidStage[] }) => {
                 width: '40%',
               }}
             >
-              <div className={`h-full p-2 rounded-lg shadow-md flex items-center justify-center ${colors[index % colors.length]}`}>
+              <div className={`h-full p-3 rounded-lg shadow-md flex items-center justify-center ${colors[index % colors.length]}`}>
                 <div className="text-center text-primary-foreground">
-                    <p className="font-bold text-sm md:text-base">{stage.name}</p>
-                    <p className="text-xs hidden sm:block">{stage.years}</p>
+                    <p className="font-bold text-base md:text-lg">{stage.name}</p>
+                    <p className="text-xs md:text-sm">{stage.years}</p>
                 </div>
               </div>
             </motion.div>
