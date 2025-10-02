@@ -29,11 +29,17 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'https',
+        protocol: 'https,',
         hostname: 'www.bing.com',
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'escholarium.educarex.es',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
 };

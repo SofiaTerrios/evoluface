@@ -49,7 +49,7 @@ const LandingPage = () => {
       >
         {!showMenu && (
              <Image
-              src="/evolution.png"
+              src="https://escholarium.educarex.es/useruploads/r/c/137369/scorm_imported/52538244438392521587/evolution-24560_1280.png"
               alt="Evolución Humana"
               width={400}
               height={100}
