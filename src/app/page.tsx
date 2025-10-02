@@ -9,7 +9,7 @@ const menuItems = [
   { id: 1, title: 'EvoluFace', href: '/evoluface' },
   { id: 2, title: 'Linea de Tiempo', href: '/timeline' },
   { id: 3, title: 'Video', href: '/video' },
-  { id: 4, title: 'Hominids', href: '/hominids' },
+  { id: 4, title: 'Descubrimientos', href: '/hominids' },
 ];
 
 const LandingPage = () => {
