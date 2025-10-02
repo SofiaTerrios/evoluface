@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, PanInfo } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import type { Discovery } from '@/lib/discoveries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -10,7 +10,7 @@ import { Badge } from './ui/badge';
 interface InteractiveDiscoveryCardProps {
   discovery: Discovery;
   isRevealed: boolean;
-  onReveal: () => void;
+  onRevealToggle: (id: string, state: boolean) => void;
   initialPosition: { x: number; y: number };
 }
 
@@ -20,7 +20,7 @@ const CARD_SIZE_LARGE = { width: 320, height: 400 };
 export default function InteractiveDiscoveryCard({
   discovery,
   isRevealed,
-  onReveal,
+  onRevealToggle,
   initialPosition,
 }: InteractiveDiscoveryCardProps) {
   const controls = useAnimation();
@@ -32,64 +32,93 @@ export default function InteractiveDiscoveryCard({
         rotateY: 180,
         x: 0,
         y: 0,
-        scale: 1, // Make sure it's at full scale when revealed
+        scale: 1,
+        width: CARD_SIZE_LARGE.width,
+        height: CARD_SIZE_LARGE.height,
+        zIndex: 10,
+        transition: { duration: 0.6, type: 'spring' },
+      });
+    } else {
+       controls.start({
+        rotateY: 0,
+        scale: 0.8,
+        width: CARD_SIZE_SMALL.width,
+        height: CARD_SIZE_SMALL.height,
+        zIndex: 1,
         transition: { duration: 0.6, type: 'spring' },
       });
     }
   }, [isRevealed, controls]);
-
-  const handleDragEnd = (_event: any, info: any) => {
-    if (isRevealed) return; // Don't do anything if already revealed
-
+  
+  const isPointInDropZone = (info: PanInfo) => {
     const dropZone = document.getElementById('drop-zone');
-    if (!dropZone || !cardRef.current) return;
+    if (!dropZone) return false;
 
     const dropZoneRect = dropZone.getBoundingClientRect();
     
-    // We need to account for the card's current transform (scale and position)
-    const cardTransform = new DOMMatrix(getComputedStyle(cardRef.current).transform);
+    // We get the center of the card from the drag event info
     const cardCenterX = info.point.x;
     const cardCenterY = info.point.y;
 
-    if (
+    return (
       cardCenterX > dropZoneRect.left &&
       cardCenterX < dropZoneRect.right &&
       cardCenterY > dropZoneRect.top &&
       cardCenterY < dropZoneRect.bottom
-    ) {
-      onReveal();
+    );
+  }
+
+  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (isPointInDropZone(info)) {
+      if (!isRevealed) {
+        onRevealToggle(discovery.id, true);
+      }
+    } else {
+      if (isRevealed) {
+         onRevealToggle(discovery.id, false);
+      }
+      // Snap back to initial position if not in drop zone
+      controls.start({ x: initialPosition.x, y: initialPosition.y });
     }
   };
+  
+  const handleDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    // If revealed, check if it's being dragged out of the zone
+    if(isRevealed && !isPointInDropZone(info)) {
+       onRevealToggle(discovery.id, false);
+    }
+  }
 
   return (
     <motion.div
       ref={cardRef}
-      drag={!isRevealed} // Only allow dragging if not revealed
-      dragConstraints={{ top: -300, left: -500, right: 500, bottom: 300 }}
+      drag={!isRevealed}
+      dragConstraints={{ top: -400, left: -600, right: 600, bottom: 400 }}
       dragElastic={0.2}
       onDragEnd={handleDragEnd}
+      onDrag={handleDrag}
       className="absolute cursor-grab active:cursor-grabbing"
       style={{
         perspective: 1000,
-        width: CARD_SIZE_LARGE.width, // Base width for layout
-        height: CARD_SIZE_LARGE.height, // Base height for layout
+        width: CARD_SIZE_SMALL.width,
+        height: CARD_SIZE_SMALL.height,
       }}
-      initial={{ ...initialPosition, rotateY: 0, scale: 0.6 }}
+      initial={{ ...initialPosition, rotateY: 0, scale: 0.8 }}
       animate={controls}
     >
-      {/* Container for scaling and rotating */}
+      {/* Container for rotating */}
       <motion.div
         className="relative w-full h-full"
         style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Front Face (Revealed Content) */}
-        <motion.div
+        <div
           className="absolute w-full h-full"
-          style={{ backfaceVisibility: 'hidden', rotateY: 180 }}
+          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           <Card className="w-full h-full flex flex-col overflow-hidden shadow-2xl bg-card text-card-foreground">
-            <CardHeader>
-              <div className="relative w-full h-32 rounded-lg overflow-hidden border mb-2">
+            <CardHeader className="p-4">
+              <div className="relative w-full h-32 rounded-md overflow-hidden border mb-2">
                 <Image
                   src={discovery.imageUrl}
                   alt={discovery.title}
@@ -103,18 +132,18 @@ export default function InteractiveDiscoveryCard({
               </CardTitle>
               <CardDescription className="text-xs">{discovery.date}</CardDescription>
             </CardHeader>
-            <CardContent className="flex-grow text-sm text-card-foreground/90 overflow-y-auto">
+            <CardContent className="flex-grow text-sm text-card-foreground/90 overflow-y-auto p-4 pt-0">
               <p>{discovery.summary}</p>
             </CardContent>
-            <CardContent className="flex flex-wrap gap-2 pt-2">
+            <CardContent className="flex flex-wrap gap-2 p-4 pt-2">
               <Badge variant="secondary">{discovery.hominidTag}</Badge>
               <Badge variant="outline">{discovery.typeTag}</Badge>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
         {/* Back Face (Unrevealed) */}
-        <motion.div
+        <div
           className="absolute w-full h-full"
           style={{ backfaceVisibility: 'hidden' }}
         >
@@ -129,7 +158,7 @@ export default function InteractiveDiscoveryCard({
                 HALLAZGO
             </span>
           </Card>
-        </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   );

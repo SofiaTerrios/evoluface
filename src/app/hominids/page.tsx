@@ -11,14 +11,14 @@ import { Button } from '@/components/ui/button';
 export default function HominidsPage() {
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
 
-  const handleReveal = (id: string) => {
-    setRevealed((prev) => ({ ...prev, [id]: true }));
+  const handleRevealToggle = (id: string, state: boolean) => {
+    setRevealed((prev) => ({ ...prev, [id]: state }));
   };
 
   return (
-    <main className="container mx-auto p-4 sm:p-8 h-screen w-screen flex flex-col items-center justify-center relative">
-        <header className="absolute top-0 left-0 w-full p-4 sm:p-8 z-20">
-             <div className="flex items-center">
+    <main className="container mx-auto p-4 sm:p-8 h-screen w-screen flex flex-col items-center relative">
+        <header className="absolute top-0 left-0 w-full p-4 sm:p-8 z-20 flex justify-center">
+             <div className="flex items-center w-full max-w-4xl">
                 <Button asChild variant="outline" size="icon" className="mr-4">
                     <Link href="/">
                     <ArrowLeft />
@@ -36,24 +36,30 @@ export default function HominidsPage() {
             </div>
         </header>
 
+        {/* This div will be the positioning parent for the drop zone and cards */}
+        <div className="relative w-full h-full flex items-center justify-center">
+            <motion.div
+                id="drop-zone"
+                className="relative z-0 flex h-72 w-72 items-center justify-center rounded-full border-2 border-dashed border-primary/50 bg-primary/10"
+            >
+                <Lightbulb className="h-16 w-16 text-primary/30" />
+                <span className="absolute bottom-4 text-sm text-primary/50">Zona de Revelación</span>
+            </motion.div>
 
-      <motion.div
-        id="drop-zone"
-        className="relative z-0 flex h-64 w-64 items-center justify-center rounded-full border-2 border-dashed border-primary/50 bg-primary/10"
-      >
-        <Lightbulb className="h-12 w-12 text-primary/30" />
-        <span className="absolute bottom-4 text-xs text-primary/50">Zona de Revelación</span>
-      </motion.div>
-
-      {DISCOVERIES.map((discovery, index) => (
-        <InteractiveDiscoveryCard
-          key={discovery.id}
-          discovery={discovery}
-          isRevealed={!!revealed[discovery.id]}
-          onReveal={() => handleReveal(discovery.id)}
-          initialPosition={{ x: (index % 3 - 1) * 350 - 50, y: (Math.floor(index / 3) - 1) * 250 }}
-        />
-      ))}
+            {DISCOVERIES.map((discovery, index) => (
+                <InteractiveDiscoveryCard
+                    key={discovery.id}
+                    discovery={discovery}
+                    isRevealed={!!revealed[discovery.id]}
+                    onRevealToggle={handleRevealToggle}
+                    // Distribute cards around the center
+                    initialPosition={{ 
+                        x: Math.cos((index / DISCOVERIES.length) * 2 * Math.PI) * 400, 
+                        y: Math.sin((index / DISCOVERIES.length) * 2 * Math.PI) * 250 
+                    }}
+                />
+            ))}
+        </div>
     </main>
   );
 }
