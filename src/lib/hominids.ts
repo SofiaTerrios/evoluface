@@ -7,6 +7,13 @@ export type HominidStage = {
   model3dId?: string;
 };
 
+export type HominidStageTimeline = {
+  name: string;
+  years: string;
+  startMa: number; // Start date in Millions of years ago
+  endMa: number; // End date in Millions of years ago
+};
+
 export const HOMINID_STAGES: HominidStage[] = [
   {
     name: 'Australopithecus Afarensis',
@@ -70,51 +77,41 @@ export const HOMINID_STAGES: HominidStage[] = [
 ];
 
 
-// Simplified list for the new timeline design
-export const HOMINID_STAGES_TIMELINE: HominidStage[] = [
+export const HOMINID_STAGES_TIMELINE: HominidStageTimeline[] = [
   {
     name: 'Australopithecus Afarensis',
-    years: 'Hace 3.9 – 2.9 millones de años',
-    imagePlaceholderId: 'evoluface-australopithecus',
-    facialFeatures:
-      'Famoso por "Lucy", esta especie caminaba erguida pero conservaba rasgos simiescos.',
-    craniumFeatures: '',
+    years: '3.9 – 2.9 Ma',
+    startMa: 2.9,
+    endMa: 3.9,
   },
   {
     name: 'Homo Habilis',
-    years: 'Hace 2.4 – 1.4 millones de años',
-    imagePlaceholderId: 'evoluface-homo-habilis',
-    facialFeatures:
-      'Conocido como "hombre hábil" por ser uno de los primeros en usar herramientas de piedra.',
-    craniumFeatures: '',
+    years: '2.4 – 1.4 Ma',
+    startMa: 1.4,
+    endMa: 2.4,
   },
   {
     name: 'Homo Erectus',
-    years: 'Hace 1.9 millones – 117,000 años',
-    imagePlaceholderId: 'evoluface-homo-erectus',
-    facialFeatures:
-      'El primer homínido en migrar fuera de África, con un cerebro más grande y proporciones corporales más humanas.',
-    craniumFeatures: '',
+    years: '1.9 Ma – 117,000 años',
+    startMa: 0.117,
+    endMa: 1.9,
   },
   {
-    name: 'Homo Neanderthalensis',
-    years: 'Hace 400,000 – 40,000 años',
-    imagePlaceholderId: 'evoluface-neanderthal',
-    facialFeatures:
-      'Nuestro pariente humano extinto más cercano, adaptado a climas fríos en Europa y Asia.',
-    craniumFeatures: '',
+    name: 'H. Heidelbergensis',
+    years: '700,000 – 200,000 años',
+    startMa: 0.2,
+    endMa: 0.7,
+  },
+  {
+    name: 'H. Neanderthalensis',
+    years: '400,000 – 40,000 años',
+    startMa: 0.04,
+    endMa: 0.4,
   },
   {
     name: 'Homo Sapiens',
-    years: 'Hace 300,000 años – presente',
-    imagePlaceholderId: 'evoluface-homo-sapiens',
-    facialFeatures:
-      'Humanos modernos, caracterizados por cerebros grandes, lenguaje y cultura compleja.',
-    craniumFeatures: '',
+    years: '300,000 años – presente',
+    startMa: 0,
+    endMa: 0.3,
   },
-].sort((a, b) => {
-    const getYear = (str: string) => parseFloat(str.match(/(\d+\.?\d*)/)?.[0] || '0') * (str.includes('millones') ? 1000000 : 1);
-    const yearA = getYear(a.years);
-    const yearB = getYear(b.years);
-    return yearB - yearA;
-});
+].sort((a, b) => b.endMa - a.endMa);

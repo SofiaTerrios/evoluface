@@ -1,76 +1,98 @@
 'use client';
 
-import type { HominidStage } from '@/lib/hominids';
+import type { HominidStageTimeline } from '@/lib/hominids';
 import { motion } from 'framer-motion';
-import { Leaf } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
-const TimelineCard = ({
+const TOTAL_YEARS = 4; // Total span in millions of years for the timeline (e.g., 0 to 4 Ma)
+
+const HominidBar = ({
   stage,
   index,
 }: {
-  stage: HominidStage;
+  stage: HominidStageTimeline;
   index: number;
 }) => {
-  const side = index % 2 === 0 ? 'left' : 'right';
+  const startPercent = (stage.startMa / TOTAL_YEARS) * 100;
+  const widthPercent = ((stage.endMa - stage.startMa) / TOTAL_YEARS) * 100;
 
-  const cardVariants = {
-    hidden: { opacity: 0, x: side === 'left' ? -50 : 50 },
-    visible: { opacity: 1, x: 0 },
-  };
+  const barColors = [
+    'bg-chart-1',
+    'bg-chart-2',
+    'bg-chart-3',
+    'bg-chart-4',
+    'bg-chart-5',
+  ];
 
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
-      {/* Card Section */}
-      <div className={`${side === 'left' ? 'col-start-1' : 'col-start-3'} ${side === 'right' ? 'text-left' : 'text-right'}`}>
-        <motion.div
-          variants={cardVariants}
-          className="bg-card/80 backdrop-blur-sm p-6 rounded-lg shadow-md border border-black/5"
-        >
-          <h3 className="font-headline text-xl font-bold text-primary">{stage.name}</h3>
-          <p className="text-sm text-muted-foreground mt-1">{stage.years}</p>
-          <p className="text-sm text-card-foreground/80 mt-4">{stage.facialFeatures}</p>
-        </motion.div>
-      </div>
-
-      {/* Timeline Axis Elements */}
-      <div className="col-start-2 flex flex-col items-center h-full">
-         <div className="h-full w-0.5 bg-[#d3cbb9]" />
-         <div className="relative my-4">
-            <div className="absolute inset-0.5 rounded-full bg-[#f4f1e9]"></div>
-            <Leaf className="h-6 w-6 text-green-800/70 relative" />
-         </div>
-         <div className="h-full w-0.5 bg-[#d3cbb9]" />
-      </div>
-
-      {/* Empty space filler */}
-      <div className="col-start-auto"></div>
-    </div>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <motion.div
+            className="relative h-10 flex items-center group cursor-pointer"
+            style={{
+              right: `${startPercent}%`,
+              width: `${widthPercent}%`,
+              top: `${index * 3.5}rem`, // Stagger vertically
+            }}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+          >
+            <div
+              className={`absolute inset-0 ${barColors[index % barColors.length]} rounded-md shadow-lg transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl opacity-80 group-hover:opacity-100 border-2 border-transparent group-hover:border-white/50`}
+            />
+            <span className="relative pl-3 text-sm font-bold text-white mix-blend-difference truncate">
+              {stage.name}
+            </span>
+          </motion.div>
+        </TooltipTrigger>
+        <TooltipContent className="bg-background text-foreground border-primary">
+          <p className="font-bold">{stage.name}</p>
+          <p>{stage.years}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
+export const HominidTimeline = ({
+  stages,
+}: {
+  stages: HominidStageTimeline[];
+}) => {
+  const totalHeight = stages.length * 3.5 + 4; // Calculate total height for the container
 
-export const HominidTimeline = ({ stages }: { stages: HominidStage[] }) => {
   return (
-    <div className="relative w-full max-w-3xl mx-auto">
-        {/* Draw the main line behind the cards */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 bg-[#d3cbb9] h-full" />
-        
-        <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{
-                visible: {
-                transition: {
-                    staggerChildren: 0.3,
-                },
-                },
-            }}
-            className="flex flex-col gap-12"
-        >
-            {stages.map((stage, index) => (
-                <TimelineCard key={stage.name} stage={stage} index={index} />
-            ))}
-      </motion.div>
+    <div className="w-full">
+      {/* Timeline Axis & Labels */}
+      <div className="relative h-8 mb-4">
+        {[...Array(TOTAL_YEARS + 1)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute h-full flex flex-col items-center"
+            style={{ left: `${(i / TOTAL_YEARS) * 100}%` }}
+          >
+            <span className="text-xs text-muted-foreground -translate-x-1/2">
+              {i > 0 ? `${i} Ma` : 'Presente'}
+            </span>
+            <div className="h-4 w-px bg-border mt-1"></div>
+          </div>
+        ))}
+         <div className="absolute top-1/2 left-0 w-full h-px bg-border -translate-y-1/2" />
+      </div>
+
+      {/* Hominid Bars Container */}
+      <div className="relative" style={{ height: `${totalHeight}rem` }}>
+        {stages.map((stage, index) => (
+          <HominidBar key={stage.name} stage={stage} index={index} />
+        ))}
+      </div>
     </div>
   );
 };
