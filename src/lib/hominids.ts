@@ -7,13 +7,6 @@ export type HominidStage = {
   model3dId?: string;
 };
 
-export type HominidStageTimeline = {
-  name: string;
-  years: string;
-  startMa: number; // Start date in Millions of years ago
-  endMa: number; // End date in Millions of years ago
-};
-
 export const HOMINID_STAGES: HominidStage[] = [
   {
     name: 'Australopithecus Afarensis',
@@ -75,43 +68,3 @@ export const HOMINID_STAGES: HominidStage[] = [
     model3dId: 'homo-sapiens-cranium',
   },
 ];
-
-
-export const HOMINID_STAGES_TIMELINE: HominidStageTimeline[] = [
-  {
-    name: 'Australopithecus Afarensis',
-    years: '3.9 – 2.9 Ma',
-    startMa: 2.9,
-    endMa: 3.9,
-  },
-  {
-    name: 'Homo Habilis',
-    years: '2.4 – 1.4 Ma',
-    startMa: 1.4,
-    endMa: 2.4,
-  },
-  {
-    name: 'Homo Erectus',
-    years: '1.9 Ma – 117,000 años',
-    startMa: 0.117,
-    endMa: 1.9,
-  },
-  {
-    name: 'H. Heidelbergensis',
-    years: '700,000 – 200,000 años',
-    startMa: 0.2,
-    endMa: 0.7,
-  },
-  {
-    name: 'H. Neanderthalensis',
-    years: '400,000 – 40,000 años',
-    startMa: 0.04,
-    endMa: 0.4,
-  },
-  {
-    name: 'Homo Sapiens',
-    years: '300,000 años – presente',
-    startMa: 0,
-    endMa: 0.3,
-  },
-].sort((a, b) => b.endMa - a.endMa);
