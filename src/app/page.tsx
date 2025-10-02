@@ -1,34 +1,64 @@
-import EvoluFace, { HominidStageWithData } from '@/components/EvoluFace';
-import { HOMINID_STAGES } from '@/lib/hominids';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Models3D } from '@/lib/3d-models';
+'use client';
 
-export default async function Home() {
-  const hominidStagesWithData: HominidStageWithData[] = HOMINID_STAGES.map(
-    (stage) => {
-      const placeholder = PlaceHolderImages.find(
-        (p) => p.id === stage.imagePlaceholderId
-      );
-      const model3d = Models3D.find((m) => m.id === stage.model3dId);
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
-      return {
-        ...stage,
-        imageUrl: placeholder?.imageUrl || '',
-        imageHint: placeholder?.imageHint || '',
-        modelEmbedUrl: model3d?.iframeUrl,
-        modelDescription: model3d?.description,
-      };
-    }
-  );
+const LandingPage = () => {
+  const [showLanding, setShowLanding] = useState(true);
+  const router = useRouter();
+
+  const handleEnter = () => {
+    setShowLanding(false);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+        if (!showLanding) {
+            router.push('/menu');
+        }
+    }, 1000); 
+    return () => clearTimeout(timer);
+  }, [showLanding, router]);
+
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 sm:p-8">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl md:text-5xl font-headline font-bold tracking-tight text-primary">
-          EvoluFace
-        </h1>
-      </div>
-      <EvoluFace hominidStages={hominidStagesWithData} />
-    </main>
+    <AnimatePresence>
+      {showLanding && (
+        <motion.main
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, y: -100 }}
+          transition={{ duration: 1, ease: 'easeInOut' }}
+          className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 sm:p-8 text-center"
+        >
+          <div className="absolute top-16">
+            <div className="w-48 h-12 bg-card rounded-lg mx-auto"></div>
+          </div>
+
+          <motion.div 
+            layoutId="hominids-humanity-title"
+            className="flex flex-col items-center"
+            >
+            <Image
+              src="/evolution.png"
+              alt="Evolución Humana"
+              width={400}
+              height={100}
+              className="mb-8"
+              data-ai-hint="human evolution"
+            />
+            <button
+              onClick={handleEnter}
+              className="bg-card text-card-foreground font-headline py-3 px-6 rounded-lg shadow-lg hover:bg-primary hover:text-primary-foreground transition-colors"
+            >
+              HOMÍNIDOS Y HUMANIDAD
+            </button>
+          </motion.div>
+        </motion.main>
+      )}
+    </AnimatePresence>
   );
-}
+};
+
+export default LandingPage;

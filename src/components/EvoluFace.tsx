@@ -73,7 +73,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
           </Link>
         </Button>
       </div>
-      <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative">
+      <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative bg-card text-card-foreground">
         <CardHeader className="text-center pb-2">
           <CardTitle className="font-headline text-2xl font-bold text-primary">
             {currentStage.name}
@@ -127,7 +127,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
       </Card>
 
       {currentStage.modelEmbedUrl && currentStage.modelDescription && (
-        <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8">
+        <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8 bg-card text-card-foreground">
           <CardHeader className="text-center">
             <CardTitle className="font-headline text-xl font-bold text-primary flex items-center justify-center gap-2">
               <ToyBrick className="h-6 w-6" />
@@ -148,7 +148,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
         </Card>
       )}
 
-      <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8">
+      <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8 bg-card text-card-foreground">
         <CardHeader>
           <CardTitle className="font-headline text-xl font-bold text-primary flex items-center gap-2">
             <Newspaper className="h-6 w-6" />

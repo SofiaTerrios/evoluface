@@ -10,7 +10,7 @@ export default function HominidsPage() {
     <main className="container mx-auto p-4 sm:p-8">
       <div className="flex items-center mb-8">
         <Button asChild variant="outline" size="icon" className="mr-4">
-          <Link href="/">
+          <Link href="/evoluface">
             <ArrowLeft />
             <span className="sr-only">Volver</span>
           </Link>
@@ -21,7 +21,7 @@ export default function HominidsPage() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {Models3D.map(item => (
-          <Card key={item.id} className="overflow-hidden shadow-lg">
+          <Card key={item.id} className="overflow-hidden shadow-lg bg-card text-card-foreground">
             <CardHeader>
               <CardTitle className="font-headline text-xl font-bold text-primary">
                 {item.description}
@@ -30,7 +30,6 @@ export default function HominidsPage() {
             <CardContent>
               <div className="aspect-video w-full h-auto rounded-lg overflow-hidden border">
                 <HominidViewer
-                  key={item.id}
                   iframeUrl={item.iframeUrl}
                   description={item.description}
                 />
