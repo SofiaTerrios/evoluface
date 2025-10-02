@@ -51,14 +51,14 @@ export default function InteractiveDiscoveryCard({
     }
   }, [isRevealed, controls, initialPosition.x, initialPosition.y]);
   
-  const isPointInDropZone = (info: PanInfo) => {
+  const isPointInDropZone = (event: MouseEvent | TouchEvent | PointerEvent) => {
     const dropZone = document.getElementById('drop-zone');
-    if (!dropZone) return false;
+    if (!dropZone || !(event.target instanceof Element)) return false;
 
     const dropZoneRect = dropZone.getBoundingClientRect();
     
     // Use the center of the card for collision detection
-    const cardRect = info.target.getBoundingClientRect();
+    const cardRect = event.target.getBoundingClientRect();
     const cardCenterX = cardRect.left + cardRect.width / 2;
     const cardCenterY = cardRect.top + cardRect.height / 2;
 
@@ -70,8 +70,8 @@ export default function InteractiveDiscoveryCard({
     );
   }
 
-  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (isPointInDropZone(info)) {
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (isPointInDropZone(event)) {
         onRevealToggle(discovery.id, true);
     } else {
         onRevealToggle(discovery.id, false);
