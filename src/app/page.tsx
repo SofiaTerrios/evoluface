@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 const menuItems = [
   { id: 1, title: 'EvoluFace', href: '/evoluface' },
@@ -29,8 +30,16 @@ const LandingPage = () => {
         transition={{ type: 'spring', stiffness: 200, damping: 30 }}
         className={`flex flex-col items-center ${!showMenu ? 'cursor-pointer' : ''}`}
       >
-        <div className="mb-8 h-24">
-          {/* Espacio reservado para la imagen */}
+        <div className="mb-8 h-24 w-full relative">
+          {!showMenu && (
+             <Image
+                src="/evolution.png"
+                alt="Evolución humana"
+                fill
+                style={{ objectFit: 'contain' }}
+                priority
+              />
+          )}
         </div>
         <div
           className="bg-card text-card-foreground font-headline py-3 px-6 rounded-lg shadow-lg hover:bg-primary hover:text-primary-foreground transition-colors"
