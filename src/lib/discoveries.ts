@@ -1,3 +1,4 @@
+
 export type Discovery = {
   id: string;
   title: string;
@@ -55,7 +56,7 @@ export const DISCOVERIES: Discovery[] = [
     imageHint: 'cave painting',
   },
   {
-    id 'denisovan-dna-new-guinea',
+    id: 'denisovan-dna-new-guinea',
     title: 'ADN denisovano revela una historia compleja en Nueva Guinea',
     date: 'Publicado: Abril 2019',
     summary:
