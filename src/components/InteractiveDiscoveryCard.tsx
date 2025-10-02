@@ -44,7 +44,6 @@ export default function InteractiveDiscoveryCard({
     const dropZoneRect = dropZone.getBoundingClientRect();
     const cardRect = cardRef.current.getBoundingClientRect();
     
-    // Using center point of the card for collision detection
     const cardCenterX = cardRect.left + cardRect.width / 2;
     const cardCenterY = cardRect.top + cardRect.height / 2;
 
@@ -72,7 +71,7 @@ export default function InteractiveDiscoveryCard({
         perspective: 1000,
       }}
       initial={{ ...initialPosition, rotateY: 0, opacity: 0}}
-      animate={{ ...controls, opacity: 1, transition: {delay: 0.5, duration: 0.5}}}
+      animate={{ ...controls, opacity: 1, x: initialPosition.x, y: initialPosition.y, transition: {delay: 0.5, duration: 0.5}}}
     >
       {/* Front Face (Initially Hidden) */}
       <motion.div
