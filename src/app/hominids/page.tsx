@@ -2,7 +2,7 @@
 
 import { Models3D } from '@/lib/3d-models';
 import HominidViewer from '@/components/HominidViewer';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, GalleryHorizontal, Skull } from 'lucide-react';
