@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { DISCOVERIES } from '@/lib/discoveries';
 import InteractiveDiscoveryCard from '@/components/InteractiveDiscoveryCard';
@@ -10,6 +10,11 @@ import { Button } from '@/components/ui/button';
 
 export default function HominidsPage() {
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleRevealToggle = (id: string, state: boolean) => {
     setRevealed((prev) => ({ ...prev, [id]: state }));
@@ -46,7 +51,7 @@ export default function HominidsPage() {
                 <span className="absolute bottom-4 text-sm text-primary/50">Zona de Revelación</span>
             </motion.div>
 
-            {DISCOVERIES.map((discovery, index) => (
+            {isMounted && DISCOVERIES.map((discovery, index) => (
                 <InteractiveDiscoveryCard
                     key={discovery.id}
                     discovery={discovery}
