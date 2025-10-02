@@ -58,7 +58,7 @@ export default function InteractiveDiscoveryCard({
     const dropZoneRect = dropZone.getBoundingClientRect();
     
     // Use the center of the card for collision detection
-    const cardRect = event.target.getBoundingClientRect();
+    const cardRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const cardCenterX = cardRect.left + cardRect.width / 2;
     const cardCenterY = cardRect.top + cardRect.height / 2;
 
@@ -98,25 +98,7 @@ export default function InteractiveDiscoveryCard({
         className="relative w-full h-full"
         style={{ transformStyle: 'preserve-3d' }}
       >
-        {/* Back Face (Unrevealed) - Rendered first */}
-        <div
-          className="absolute w-full h-full"
-          style={{ backfaceVisibility: 'hidden' }}
-        >
-          <Card className="w-full h-full shadow-2xl bg-stone-700 border-stone-500 flex items-center justify-center relative overflow-hidden">
-            <Image 
-              src="/stone-texture.png"
-              alt="Stone texture"
-              fill
-              className="object-cover opacity-30"
-            />
-            <span className="absolute text-stone-200 font-headline text-2xl tracking-widest" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
-                HALLAZGO
-            </span>
-          </Card>
-        </div>
-
-        {/* Front Face (Revealed Content) - Rendered second to be on top */}
+        {/* Front Face (Revealed Content) */}
         <div
           className="absolute w-full h-full"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
@@ -144,6 +126,24 @@ export default function InteractiveDiscoveryCard({
               <Badge variant="secondary">{discovery.hominidTag}</Badge>
               <Badge variant="outline">{discovery.typeTag}</Badge>
             </CardContent>
+          </Card>
+        </div>
+
+        {/* Back Face (Unrevealed) */}
+        <div
+          className="absolute w-full h-full"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          <Card className="w-full h-full shadow-2xl bg-stone-700 border-stone-500 flex items-center justify-center relative overflow-hidden">
+            <Image 
+              src="/stone-texture.png"
+              alt="Stone texture"
+              fill
+              className="object-cover opacity-30"
+            />
+            <span className="absolute text-stone-200 font-headline text-2xl tracking-widest" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
+                HALLAZGO
+            </span>
           </Card>
         </div>
       </motion.div>
