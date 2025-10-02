@@ -16,7 +16,6 @@ function LayerSection({ layer, index }: { layer: CulturalLayer; index: number })
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   const layerColors = ['bg-[#6b4a39]', 'bg-[#8c6d5b]', 'bg-[#a1887f]', 'bg-[#bcaaa4]'];
-  const textColor = ['text-stone-200', 'text-stone-100', 'text-stone-900', 'text-stone-950'];
 
   return (
     <section
@@ -44,7 +43,7 @@ function LayerSection({ layer, index }: { layer: CulturalLayer; index: number })
                 <Smartphone className="h-24 w-24 text-muted-foreground/50" />
               </div>
             </AspectRatio>
-            <p className={`mt-4 text-sm ${textColor[index % textColor.length]}`}>
+            <p className="mt-4 text-sm text-card-foreground">
               {layer.description}
             </p>
           </CardContent>

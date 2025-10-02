@@ -8,8 +8,8 @@ import Image from 'next/image';
 const menuItems = [
   { id: 1, title: 'EvoluFace', href: '/evoluface' },
   { id: 2, title: 'Linea de Tiempo', href: '/timeline' },
-  { id: 3, title: 'Cultura', href: '/cultura' },
-  { id: 4, title: 'Video', href: '/video' },
+  { id: 3, title: 'Video', href: '/video' },
+  { id: 4, title: 'Hominids', href: '/hominids' },
 ];
 
 const LandingPage = () => {
@@ -31,13 +31,13 @@ const LandingPage = () => {
         className={`flex flex-col items-center ${!showMenu ? 'cursor-pointer' : ''}`}
       >
         <div className="mb-8 h-24 w-full relative">
-            <Image
-                src="/evolution.png"
-                alt="Evolución humana"
-                fill
-                style={{ objectFit: 'contain' }}
-                priority
-              />
+          <Image
+            src="/evolution.png"
+            alt="Evolución humana"
+            fill
+            style={{ objectFit: 'contain' }}
+            priority
+          />
         </div>
         <div
           className="bg-card text-card-foreground font-headline py-3 px-6 rounded-lg shadow-lg hover:bg-primary hover:text-primary-foreground transition-colors"
@@ -58,8 +58,7 @@ const LandingPage = () => {
                   transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
                 >
                   <Link href={item.href} legacyBehavior>
-                    <a className={`flex items-center justify-center w-32 h-32 rounded-full shadow-lg transition-colors
-                      ${item.href === '/video' ? 'bg-muted text-muted-foreground cursor-not-allowed' : 'bg-primary text-primary-foreground hover:bg-primary/90'}`}>
+                    <a className={`flex items-center justify-center w-32 h-32 rounded-full shadow-lg transition-colors bg-primary text-primary-foreground hover:bg-primary/90`}>
                       <span className="text-center font-headline">{item.title}</span>
                     </a>
                   </Link>
