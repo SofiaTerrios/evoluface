@@ -57,10 +57,11 @@ const LandingPage = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
                 >
-                  <Link href={item.href} legacyBehavior>
-                    <a className={`flex items-center justify-center w-32 h-32 rounded-full shadow-lg transition-colors bg-primary text-primary-foreground hover:bg-primary/90`}>
-                      <span className="text-center font-headline">{item.title}</span>
-                    </a>
+                  <Link
+                    href={item.href}
+                    className={`flex items-center justify-center w-32 h-32 rounded-full shadow-lg transition-colors bg-primary text-primary-foreground hover:bg-primary/90`}
+                  >
+                    <span className="text-center font-headline">{item.title}</span>
                   </Link>
                 </motion.div>
               ))}
