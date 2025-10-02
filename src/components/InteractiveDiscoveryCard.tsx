@@ -51,27 +51,23 @@ export default function InteractiveDiscoveryCard({
     }
   }, [isRevealed, controls, initialPosition.x, initialPosition.y]);
   
-  const isPointInDropZone = (event: MouseEvent | TouchEvent | PointerEvent) => {
+  const isPointInDropZone = (info: PanInfo) => {
     const dropZone = document.getElementById('drop-zone');
-    if (!dropZone || !(event.target instanceof Element)) return false;
+    if (!dropZone) return false;
 
     const dropZoneRect = dropZone.getBoundingClientRect();
-    
-    // Use the center of the card for collision detection
-    const cardRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-    const cardCenterX = cardRect.left + cardRect.width / 2;
-    const cardCenterY = cardRect.top + cardRect.height / 2;
+    const { x, y } = info.point;
 
     return (
-      cardCenterX > dropZoneRect.left &&
-      cardCenterX < dropZoneRect.right &&
-      cardCenterY > dropZoneRect.top &&
-      cardCenterY < dropZoneRect.bottom
+      x > dropZoneRect.left &&
+      x < dropZoneRect.right &&
+      y > dropZoneRect.top &&
+      y < dropZoneRect.bottom
     );
   }
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (isPointInDropZone(event)) {
+    if (isPointInDropZone(info)) {
         onRevealToggle(discovery.id, true);
     } else {
         onRevealToggle(discovery.id, false);
@@ -90,7 +86,7 @@ export default function InteractiveDiscoveryCard({
         width: CARD_SIZE_SMALL.width,
         height: CARD_SIZE_SMALL.height,
       }}
-      initial={{ ...initialPosition, rotateY: 0, scale: 0.8 }}
+      initial={{ ...initialPosition, rotateY: 0, scale: 0.8, opacity: 1 }}
       animate={controls}
     >
       {/* Container for rotating */}
