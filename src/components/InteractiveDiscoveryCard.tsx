@@ -24,7 +24,6 @@ export default function InteractiveDiscoveryCard({
   initialPosition,
 }: InteractiveDiscoveryCardProps) {
   const controls = useAnimation();
-  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isRevealed) {
@@ -41,6 +40,8 @@ export default function InteractiveDiscoveryCard({
     } else {
        controls.start({
         rotateY: 0,
+        x: initialPosition.x,
+        y: initialPosition.y,
         scale: 0.8,
         width: CARD_SIZE_SMALL.width,
         height: CARD_SIZE_SMALL.height,
@@ -48,7 +49,7 @@ export default function InteractiveDiscoveryCard({
         transition: { duration: 0.6, type: 'spring' },
       });
     }
-  }, [isRevealed, controls]);
+  }, [isRevealed, controls, initialPosition.x, initialPosition.y]);
   
   const isPointInDropZone = (info: PanInfo) => {
     const dropZone = document.getElementById('drop-zone');
@@ -56,7 +57,6 @@ export default function InteractiveDiscoveryCard({
 
     const dropZoneRect = dropZone.getBoundingClientRect();
     
-    // We get the center of the card from the drag event info
     const cardCenterX = info.point.x;
     const cardCenterY = info.point.y;
 
@@ -70,33 +70,18 @@ export default function InteractiveDiscoveryCard({
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isPointInDropZone(info)) {
-      if (!isRevealed) {
         onRevealToggle(discovery.id, true);
-      }
     } else {
-      if (isRevealed) {
-         onRevealToggle(discovery.id, false);
-      }
-      // Snap back to initial position if not in drop zone
-      controls.start({ x: initialPosition.x, y: initialPosition.y });
+        onRevealToggle(discovery.id, false);
     }
   };
-  
-  const handleDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    // If revealed, check if it's being dragged out of the zone
-    if(isRevealed && !isPointInDropZone(info)) {
-       onRevealToggle(discovery.id, false);
-    }
-  }
 
   return (
     <motion.div
-      ref={cardRef}
-      drag={!isRevealed}
+      drag
       dragConstraints={{ top: -400, left: -600, right: 600, bottom: 400 }}
       dragElastic={0.2}
       onDragEnd={handleDragEnd}
-      onDrag={handleDrag}
       className="absolute cursor-grab active:cursor-grabbing"
       style={{
         perspective: 1000,
@@ -111,7 +96,25 @@ export default function InteractiveDiscoveryCard({
         className="relative w-full h-full"
         style={{ transformStyle: 'preserve-3d' }}
       >
-        {/* Front Face (Revealed Content) */}
+        {/* Back Face (Unrevealed) - Rendered first */}
+        <div
+          className="absolute w-full h-full"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          <Card className="w-full h-full shadow-2xl bg-stone-700 border-stone-500 flex items-center justify-center relative overflow-hidden">
+            <Image 
+              src="/stone-texture.png"
+              alt="Stone texture"
+              fill
+              className="object-cover opacity-30"
+            />
+            <span className="absolute text-stone-200 font-headline text-2xl tracking-widest" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
+                HALLAZGO
+            </span>
+          </Card>
+        </div>
+
+        {/* Front Face (Revealed Content) - Rendered second to be on top */}
         <div
           className="absolute w-full h-full"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
@@ -139,24 +142,6 @@ export default function InteractiveDiscoveryCard({
               <Badge variant="secondary">{discovery.hominidTag}</Badge>
               <Badge variant="outline">{discovery.typeTag}</Badge>
             </CardContent>
-          </Card>
-        </div>
-
-        {/* Back Face (Unrevealed) */}
-        <div
-          className="absolute w-full h-full"
-          style={{ backfaceVisibility: 'hidden' }}
-        >
-          <Card className="w-full h-full shadow-2xl bg-stone-700 border-stone-500 flex items-center justify-center relative overflow-hidden">
-            <Image 
-              src="/stone-texture.png"
-              alt="Stone texture"
-              fill
-              className="object-cover opacity-30"
-            />
-            <span className="absolute text-stone-200 font-headline text-2xl tracking-widest" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
-                HALLAZGO
-            </span>
           </Card>
         </div>
       </motion.div>
