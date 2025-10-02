@@ -70,8 +70,8 @@ export default function InteractiveDiscoveryCard({
         height: 400,
         perspective: 1000,
       }}
-      initial={{ ...initialPosition, rotateY: 0, opacity: 0}}
-      animate={{ ...controls, opacity: 1, x: initialPosition.x, y: initialPosition.y, transition: {delay: 0.5, duration: 0.5}}}
+      initial={{ ...initialPosition, rotateY: 0 }}
+      animate={controls}
     >
       {/* Front Face (Initially Hidden) */}
       <motion.div

@@ -16,7 +16,7 @@ export default function HominidsPage() {
   };
 
   return (
-    <main className="container mx-auto p-4 sm:p-8 h-screen w-screen flex flex-col items-center justify-center relative overflow-hidden">
+    <main className="container mx-auto p-4 sm:p-8 h-screen w-screen flex flex-col items-center justify-center relative">
         <header className="absolute top-0 left-0 w-full p-4 sm:p-8 z-20">
              <div className="flex items-center">
                 <Button asChild variant="outline" size="icon" className="mr-4">
@@ -51,7 +51,7 @@ export default function HominidsPage() {
           discovery={discovery}
           isRevealed={!!revealed[discovery.id]}
           onReveal={() => handleReveal(discovery.id)}
-          initialPosition={{ x: (index % 3 - 1) * 300, y: (Math.floor(index / 3) - 1) * 200 }}
+          initialPosition={{ x: (index % 3 - 1) * 350 - 50, y: (Math.floor(index / 3) - 1) * 250 }}
         />
       ))}
     </main>
