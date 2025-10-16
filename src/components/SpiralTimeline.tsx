@@ -20,12 +20,12 @@ const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
 
   const numPoints = hominids.length;
   const a = 10; // Center offset
-  const b = 20; // Spiral density / distance between arms
-  const angleStep = Math.PI * 1.5;
+  const b = 25; // Spiral density / distance between arms
+  const angleStep = Math.PI * 0.9; // Reduced angle for a tighter, more circular spiral
 
   const points: Point[] = hominids.map((_, i) => {
     const angle = i * angleStep;
-    const radius = a + b * Math.pow(angle, 0.6); // Use pow for accelerating separation
+    const radius = a + b * Math.pow(angle, 0.6); 
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
     return { x, y };
@@ -36,11 +36,12 @@ const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
     .map((p, i) => {
       if (i === 0) return `M ${p.x} ${p.y}`;
       const prev = points[i-1];
+      // Use quadratic bezier curve for a smoother path
       const midX = (prev.x + p.x) / 2;
       const midY = (prev.y + p.y) / 2;
-      return `Q ${prev.x} ${prev.y}, ${midX} ${midY} T ${p.x} ${p.y}`;
+      return `Q ${prev.x} ${prev.y}, ${midX} ${midY}`;
     })
-    .join(' ');
+    .join(' ') + ` L ${points[points.length-1].x} ${points[points.length-1].y}`;
   
 
   return (
@@ -48,7 +49,7 @@ const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
       <svg
         viewBox="-400 -400 800 800"
         className="absolute w-full h-full"
-        style={{ transform: 'scale(1.2) rotate(-90deg)' }}
+        style={{ transform: 'scale(1) rotate(-90deg)' }}
       >
         <motion.path
           d={svgPath}
@@ -57,7 +58,7 @@ const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
           strokeWidth="2"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ duration: 3, ease: 'easeInOut' }}
+          transition={{ duration: 5, ease: 'easeInOut' }}
         />
       </svg>
       {points.map((point, i) => (
