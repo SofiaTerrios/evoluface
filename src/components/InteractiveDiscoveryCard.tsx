@@ -1,3 +1,4 @@
+
 'use client';
 
 import { motion, useAnimation, PanInfo } from 'framer-motion';
@@ -13,8 +14,7 @@ interface InteractiveDiscoveryCardProps {
   initialPosition: { x: number; y: number };
 }
 
-const CARD_SIZE_SMALL = { width: 200, height: 260 };
-const CARD_SIZE_LARGE = { width: 350, height: 'auto' };
+const CARD_SIZE = { width: 200, height: 260 };
 
 export default function InteractiveDiscoveryCard({
   discovery,
@@ -30,9 +30,8 @@ export default function InteractiveDiscoveryCard({
         rotateY: 180,
         x: 0,
         y: 0,
-        scale: 1,
-        width: CARD_SIZE_LARGE.width,
-        height: CARD_SIZE_LARGE.height,
+        width: CARD_SIZE.width,
+        height: CARD_SIZE.height,
         zIndex: 10,
         transition: { duration: 0.6, type: 'spring' },
       });
@@ -41,9 +40,8 @@ export default function InteractiveDiscoveryCard({
         rotateY: 0,
         x: initialPosition.x,
         y: initialPosition.y,
-        scale: 0.8,
-        width: CARD_SIZE_SMALL.width,
-        height: CARD_SIZE_SMALL.height,
+        width: CARD_SIZE.width,
+        height: CARD_SIZE.height,
         zIndex: 1,
         transition: { duration: 0.6, type: 'spring' },
       });
@@ -82,10 +80,10 @@ export default function InteractiveDiscoveryCard({
       className="absolute cursor-grab active:cursor-grabbing"
       style={{
         perspective: 1000,
-        width: CARD_SIZE_SMALL.width,
-        height: CARD_SIZE_SMALL.height,
+        width: CARD_SIZE.width,
+        height: CARD_SIZE.height,
       }}
-      initial={{ ...initialPosition, rotateY: 0, scale: 0.8, opacity: 1 }}
+      initial={{ ...initialPosition, rotateY: 0, scale: 1, opacity: 1 }}
       animate={controls}
     >
       {/* Container for rotating */}
@@ -99,14 +97,14 @@ export default function InteractiveDiscoveryCard({
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           <Card className="w-full h-full flex flex-col overflow-hidden shadow-2xl bg-card text-card-foreground">
-            <CardHeader className="p-4">
-              <CardTitle className="font-headline text-xl font-bold text-primary">
+            <CardHeader className="p-2">
+              <CardTitle className="font-headline text-base font-bold text-primary">
                 {discovery.title}
               </CardTitle>
-              <CardDescription>{discovery.date}</CardDescription>
+              <CardDescription className="text-xs">{discovery.date}</CardDescription>
             </CardHeader>
-            <CardContent className="flex-grow text-sm text-card-foreground/90 overflow-y-auto p-4 pt-0">
-               <div className="relative w-full h-40 rounded-md overflow-hidden border mb-4">
+            <CardContent className="flex-grow text-xs text-card-foreground/90 overflow-y-auto p-2 pt-0">
+               <div className="relative w-full h-24 rounded-md overflow-hidden border mb-2">
                 <Image
                   src={discovery.imageUrl}
                   alt={discovery.title}
