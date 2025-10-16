@@ -1,106 +1,171 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { HominidStage } from '@/lib/hominids';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { HominidStage } from '@/lib/hominids';
 import { Footprints } from 'lucide-react';
 
 interface SpiralTimelineProps {
   hominids: HominidStage[];
 }
 
-interface Point {
-  x: number;
-  y: number;
-}
+const quadrantStyles = [
+  // Bottom-left
+  {
+    textAnchor: 'end',
+    transform: 'translate(-10px, -10px)',
+    path: (size: number) => `M ${size},0 A ${size},${size} 0 0 0 0,${size}`,
+  },
+  // Top-left
+  {
+    textAnchor: 'end',
+    transform: 'translate(-10px, 10px) translateY(1em)',
+    path: (size: number) => `M 0,-${size} A ${size},${size} 0 0 0 -${size},0`,
+  },
+  // Top-right
+  {
+    textAnchor: 'start',
+    transform: 'translate(10px, 10px) translateY(1em)',
+    path: (size: number) => `M -${size},0 A ${size},${size} 0 0 0 0,-${size}`,
+  },
+  // Bottom-right
+  {
+    textAnchor: 'start',
+    transform: 'translate(10px, -10px)',
+    path: (size: number) => `M 0,${size} A ${size},${size} 0 0 0 ${size},0`,
+  },
+];
 
 const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const fibSequence = [1, 2, 3, 5, 8, 13, 21, 34].slice(0, hominids.length).reverse();
+  const scale = 25;
 
-  const numPoints = hominids.length;
-  const a = 10; // Center offset
-  const b = 25; // Spiral density / distance between arms
-  const angleStep = Math.PI * 0.9; // Reduced angle for a tighter, more circular spiral
+  let currentX = 0;
+  let currentY = 0;
+  const positions = [];
 
-  const points: Point[] = hominids.map((_, i) => {
-    const angle = i * angleStep;
-    const radius = a + b * Math.pow(angle, 0.6); 
-    const x = radius * Math.cos(angle);
-    const y = radius * Math.sin(angle);
-    return { x, y };
-  });
+  for (let i = 0; i < hominids.length; i++) {
+    const size = fibSequence[i] * scale;
+    const direction = i % 4;
 
-  // Create a smooth path through all points
-  const svgPath = points
-    .map((p, i) => {
-      if (i === 0) return `M ${p.x} ${p.y}`;
-      const prev = points[i-1];
-      // Use quadratic bezier curve for a smoother path
-      const midX = (prev.x + p.x) / 2;
-      const midY = (prev.y + p.y) / 2;
-      return `Q ${prev.x} ${prev.y}, ${midX} ${midY}`;
-    })
-    .join(' ') + ` L ${points[points.length-1].x} ${points[points.length-1].y}`;
+    let textX = currentX;
+    let textY = currentY;
+    let pathX = currentX;
+    let pathY = currentY;
+    
+    let nextX = currentX;
+    let nextY = currentY;
+
+    if (direction === 0) { // Bottom-left -> move left by `size`
+      textX -= size / 2;
+      textY += size / 2;
+      nextX -= size;
+    } else if (direction === 1) { // Top-left -> move up by `size`
+      pathX -= size;
+      textX -= size / 2;
+      textY -= size / 2;
+      nextY -= size;
+    } else if (direction === 2) { // Top-right -> move right by `size`
+       pathX -= size;
+       pathY -= size;
+       textX += size / 2;
+       textY -= size / 2;
+       nextX += size;
+    } else if (direction === 3) { // Bottom-right -> move down by `size`
+       pathY -= size;
+       textX += size / 2;
+       textY += size / 2;
+       nextY += size;
+    }
+    
+    const quadrant = quadrantStyles[direction];
+
+    positions.push({
+      hominid: hominids[i],
+      size: size,
+      textX,
+      textY,
+      pathX,
+      pathY,
+      quadrant,
+    });
+    
+    currentX = nextX;
+    currentY = nextY;
+  }
   
+  const totalWidth = Math.max(...positions.map(p => Math.abs(p.textX))) * 2.2;
+  const totalHeight = Math.max(...positions.map(p => Math.abs(p.textY))) * 2.2;
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+     <div className="relative w-full h-full flex items-center justify-center">
+      <div className="absolute top-1/2 -left-4 -translate-y-1/2 transform -rotate-90">
+        <span className="text-sm uppercase tracking-widest text-muted-foreground">Línea de Tiempo</span>
+      </div>
+       <div className="absolute left-1/2 -top-4 -translate-x-1/2">
+        <span className="text-sm uppercase tracking-widest text-muted-foreground">Evolución</span>
+      </div>
       <svg
-        viewBox="-400 -400 800 800"
-        className="absolute w-full h-full"
-        style={{ transform: 'scale(1) rotate(-90deg)' }}
+        viewBox={`${-totalWidth / 2} ${-totalHeight / 2} ${totalWidth} ${totalHeight}`}
+        className="absolute w-full h-full overflow-visible"
       >
-        <motion.path
-          d={svgPath}
-          fill="none"
-          stroke="hsl(var(--border))"
-          strokeWidth="2"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 5, ease: 'easeInOut' }}
-        />
+        <g>
+          {positions.map((p, i) => (
+            <g key={p.hominid.name}>
+              <motion.path
+                d={p.quadrant.path(p.size)}
+                transform={`translate(${p.pathX}, ${p.pathY})`}
+                fill="none"
+                stroke="hsl(var(--border))"
+                strokeWidth="2"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ delay: i * 0.4, duration: 0.5, ease: 'easeInOut' }}
+              />
+              <motion.circle
+                cx={p.pathX + (p.size * (p.quadrant.path(1).includes('A 1,1 0 0 0 -1,0') ? -1 : 1) / Math.sqrt(2))}
+                cy={p.pathY + (p.size * (p.quadrant.path(1).includes('M 0,-1') || p.quadrant.path(1).includes('A 1,1 0 0 0 0,-1') ? -1 : 1) / Math.sqrt(2))}
+                r="10"
+                fill="hsl(var(--primary))"
+                stroke="hsl(var(--background))"
+                strokeWidth="4"
+                 initial={{ scale: 0, opacity: 0 }}
+                 animate={{ scale: 1, opacity: 1 }}
+                 transition={{ delay: i * 0.4 + 0.4, duration: 0.3 }}
+              >
+                  <Footprints className="w-3 h-3 text-primary-foreground" />
+              </motion.circle>
+                 <foreignObject
+                    x={p.textX - 100} 
+                    y={p.textY - 50} 
+                    width="200" 
+                    height="100"
+                    style={{overflow: 'visible'}}
+                 >
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.4 + 0.3, duration: 0.4 }}
+                    className="w-full h-full"
+                >
+                    <div
+                        style={{
+                            textAlign: p.quadrant.textAnchor === 'end' ? 'right' : 'left',
+                            transform: p.quadrant.transform,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            height: '100%'
+                        }}
+                    >
+                        <p className="font-headline text-base font-bold text-primary">{p.hominid.name}</p>
+                        <p className="text-xs text-muted-foreground">{p.hominid.years}</p>
+                    </div>
+                </motion.div>
+                </foreignObject>
+            </g>
+          ))}
+        </g>
       </svg>
-      {points.map((point, i) => (
-        <motion.div
-          key={hominids[i].name}
-          className="absolute"
-          style={{
-            width: 180,
-            height: 120,
-            x: point.x,
-            y: point.y,
-          }}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: i * 0.2 + 1, duration: 0.5 }}
-          onHoverStart={() => setHoveredIndex(i)}
-          onHoverEnd={() => setHoveredIndex(null)}
-        >
-          <motion.div
-            animate={{
-              scale: hoveredIndex === i ? 1.2 : 1,
-              zIndex: hoveredIndex === i ? 10 : 1,
-            }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className="relative w-full h-full"
-          >
-            <Card className="w-full h-full shadow-lg bg-card/80 backdrop-blur-sm text-card-foreground p-2 flex flex-col justify-center">
-              <CardHeader className="p-2 text-center">
-                <CardTitle className="font-headline text-sm text-primary">
-                  {hominids[i].name}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-2 text-center">
-                <p className="text-xs text-muted-foreground">{hominids[i].years}</p>
-              </CardContent>
-            </Card>
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-primary flex items-center justify-center border-2 border-background">
-                <Footprints className="w-3 h-3 text-primary-foreground" />
-            </div>
-          </motion.div>
-        </motion.div>
-      ))}
     </div>
   );
 };
