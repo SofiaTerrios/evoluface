@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CameraOff } from 'lucide-react';
+import { ArrowLeft, CameraOff, Zap } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Alert,
@@ -14,7 +14,10 @@ import {
 
 export default function CameraPage() {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  const [isTorchOn, setIsTorchOn] = useState(false);
+  const [torchSupported, setTorchSupported] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -32,12 +35,21 @@ export default function CameraPage() {
       
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        streamRef.current = stream;
         setHasCameraPermission(true);
 
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
-      } catch (error) {
+
+        const videoTrack = stream.getVideoTracks()[0];
+        const capabilities = videoTrack.getCapabilities();
+        // @ts-ignore
+        if (capabilities.torch) {
+            setTorchSupported(true);
+        }
+
+      } catch (error) => {
         console.error('Error accessing camera:', error);
         setHasCameraPermission(false);
         toast({
@@ -52,12 +64,32 @@ export default function CameraPage() {
     getCameraPermission();
 
     return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject as MediaStream;
-        stream.getTracks().forEach(track => track.stop());
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
       }
     };
   }, [toast]);
+  
+  const toggleTorch = async () => {
+    if (!streamRef.current || !torchSupported) return;
+    
+    const videoTrack = streamRef.current.getVideoTracks()[0];
+    try {
+      await videoTrack.applyConstraints({
+        // @ts-ignore
+        advanced: [{ torch: !isTorchOn }]
+      });
+      setIsTorchOn(!isTorchOn);
+    } catch (error) {
+      console.error('Error toggling torch:', error);
+      toast({
+        variant: "destructive",
+        title: "Error de Linterna",
+        description: "No se pudo cambiar el estado de la linterna."
+      })
+    }
+  }
+
 
   return (
     <div className="relative min-h-screen bg-background flex flex-col items-center justify-center p-4">
@@ -75,7 +107,7 @@ export default function CameraPage() {
       </h1>
       
       <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl bg-card">
-        <CardContent className="p-4">
+        <CardContent className="p-4 relative">
              <div className="aspect-video w-full h-auto rounded-lg overflow-hidden bg-muted flex items-center justify-center">
                  {hasCameraPermission === null && <p className="text-muted-foreground">Esperando permiso de cámara...</p>}
                  {hasCameraPermission === true && (
@@ -99,6 +131,17 @@ export default function CameraPage() {
                     </div>
                  )}
              </div>
+             {torchSupported && hasCameraPermission && (
+                <Button 
+                    onClick={toggleTorch}
+                    variant="outline" 
+                    size="icon" 
+                    className={`absolute bottom-6 right-6 rounded-full h-12 w-12 transition-colors ${isTorchOn ? 'bg-amber-400 text-black hover:bg-amber-500' : 'bg-background/50 hover:bg-background/80'}`}
+                >
+                    <Zap className="h-6 w-6"/>
+                    <span className="sr-only">Toggle Flashlight</span>
+                </Button>
+            )}
         </CardContent>
       </Card>
 
