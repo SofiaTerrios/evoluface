@@ -14,7 +14,7 @@ export const ARCHEOLOGY_ITEMS: ArcheologyItem[] = [
     title: 'Bifaz Achelense',
     period: 'Paleolítico Inferior',
     description:
-      'Una herramienta de piedra simétrica y versátil, fabricada por Homo erectus. Se considera la "navaja suiza" de la prehistoria por su uso en múltiples tareas como cortar, raspar y perforar.',
+      'Fabricada por Homo erectus, esta herramienta de piedra simétrica es un salto cognitivo. Demuestra planificación, habilidad y una posible transmisión de conocimientos, siendo la "navaja suiza" de la prehistoria.',
     imageUrl: 'https://picsum.photos/seed/biface/600/400',
     imageHint: 'hand axe',
   },
@@ -23,7 +23,7 @@ export const ARCHEOLOGY_ITEMS: ArcheologyItem[] = [
     title: 'Núcleo Levallois',
     period: 'Paleolítico Medio',
     description:
-      'Técnica de talla lítica desarrollada por los Neandertales. Implicaba preparar un núcleo de piedra para extraer lascas con una forma y tamaño predeterminados, demostrando una alta capacidad de planificación.',
+      'Una técnica de talla lítica avanzada asociada a los Neandertales. Implicaba preparar un núcleo para obtener lascas estandarizadas, lo que revela una alta capacidad de planificación y abstracción mental.',
     imageUrl: 'https://picsum.photos/seed/levallois/600/400',
     imageHint: 'stone core',
   },
@@ -32,7 +32,7 @@ export const ARCHEOLOGY_ITEMS: ArcheologyItem[] = [
     title: 'Venus de Hohle Fels',
     period: 'Paleolítico Superior',
     description:
-      'Una de las representaciones humanas más antiguas conocidas. Esta estatuilla femenina de marfil, de unos 40,000 años de antigüedad, resalta atributos sexuales y es un ejemplo temprano de arte figurativo.',
+      'Con 40,000 años, es una de las primeras representaciones humanas. Creada por Homo sapiens, esta estatuilla de marfil es una evidencia temprana de arte figurativo y pensamiento simbólico complejo.',
     imageUrl: 'https://picsum.photos/seed/venusfigurine/600/400',
     imageHint: 'ancient figurine',
   },
@@ -41,16 +41,16 @@ export const ARCHEOLOGY_ITEMS: ArcheologyItem[] = [
     title: 'Flauta de Hueso',
     period: 'Paleolítico Superior',
     description:
-      'Instrumento musical de unos 35,000 años, tallado en el hueso de un buitre. Es una de las pruebas más antiguas de expresión musical, sugiriendo la existencia de reuniones sociales complejas.',
+      'Este instrumento de 35,000 años, tallado en hueso de buitre por Homo sapiens, es una de las pruebas más antiguas de música. Sugiere la existencia de rituales y una vida social y cultural rica.',
     imageUrl: 'https://picsum.photos/seed/boneflute/600/400',
     imageHint: 'bone flute',
   },
   {
     id: 'blombos-ochre',
     title: 'Ocre Grabado de Blombos',
-    period: 'Edad de Piedra Media',
+    period: 'Edad de Piedra Media (África)',
     description:
-      'Piezas de ocre de 75,000 años con grabados geométricos abstractos, encontradas en Sudáfrica. Se consideran una de las primeras evidencias de pensamiento simbólico y arte abstracto humano.',
+      'Piezas de ocre de 75,000 años con grabados geométricos. Son una de las primeras evidencias de pensamiento simbólico, mostrando que nuestros ancestros Homo sapiens tenían capacidades artísticas abstractas.',
     imageUrl: 'https://picsum.photos/seed/ochre/600/400',
     imageHint: 'engraved stone',
   },

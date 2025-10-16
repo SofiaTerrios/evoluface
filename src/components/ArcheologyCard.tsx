@@ -131,16 +131,14 @@ export default function ArcheologyCard({
           className="absolute w-full h-full"
           style={{ backfaceVisibility: 'hidden' }}
         >
-          <Card className="w-full h-full shadow-2xl bg-stone-700 border-stone-500 flex items-center justify-center relative overflow-hidden">
+          <Card className="w-full h-full shadow-lg border-4 border-primary/80 flex items-center justify-center relative overflow-hidden rounded-lg">
             <Image 
               src="/stone-texture.png"
-              alt="Stone texture"
+              alt="Artefacto sin revelar"
               fill
-              className="object-cover opacity-30"
+              className="object-cover opacity-80"
+              data-ai-hint="stone texture"
             />
-            <span className="absolute text-stone-200 font-headline text-2xl tracking-widest" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
-                ARTEFACTO
-            </span>
           </Card>
         </div>
       </motion.div>
