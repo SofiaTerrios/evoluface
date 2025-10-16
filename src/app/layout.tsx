@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="dark">
+    <html lang="es">
        <head>
         <title>EvoluFace</title>
         <meta name="description" content="Desliza para viajar en el tiempo y ver la evolución del rostro humano." />
