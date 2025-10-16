@@ -53,7 +53,7 @@ export default function ArcheologyPage() {
                     fill
                     className="object-cover opacity-30"
                 />
-                <span className="absolute bottom-4 text-sm text-primary/50 bg-background/50 px-2 py-1 rounded">Zona de Revelación</span>
+                <span className="absolute bottom-4 text-sm text-primary/50 bg-background/50 px-2 py-1 rounded">Zona de información</span>
             </motion.div>
 
             {isMounted && ARCHEOLOGY_ITEMS.map((item, index) => (

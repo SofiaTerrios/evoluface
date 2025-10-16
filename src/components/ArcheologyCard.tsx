@@ -76,11 +76,11 @@ export default function ArcheologyCard({
 
   return (
     <motion.div
-      drag={!isRevealed}
+      drag
       dragConstraints={{ top: -400, left: -600, right: 600, bottom: 400 }}
       dragElastic={0.2}
       onDragEnd={handleDragEnd}
-      className={`absolute ${isRevealed ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'}`}
+      className={'absolute cursor-grab active:cursor-grabbing'}
       style={{
         perspective: 1000,
         width: CARD_SIZE_SMALL.width,
