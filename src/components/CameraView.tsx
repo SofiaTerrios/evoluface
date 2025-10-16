@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { CameraOff } from 'lucide-react';
 
 export default function CameraView() {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
@@ -11,6 +11,18 @@ export default function CameraView() {
 
   useEffect(() => {
     const getCameraPermission = async () => {
+      // Check for navigator support
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.error('Camera API not supported in this browser.');
+        setHasCameraPermission(false);
+        toast({
+            variant: 'destructive',
+            title: 'Cámara no compatible',
+            description: 'Tu navegador no es compatible con el acceso a la cámara.',
+        });
+        return;
+      }
+      
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         setHasCameraPermission(true);
@@ -31,27 +43,28 @@ export default function CameraView() {
     };
 
     getCameraPermission();
+
+    // Cleanup function to stop the stream
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
   }, [toast]);
 
   return (
-    <div className="w-full">
-      <div className="aspect-video w-full rounded-md overflow-hidden border bg-muted">
-        <video
+    <div className="fixed bottom-8 left-8 z-50 h-40 w-40 rounded-full overflow-hidden border-4 border-primary shadow-2xl bg-muted flex items-center justify-center">
+      {hasCameraPermission ? (
+         <video
           ref={videoRef}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover scale-x-[-1]" // Flip video horizontally
           autoPlay
           muted
           playsInline // Important for iOS
         />
-      </div>
-
-      {hasCameraPermission === false && (
-        <Alert variant="destructive" className="mt-4">
-          <AlertTitle>Se requiere acceso a la cámara</AlertTitle>
-          <AlertDescription>
-            Por favor, permite el acceso a la cámara para utilizar esta función.
-          </AlertDescription>
-        </Alert>
+      ) : (
+        <CameraOff className="h-16 w-16 text-muted-foreground" />
       )}
     </div>
   );

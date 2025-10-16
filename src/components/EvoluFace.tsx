@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ToyBrick, GalleryHorizontal, Newspaper, Camera } from 'lucide-react';
+import { ToyBrick, GalleryHorizontal, Newspaper } from 'lucide-react';
 import type { HominidStage } from '@/lib/hominids';
 import {
   Card,
@@ -22,7 +22,6 @@ import {
   type FetchLatestNewsInput,
   type FetchLatestNewsOutput,
 } from '@/ai/flows/fetch-latest-news';
-import CameraView from './CameraView';
 
 export type HominidStageWithData = HominidStage & {
   imageUrl: string;
@@ -168,18 +167,6 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
               {news?.news}
             </p>
           )}
-        </CardContent>
-      </Card>
-      
-      <Card className="w-full max-w-md md:max-w-lg overflow-hidden shadow-2xl relative mt-8 bg-card text-card-foreground">
-        <CardHeader>
-            <CardTitle className="font-headline text-xl font-bold text-primary flex items-center gap-2">
-                <Camera className="h-6 w-6" />
-                Tu Cámara
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <CameraView />
         </CardContent>
       </Card>
     </>
