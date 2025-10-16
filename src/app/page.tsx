@@ -9,8 +9,9 @@ const menuItems = [
   { id: 1, title: 'EvoluFace', href: '/evoluface' },
   { id: 2, title: 'Linea de Tiempo', href: '/timeline' },
   { id: 3, title: 'Video', href: '/video' },
-  { id: 4, title: 'Mesa de Arqueología', href: '/hominids' },
+  { id: 4, title: 'Mesa de Descubrimientos', href: '/hominids' },
   { id: 5, title: 'Cámara', href: '/camera' },
+  { id: 6, title: 'Mesa de Arqueología', href: '/archeology' },
 ];
 
 const LandingPage = () => {

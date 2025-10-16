@@ -2,12 +2,13 @@
 
 import { motion, useAnimation, PanInfo } from 'framer-motion';
 import { useEffect } from 'react';
-import type { Discovery } from '@/lib/discoveries';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import type { ArcheologyItem } from '@/lib/archeology-items';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import Image from 'next/image';
+import { Button } from './ui/button';
 
-interface InteractiveDiscoveryCardProps {
-  discovery: Discovery;
+interface ArcheologyCardProps {
+  item: ArcheologyItem;
   isRevealed: boolean;
   onRevealToggle: (id: string, state: boolean) => void;
   initialPosition: { x: number; y: number };
@@ -16,12 +17,12 @@ interface InteractiveDiscoveryCardProps {
 const CARD_SIZE_SMALL = { width: 200, height: 260 };
 const CARD_SIZE_LARGE = { width: 350, height: 'auto' };
 
-export default function InteractiveDiscoveryCard({
-  discovery,
+export default function ArcheologyCard({
+  item,
   isRevealed,
   onRevealToggle,
   initialPosition,
-}: InteractiveDiscoveryCardProps) {
+}: ArcheologyCardProps) {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -67,9 +68,9 @@ export default function InteractiveDiscoveryCard({
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (isPointInDropZone(info)) {
-        onRevealToggle(discovery.id, true);
+        onRevealToggle(item.id, true);
     } else {
-        onRevealToggle(discovery.id, false);
+        onRevealToggle(item.id, false);
     }
   };
 
@@ -99,24 +100,29 @@ export default function InteractiveDiscoveryCard({
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           <Card className="w-full h-full flex flex-col overflow-hidden shadow-2xl bg-card text-card-foreground">
-            <CardHeader className="p-4">
-              <CardTitle className="font-headline text-xl font-bold text-primary">
-                {discovery.title}
-              </CardTitle>
-              <CardDescription>{discovery.date}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow text-sm text-card-foreground/90 overflow-y-auto p-4 pt-0">
-               <div className="relative w-full h-40 rounded-md overflow-hidden border mb-4">
+            <CardHeader className="p-4 pb-2">
+               <div className="relative w-full h-40 rounded-md overflow-hidden border mb-2">
                 <Image
-                  src={discovery.imageUrl}
-                  alt={discovery.title}
+                  src={item.imageUrl}
+                  alt={item.title}
                   fill
                   className="object-cover"
-                  data-ai-hint={discovery.imageHint}
+                  data-ai-hint={item.imageHint}
                 />
               </div>
-              <p>{discovery.summary}</p>
+              <CardTitle className="font-headline text-xl font-bold text-primary">
+                {item.title}
+              </CardTitle>
+              <CardDescription>{item.period}</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-grow text-sm text-card-foreground/90 overflow-y-auto p-4 pt-2">
+              <p>{item.description}</p>
             </CardContent>
+            <CardFooter className="flex justify-around p-4 pt-0">
+                <Button variant="outline" size="sm">Descubrimientos</Button>
+                <Button variant="outline" size="sm">Características</Button>
+                <Button variant="outline" size="sm">Lugares</Button>
+            </CardFooter>
           </Card>
         </div>
 
@@ -133,7 +139,7 @@ export default function InteractiveDiscoveryCard({
               className="object-cover opacity-30"
             />
             <span className="absolute text-stone-200 font-headline text-2xl tracking-widest" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
-                HALLAZGO
+                ARTEFACTO
             </span>
           </Card>
         </div>
