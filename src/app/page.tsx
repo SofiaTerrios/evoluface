@@ -35,7 +35,7 @@ const LandingPage = () => {
             src="/evolution.png"
             alt="Evolución humana"
             fill
-            style={{ objectFit: 'contain' }}
+            className="object-contain"
             priority
           />
         </div>
