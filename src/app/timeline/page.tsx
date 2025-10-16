@@ -22,20 +22,20 @@ const getHominidImage = (id: string) => {
 
 export default function TimelinePage() {
   return (
-    <div className="bg-[#fdfaec] min-h-screen text-foreground overflow-x-hidden">
+    <div className="bg-background min-h-screen text-foreground overflow-x-hidden">
       <header className="container mx-auto px-4 pt-8 sm:px-8 w-full z-10">
         <div className="flex items-center mb-8 max-w-5xl mx-auto">
-          <Button asChild variant="outline" size="icon" className="mr-4 bg-white/50 border-stone-300">
+          <Button asChild variant="outline" size="icon" className="mr-4">
             <Link href="/">
               <ArrowLeft />
               <span className="sr-only">Volver al Menú</span>
             </Link>
           </Button>
           <div className="text-left flex-grow">
-            <h1 className="text-3xl md:text-4xl font-headline font-bold tracking-tight text-stone-800">
+            <h1 className="text-3xl md:text-4xl font-headline font-bold tracking-tight text-primary">
               Línea de Tiempo Evolutiva
             </h1>
-            <p className="text-stone-600 mt-1">
+            <p className="text-muted-foreground mt-1">
               Un viaje a través de millones de años de nuestra historia.
             </p>
           </div>
@@ -44,7 +44,7 @@ export default function TimelinePage() {
       <main className="container mx-auto p-4 sm:p-8">
         <div className="relative max-w-5xl mx-auto">
           {/* Vertical line */}
-          <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-stone-300" aria-hidden="true"></div>
+          <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-border" aria-hidden="true"></div>
 
           {timelineHominids.map((hominid, index) => {
             const isLeft = index % 2 === 0;
@@ -62,7 +62,7 @@ export default function TimelinePage() {
                     transition={{ duration: 0.6 }}
                   >
                      <div className={isLeft ? 'pr-8' : 'pl-8'}>
-                        <Card className="shadow-lg rounded-xl bg-white border-stone-200">
+                        <Card className="shadow-lg rounded-xl bg-card border-border">
                            <CardHeader className="p-4">
                             <div className="w-full h-40 relative rounded-t-lg overflow-hidden mb-3">
                                 {placeholder && (
@@ -90,8 +90,8 @@ export default function TimelinePage() {
 
                 {/* Marker on the timeline */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                   <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center ring-4 ring-white">
-                     <Footprints className="h-4 w-4 text-white" />
+                   <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center ring-4 ring-background">
+                     <Footprints className="h-4 w-4 text-primary-foreground" />
                    </div>
                 </div>
               </div>
