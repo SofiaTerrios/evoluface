@@ -14,7 +14,8 @@ interface InteractiveDiscoveryCardProps {
   initialPosition: { x: number; y: number };
 }
 
-const CARD_SIZE = { width: 200, height: 260 };
+const CARD_SIZE_HIDDEN = { width: 160, height: 208 };
+const CARD_SIZE_REVEALED = { width: 200, height: 260 };
 
 export default function InteractiveDiscoveryCard({
   discovery,
@@ -30,8 +31,8 @@ export default function InteractiveDiscoveryCard({
         rotateY: 180,
         x: 0,
         y: 0,
-        width: CARD_SIZE.width,
-        height: CARD_SIZE.height,
+        width: CARD_SIZE_REVEALED.width,
+        height: CARD_SIZE_REVEALED.height,
         zIndex: 10,
         transition: { duration: 0.6, type: 'spring' },
       });
@@ -40,8 +41,8 @@ export default function InteractiveDiscoveryCard({
         rotateY: 0,
         x: initialPosition.x,
         y: initialPosition.y,
-        width: CARD_SIZE.width,
-        height: CARD_SIZE.height,
+        width: CARD_SIZE_HIDDEN.width,
+        height: CARD_SIZE_HIDDEN.height,
         zIndex: 1,
         transition: { duration: 0.6, type: 'spring' },
       });
@@ -80,8 +81,8 @@ export default function InteractiveDiscoveryCard({
       className="absolute cursor-grab active:cursor-grabbing"
       style={{
         perspective: 1000,
-        width: CARD_SIZE.width,
-        height: CARD_SIZE.height,
+        width: CARD_SIZE_HIDDEN.width,
+        height: CARD_SIZE_HIDDEN.height,
       }}
       initial={{ ...initialPosition, rotateY: 0, scale: 1, opacity: 1 }}
       animate={controls}
