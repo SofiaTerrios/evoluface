@@ -31,7 +31,7 @@ export default function CameraPage() {
       }
       
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
         setHasCameraPermission(true);
 
         if (videoRef.current) {
