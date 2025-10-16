@@ -19,15 +19,13 @@ const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const numPoints = hominids.length;
-  const a = 0; // Center offset
-  const b = 25; // Spiral density / distance between arms
-  const angleStep = (Math.PI * 2) / 1.618; // Use golden angle for nice distribution
+  const a = 10; // Center offset
+  const b = 20; // Spiral density / distance between arms
+  const angleStep = Math.PI * 1.5;
 
   const points: Point[] = hominids.map((_, i) => {
-    // Increase angle for each point
     const angle = i * angleStep;
-    // Radius grows as angle increases
-    const radius = a + b * Math.sqrt(angle); // Use sqrt for a tighter center
+    const radius = a + b * Math.pow(angle, 0.6); // Use pow for accelerating separation
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
     return { x, y };
@@ -38,7 +36,6 @@ const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
     .map((p, i) => {
       if (i === 0) return `M ${p.x} ${p.y}`;
       const prev = points[i-1];
-      // Create a bezier curve to the next point
       const midX = (prev.x + p.x) / 2;
       const midY = (prev.y + p.y) / 2;
       return `Q ${prev.x} ${prev.y}, ${midX} ${midY} T ${p.x} ${p.y}`;
