@@ -20,26 +20,28 @@ const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
 
   const numPoints = hominids.length;
   const a = 0; // Center offset
-  const b = 25; // Spiral density
-  const angleStep = Math.PI; // Controls how tight the spiral is, 2*PI is a full circle
+  const b = 25; // Spiral density / distance between arms
+  const angleStep = (Math.PI * 2) / 1.618; // Use golden angle for nice distribution
 
   const points: Point[] = hominids.map((_, i) => {
+    // Increase angle for each point
     const angle = i * angleStep;
-    const radius = b * (1 + angle);
+    // Radius grows as angle increases
+    const radius = a + b * Math.sqrt(angle); // Use sqrt for a tighter center
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
     return { x, y };
   });
 
+  // Create a smooth path through all points
   const svgPath = points
     .map((p, i) => {
       if (i === 0) return `M ${p.x} ${p.y}`;
       const prev = points[i-1];
-      const cx1 = prev.x + (p.x - prev.x) * 0.5;
-      const cy1 = prev.y;
-      const cx2 = prev.x + (p.x - prev.x) * 0.5;
-      const cy2 = p.y;
-      return `C ${cx1} ${cy1}, ${cx2} ${cy2}, ${p.x} ${p.y}`;
+      // Create a bezier curve to the next point
+      const midX = (prev.x + p.x) / 2;
+      const midY = (prev.y + p.y) / 2;
+      return `Q ${prev.x} ${prev.y}, ${midX} ${midY} T ${p.x} ${p.y}`;
     })
     .join(' ');
   
@@ -49,7 +51,7 @@ const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
       <svg
         viewBox="-400 -400 800 800"
         className="absolute w-full h-full"
-        style={{ transform: 'scale(1.2)' }}
+        style={{ transform: 'scale(1.2) rotate(-90deg)' }}
       >
         <motion.path
           d={svgPath}
