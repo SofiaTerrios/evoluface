@@ -49,7 +49,7 @@ export default function CameraPage() {
             setTorchSupported(true);
         }
 
-      } catch (error) => {
+      } catch (error) {
         console.error('Error accessing camera:', error);
         setHasCameraPermission(false);
         toast({
