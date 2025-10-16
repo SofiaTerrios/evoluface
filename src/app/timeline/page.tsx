@@ -5,20 +5,12 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Footprints } from 'lucide-react';
 import { HOMINID_STAGES } from '@/lib/hominids';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 // Filter out one to make the alternating pattern look good.
 const timelineHominids = HOMINID_STAGES.filter(
   (h) => h.name !== 'Homo Heidelbergensis'
 );
-
-// Function to find the corresponding placeholder image for a hominid
-const getHominidImage = (id: string) => {
-  return PlaceHolderImages.find((p) => p.id === id);
-};
-
 
 export default function TimelinePage() {
   return (
@@ -48,7 +40,6 @@ export default function TimelinePage() {
 
           {timelineHominids.map((hominid, index) => {
             const isLeft = index % 2 === 0;
-            const placeholder = getHominidImage(hominid.imagePlaceholderId);
             
             return (
               <div key={hominid.name} className="relative mb-12">
@@ -63,22 +54,12 @@ export default function TimelinePage() {
                   >
                      <div className={isLeft ? 'pr-8' : 'pl-8'}>
                         <Card className="shadow-lg rounded-xl bg-card border-border">
-                           <CardHeader className="p-4">
-                            <div className="w-full h-40 relative rounded-t-lg overflow-hidden mb-3">
-                                {placeholder && (
-                                    <Image 
-                                        src={placeholder.imageUrl}
-                                        alt={hominid.name}
-                                        fill
-                                        style={{ objectFit: 'cover' }}
-                                        data-ai-hint={placeholder.imageHint}
-                                    />
-                                )}
-                            </div>
+                           <CardHeader>
                             <CardTitle className="font-headline text-xl text-primary">{hominid.name}</CardTitle>
+                            <CardDescription>{hominid.years}</CardDescription>
                           </CardHeader>
-                          <CardContent className="px-4 pb-4">
-                            <p className="text-sm text-muted-foreground">{hominid.years}</p>
+                          <CardContent>
+                            <p className="text-sm text-card-foreground">{hominid.facialFeatures}</p>
                           </CardContent>
                         </Card>
                      </div>
