@@ -8,113 +8,134 @@ interface SpiralTimelineProps {
   hominids: HominidStage[];
 }
 
-const quadrantStyles = [
-  // Bottom-left
-  {
-    textAnchor: 'end' as const,
-    textPosition: { x: -0.5, y: 0.5 },
-    path: (size: number) => `M 0,${-size} A ${size},${size} 0 0 0 ${size},0`,
-  },
-  // Top-left
-  {
-    textAnchor: 'end' as const,
-    textPosition: { x: -0.5, y: -0.5 },
-    path: (size: number) => `M ${size},0 A ${size},${size} 0 0 0 0,${size}`,
-  },
-  // Top-right
-  {
-    textAnchor: 'start' as const,
-    textPosition: { x: 0.5, y: -0.5 },
-    path: (size: number) => `M 0,${size} A ${size},${size} 0 0 0 ${-size},0`,
-  },
-  // Bottom-right
-  {
-    textAnchor: 'start' as const,
-    textPosition: { x: 0.5, y: 0.5 },
-    path: (size: number) => `M ${-size},0 A ${size},${size} 0 0 0 0,${-size}`,
-  },
-];
+// Based on Fibonacci sequence for quadrant sizes
+const FIB_SEQUENCE = [1, 1, 2, 3, 5, 8, 13, 21];
 
 const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
-  const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21].slice(0, hominids.length).reverse();
-  const scale = 30;
+  const quadrants = [];
+  let x = 0;
+  let y = 0;
+  const scale = 50; // Increased scale for a larger spiral
 
-  let currentX = 0;
-  let currentY = 0;
-  const positions = [];
+  const hominidsToDisplay = hominids.slice(0, FIB_SEQUENCE.length);
 
-  // Previous size needed for positioning
-  let prevSize = 0;
-
-  for (let i = 0; i < hominids.length; i++) {
-    const size = fibSequence[i] * scale;
+  for (let i = 0; i < hominidsToDisplay.length; i++) {
     const direction = i % 4;
+    const size = FIB_SEQUENCE[i] * scale;
+
+    let quadrantX = x;
+    let quadrantY = y;
+    let arcStartX, arcStartY, arcEndX, arcEndY;
+    let textAnchor: 'start' | 'end' | 'middle' = 'start';
+    let textOffset = { x: 0, y: 0 };
 
     switch (direction) {
-        case 0: // Bottom-left arc, from (0, -prev) to (size, 0)
-            currentX = size;
-            break;
-        case 1: // Top-left arc, from (size, 0) to (0, size)
-            currentY = size;
-            break;
-        case 2: // Top-right arc, from (0, size) to (-size, 0)
-            currentX = -prevSize;
-            currentY = size;
-            break;
-        case 3: // Bottom-right arc, from (-prev, size) to (0, -size)
-            currentX = -prevSize;
-            currentY = -size;
-            break;
-    }
-     if (i > 0) {
-      const prevDirection = (i - 1) % 4;
-      if (prevDirection === 0) currentY += size;
-      if (prevDirection === 1) currentX -= prevSize;
-      if (prevDirection === 2) currentX -= size;
-      if (prevDirection === 3) currentY -= prevSize;
+      case 0: // Bottom-right
+        arcStartX = x;
+        arcStartY = y + size;
+        arcEndX = x + size;
+        arcEndY = y;
+        x += size;
+        textAnchor = 'end';
+        textOffset = { x: -20, y: 0 };
+        break;
+      case 1: // Top-right
+        quadrantY = y - size;
+        arcStartX = x - size;
+        arcStartY = y;
+        arcEndX = x;
+        arcEndY = y - size;
+        y -= size;
+        textAnchor = 'end';
+        textOffset = { x: -20, y: 20 };
+        break;
+      case 2: // Top-left
+        quadrantX = x - size;
+        quadrantY = y;
+        arcStartX = x;
+        arcStartY = y + size;
+        arcEndX = x - size;
+        arcEndY = y;
+        x -= size;
+        textAnchor = 'start';
+        textOffset = { x: 20, y: 20 };
+        break;
+      case 3: // Bottom-left
+        quadrantX = x;
+        quadrantY = y;
+        arcStartX = x + size;
+        arcStartY = y;
+        arcEndX = x;
+        arcEndY = y + size;
+        y += size;
+        textAnchor = 'start';
+        textOffset = { x: 20, y: 0 };
+        break;
+      default: // Should not happen
+        arcStartX=0; arcStartY=0; arcEndX=0; arcEndY=0;
     }
 
-
-    positions.push({
-      hominid: hominids[i],
+    quadrants.push({
+      hominid: hominidsToDisplay[i],
       size: size,
-      pathD: quadrantStyles[direction].path(size),
-      transform: `translate(${currentX}, ${currentY})`,
-      textAnchor: quadrantStyles[direction].textAnchor,
-      textX: currentX + (quadrantStyles[direction].textPosition.x * size),
-      textY: currentY + (quadrantStyles[direction].textPosition.y * size)
+      qX: quadrantX,
+      qY: quadrantY,
+      pathD: `M ${arcStartX} ${arcStartY} A ${size} ${size} 0 0 1 ${arcEndX} ${arcEndY}`,
+      markerPos: {
+          x: (arcStartX + arcEndX) / 2 + (direction === 1 || direction === 2 ? size/2 : -size/2) * (Math.sqrt(2)-1),
+          y: (arcStartY + arcEndY) / 2 + (direction === 2 || direction === 3 ? -size/2 : size/2) * (Math.sqrt(2)-1)
+      },
+      textPos: {
+          x: quadrantX + size / 2,
+          y: quadrantY + size / 2,
+      },
+      textAnchor: textAnchor,
     });
-     
-    prevSize = size;
   }
-  
-  const allX = positions.flatMap(p => [p.textX-100, p.textX + 100]);
-  const allY = positions.flatMap(p => [p.textY-50, p.textY + 50]);
 
-  const minX = Math.min(...allX) - 50;
-  const maxX = Math.max(...allX) + 50;
-  const minY = Math.min(...allY) - 50;
-  const maxY = Math.max(...allY) + 50;
+  // Calculate viewBox to fit all elements
+  const allX = quadrants.flatMap(p => [p.qX, p.qX + p.size]);
+  const allY = quadrants.flatMap(p => [p.qY, p.qY + p.size]);
+  const minX = Math.min(...allX);
+  const maxX = Math.max(...allX);
+  const minY = Math.min(...allY);
+  const maxY = Math.max(...allY);
+  const padding = 100;
 
-  const totalWidth = maxX - minX;
-  const totalHeight = maxY - minY;
-
+  const totalWidth = maxX - minX + padding * 2;
+  const totalHeight = maxY - minY + padding * 2;
+  const viewBox = `${minX - padding} ${minY - padding} ${totalWidth} ${totalHeight}`;
 
   return (
-     <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12">
-      <div className="absolute top-1/2 -left-4 -translate-y-1/2 transform -rotate-90">
-        <span className="text-sm uppercase tracking-widest text-muted-foreground">Línea de Tiempo</span>
-      </div>
-       <div className="absolute left-1/2 top-0 -translate-x-1/2">
-        <span className="text-sm uppercase tracking-widest text-muted-foreground">Evolución</span>
-      </div>
+    <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12">
+        <div className="absolute top-1/2 -left-4 -translate-y-1/2 transform -rotate-90">
+            <span className="text-sm uppercase tracking-widest text-muted-foreground">Línea de Tiempo</span>
+        </div>
+        <div className="absolute left-1/2 top-0 -translate-x-1/2">
+            <span className="text-sm uppercase tracking-widest text-muted-foreground">Evolución</span>
+        </div>
       <svg
-        viewBox={`${minX} ${minY} ${totalWidth} ${totalHeight}`}
-        className="absolute w-full h-full overflow-visible"
+        viewBox={viewBox}
+        className="w-full h-full overflow-visible"
       >
         <g>
-          {positions.map((p, i) => (
-            <g key={p.hominid.name} transform={p.transform}>
+          {quadrants.map((p, i) => (
+            <motion.g
+                key={p.hominid.name}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: i * 0.2 }}
+            >
+              {/* Optional: Draw the fibonacci squares for reference */}
+              {/* <rect
+                x={p.qX}
+                y={p.qY}
+                width={p.size}
+                height={p.size}
+                fill="rgba(255,255,255,0.05)"
+                stroke="rgba(255,255,255,0.1)"
+              /> */}
+
               <motion.path
                 d={p.pathD}
                 fill="none"
@@ -122,55 +143,54 @@ const SpiralTimeline = ({ hominids }: SpiralTimelineProps) => {
                 strokeWidth="2"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ delay: i * 0.4, duration: 0.5, ease: 'easeInOut' }}
+                transition={{ delay: i * 0.3, duration: 0.5, ease: 'easeInOut' }}
               />
+
               <motion.g
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: i * 0.4 + 0.4, duration: 0.3 }}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: i * 0.3 + 0.4, duration: 0.3 }}
               >
-                  <circle
-                    cx={ p.size / Math.sqrt(2) * ( i % 4 === 0 || i % 4 === 1 ? 1 : -1 ) }
-                    cy={ p.size / Math.sqrt(2) * ( i % 4 === 1 || i % 4 === 2 ? 1 : -1 ) }
-                    r="10"
-                    fill="hsl(var(--primary))"
-                    stroke="hsl(var(--background))"
-                    strokeWidth="4"
-                  />
-                   <Footprints className="w-3 h-3 text-primary-foreground" 
-                    x={ p.size / Math.sqrt(2) * ( i % 4 === 0 || i % 4 === 1 ? 1 : -1 ) - 6}
-                    y={ p.size / Math.sqrt(2) * ( i % 4 === 1 || i % 4 === 2 ? 1 : -1 ) - 6}
-                   />
+                <circle
+                  cx={p.markerPos.x}
+                  cy={p.markerPos.y}
+                  r="12"
+                  fill="hsl(var(--primary))"
+                  stroke="hsl(var(--background))"
+                  strokeWidth="4"
+                />
+                <Footprints
+                  className="w-4 h-4 text-primary-foreground"
+                  x={p.markerPos.x - 8}
+                  y={p.markerPos.y - 8}
+                />
               </motion.g>
-              <foreignObject
-                  x={ (quadrantStyles[i%4].textPosition.x * p.size) - 100 }
-                  y={ (quadrantStyles[i%4].textPosition.y * p.size) - 50 }
-                  width="200" 
-                  height="100"
-                  style={{overflow: 'visible'}}
+
+              <motion.g
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.3 + 0.3, duration: 0.4 }}
               >
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.4 + 0.3, duration: 0.4 }}
-                    className="w-full h-full"
-                >
-                    <div
-                        style={{
-                            textAlign: p.textAnchor,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            height: '100%',
-                            padding: '10px'
-                        }}
-                    >
-                        <p className="font-headline text-base font-bold text-primary">{p.hominid.name}</p>
-                        <p className="text-xs text-muted-foreground">{p.hominid.years}</p>
-                    </div>
-                </motion.div>
-              </foreignObject>
-            </g>
+                  <text
+                    x={p.textPos.x}
+                    y={p.textPos.y - 10}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    className="font-headline text-2xl font-bold fill-primary"
+                  >
+                    {p.hominid.name}
+                  </text>
+                  <text
+                    x={p.textPos.x}
+                    y={p.textPos.y + 20}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    className="text-base fill-muted-foreground"
+                  >
+                    {p.hominid.years}
+                  </text>
+              </motion.g>
+            </motion.g>
           ))}
         </g>
       </svg>
