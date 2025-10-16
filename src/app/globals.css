@@ -8,30 +8,30 @@ body {
 
 @layer base {
   :root {
-    --background: 15 17% 25%; /* Marrón oscuro para fondo */
-    --foreground: 36 43% 97%; /* Beige claro */
-    --card: 36 43% 97%; /* Beige claro para las tarjetas */
-    --card-foreground: 0 0% 10%; /* Gris oscuro para el texto de las tarjetas */
-    --popover: 10 10% 18%;
-    --popover-foreground: 36 43% 97%;
-    --primary: 15 65% 50%; /* Naranja rojizo (menos saturado) */
-    --primary-foreground: 0 0% 98%;
-    --secondary: 220 10% 25%;
+    --background: 20 14.3% 4.1%;
+    --foreground: 0 0% 95%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 22 91% 55%;
+    --primary-foreground: 20 14.3% 4.1%;
+    --secondary: 24 9.8% 10%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 220 10% 25%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 15 65% 50%; /* Naranja rojizo (menos saturado) */
+    --muted: 24 9.8% 10%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 24 9.8% 10%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 10% 25%;
-    --input: 220 10% 25%;
-    --ring: 15 65% 50%; /* Naranja rojizo (menos saturado) */
-    --chart-1: 15 65% 50%; /* Naranja rojizo (menos saturado) */
-    --chart-2: 202 35% 40%; /* Azul petróleo (menos saturado) */
-    --chart-3: 15 20% 50%; /* Marrón */
-    --chart-4: 39 80% 65%; /* Amarillo cálido (menos saturado) */
-    --chart-5: 27 70% 67%;
+    --border: 24 9.8% 10%;
+    --input: 24 9.8% 10%;
+    --ring: 22 91% 45%;
+    --chart-1: 22 91% 55%;
+    --chart-2: 160 80% 40%;
+    --chart-3: 30 90% 60%;
+    --chart-4: 280 85% 65%;
+    --chart-5: 220 75% 55%;
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -42,31 +42,32 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
-    --background: 15 17% 25%; /* Marrón oscuro para fondo */
-    --foreground: 36 43% 97%; /* Beige claro */
-    --card: 36 43% 97%; /* Beige claro para las tarjetas */
-    --card-foreground: 0 0% 10%; /* Gris oscuro para el texto de las tarjetas */
-    --popover: 10 10% 18%;
-    --popover-foreground: 36 43% 97%;
-    --primary: 15 65% 50%; /* Naranja rojizo (menos saturado) */
-    --primary-foreground: 0 0% 98%;
-    --secondary: 220 10% 25%;
+    --background: 20 14.3% 4.1%;
+    --foreground: 0 0% 95%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 22 91% 55%;
+    --primary-foreground: 20 14.3% 4.1%;
+    --secondary: 24 9.8% 10%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 220 10% 25%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 15 65% 50%; /* Naranja rojizo (menos saturado) */
+    --muted: 24 9.8% 10%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 24 9.8% 10%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 10% 25%;
-    --input: 220 10% 25%;
-    --ring: 15 65% 50%; /* Naranja rojizo (menos saturado) */
-    --chart-1: 15 65% 50%; /* Naranja rojizo (menos saturado) */
-    --chart-2: 202 35% 40%; /* Azul petróleo (menos saturado) */
-    --chart-3: 15 20% 50%; /* Marrón */
-    --chart-4: 39 80% 65%; /* Amarillo cálido (menos saturado) */
-    --chart-5: 27 70% 67%;
+    --border: 24 9.8% 10%;
+    --input: 24 9.8% 10%;
+    --ring: 22 91% 45%;
+    --chart-1: 22 91% 55%;
+    --chart-2: 160 80% 40%;
+    --chart-3: 30 90% 60%;
+    --chart-4: 280 85% 65%;
+    --chart-5: 220 75% 55%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
