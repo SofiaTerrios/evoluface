@@ -24,7 +24,7 @@ export default function VideoPage() {
         </div>
       </header>
       <main>
-        <LayeredGallery layers={CULTURAL_LAYERS} />
+        <LayeredGallery layers={CULTURAL_LAYERS} aspectRatio={16/9} />
       </main>
     </div>
   );

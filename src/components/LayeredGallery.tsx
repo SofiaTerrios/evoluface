@@ -4,14 +4,15 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Smartphone } from 'lucide-react';
+import { Smartphone, Video } from 'lucide-react';
 import type { CulturalLayer } from '@/lib/layers';
 
 interface LayeredGalleryProps {
   layers: CulturalLayer[];
+  aspectRatio?: number;
 }
 
-function LayerSection({ layer, index }: { layer: CulturalLayer; index: number }) {
+function LayerSection({ layer, index, aspectRatio = 9/16 }: { layer: CulturalLayer; index: number, aspectRatio?: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -30,7 +31,7 @@ function LayerSection({ layer, index }: { layer: CulturalLayer; index: number })
           y: isInView ? 0 : 50,
           transition: 'all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.3s',
         }}
-        className="w-full max-w-sm"
+        className="w-full max-w-sm md:max-w-md"
       >
         <Card className="overflow-hidden shadow-2xl bg-card/80 backdrop-blur-sm border-white/20">
           <CardHeader>
@@ -38,9 +39,9 @@ function LayerSection({ layer, index }: { layer: CulturalLayer; index: number })
             <CardDescription className="text-card-foreground/80">{layer.period}</CardDescription>
           </CardHeader>
           <CardContent>
-            <AspectRatio ratio={9 / 16} className="bg-muted rounded-lg overflow-hidden">
+            <AspectRatio ratio={aspectRatio} className="bg-muted rounded-lg overflow-hidden">
               <div className="w-full h-full flex items-center justify-center">
-                <Smartphone className="h-24 w-24 text-muted-foreground/50" />
+                 {aspectRatio === 16/9 ? <Video className="h-24 w-24 text-muted-foreground/50" /> : <Smartphone className="h-24 w-24 text-muted-foreground/50" />}
               </div>
             </AspectRatio>
             <p className="mt-4 text-sm text-card-foreground">
@@ -53,11 +54,11 @@ function LayerSection({ layer, index }: { layer: CulturalLayer; index: number })
   );
 }
 
-export default function LayeredGallery({ layers }: LayeredGalleryProps) {
+export default function LayeredGallery({ layers, aspectRatio }: LayeredGalleryProps) {
   return (
     <div className="relative w-full snap-y snap-mandatory h-screen overflow-y-auto">
       {layers.map((layer, index) => (
-        <LayerSection key={layer.id} layer={layer} index={index} />
+        <LayerSection key={layer.id} layer={layer} index={index} aspectRatio={aspectRatio} />
       ))}
     </div>
   );
