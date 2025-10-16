@@ -3,7 +3,7 @@
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { MotionConfig } from "framer-motion"
-import CameraView from '@/components/CameraView';
+import CameraButton from '@/components/CameraButton';
 
 export default function RootLayout({
   children,
@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <MotionConfig>
           <main>{children}</main>
-          <CameraView />
+          <CameraButton />
         </MotionConfig>
         <Toaster />
       </body>
