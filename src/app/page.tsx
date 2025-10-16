@@ -10,6 +10,7 @@ const menuItems = [
   { id: 2, title: 'Linea de Tiempo', href: '/timeline' },
   { id: 3, title: 'Video', href: '/video' },
   { id: 4, title: 'Descubrimientos', href: '/hominids' },
+  { id: 5, title: 'Cámara', href: '/camera' },
 ];
 
 const LandingPage = () => {
@@ -49,7 +50,7 @@ const LandingPage = () => {
       <AnimatePresence>
         {showMenu && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-20">
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-3 gap-8">
               {menuItems.map((item, index) => (
                 <motion.div
                   key={item.id}

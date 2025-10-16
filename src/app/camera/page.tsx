@@ -31,7 +31,7 @@ export default function CameraPage() {
       }
       
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
         setHasCameraPermission(true);
 
         if (videoRef.current) {
@@ -81,7 +81,7 @@ export default function CameraPage() {
                  {hasCameraPermission === true && (
                     <video
                         ref={videoRef}
-                        className="w-full h-full object-cover scale-x-[-1]"
+                        className="w-full h-full object-cover"
                         autoPlay
                         muted
                         playsInline
