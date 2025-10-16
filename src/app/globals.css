@@ -8,30 +8,30 @@ body {
 
 @layer base {
   :root {
-    --background: 25 20% 8%; /* Deep earthy brown */
-    --foreground: 35 30% 95%; /* Off-white */
-    --card: 35 35% 92%; /* Light sand beige for cards */
-    --card-foreground: 25 20% 8%; /* Dark text on cards */
-    --popover: 25 20% 6%;
-    --popover-foreground: 35 30% 95%;
-    --primary: 175 70% 40%; /* Vibrant teal */
-    --primary-foreground: 20 0% 100%; /* White text on primary */
-    --secondary: 35 30% 85%; /* Slightly darker sand */
-    --secondary-foreground: 25 20% 8%;
-    --muted: 35 30% 85%;
-    --muted-foreground: 25 20% 40%;
-    --accent: 35 30% 90%;
-    --accent-foreground: 175 70% 30%;
+    --background: 220 10% 4%; /* Near black */
+    --foreground: 0 0% 100%; /* White */
+    --card: 220 10% 10%; /* Dark warm gray for cards */
+    --card-foreground: 0 0% 95%; /* Light text on cards */
+    --popover: 220 10% 3%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 210 90% 55%; /* Electric blue */
+    --primary-foreground: 0 0% 100%; /* White text on primary */
+    --secondary: 220 10% 15%; /* Slightly lighter warm gray */
+    --secondary-foreground: 0 0% 90%;
+    --muted: 220 10% 15%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 45 90% 55%; /* Amber/gold accent */
+    --accent-foreground: 220 10% 5%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 35 25% 80%;
-    --input: 35 25% 80%;
-    --ring: 175 70% 50%;
-    --chart-1: 175 70% 40%;
-    --chart-2: 30 80% 50%;
-    --chart-3: 200 80% 50%;
+    --border: 220 10% 20%;
+    --input: 220 10% 20%;
+    --ring: 210 90% 60%;
+    --chart-1: 210 90% 55%;
+    --chart-2: 45 90% 55%;
+    --chart-3: 175 70% 40%;
     --chart-4: 280 85% 65%;
-    --chart-5: 220 75% 55%;
+    --chart-5: 30 80% 50%;
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -44,30 +44,30 @@ body {
   }
 
   .dark {
-    --background: 25 20% 8%; /* Deep earthy brown */
-    --foreground: 35 30% 95%; /* Off-white */
-    --card: 35 35% 12%; /* Darker card for dark mode */
-    --card-foreground: 35 30% 95%; /* Light text on cards */
-    --popover: 25 20% 6%;
-    --popover-foreground: 35 30% 95%;
-    --primary: 175 70% 45%; /* Vibrant teal */
-    --primary-foreground: 20 0% 100%; /* White text on primary */
-    --secondary: 25 20% 15%;
-    --secondary-foreground: 35 30% 95%;
-    --muted: 25 20% 15%;
-    --muted-foreground: 35 30% 60%;
-    --accent: 25 20% 20%;
-    --accent-foreground: 35 30% 98%;
+    --background: 220 10% 4%; /* Near black */
+    --foreground: 0 0% 100%; /* White */
+    --card: 220 10% 10%; /* Dark warm gray for cards */
+    --card-foreground: 0 0% 95%; /* Light text on cards */
+    --popover: 220 10% 3%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 210 90% 55%; /* Electric blue */
+    --primary-foreground: 0 0% 100%; /* White text on primary */
+    --secondary: 220 10% 15%; /* Slightly lighter warm gray */
+    --secondary-foreground: 0 0% 90%;
+    --muted: 220 10% 15%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 45 90% 55%; /* Amber/gold accent */
+    --accent-foreground: 220 10% 5%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 25 20% 25%;
-    --input: 25 20% 25%;
-    --ring: 175 70% 50%;
-    --chart-1: 175 70% 45%;
-    --chart-2: 30 80% 50%;
-    --chart-3: 200 80% 50%;
+    --border: 220 10% 20%;
+    --input: 220 10% 20%;
+    --ring: 210 90% 60%;
+    --chart-1: 210 90% 55%;
+    --chart-2: 45 90% 55%;
+    --chart-3: 175 70% 40%;
     --chart-4: 280 85% 65%;
-    --chart-5: 220 75% 55%;
+    --chart-5: 30 80% 50%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
