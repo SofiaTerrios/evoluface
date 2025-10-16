@@ -3,9 +3,9 @@
 import { motion, useAnimation, PanInfo } from 'framer-motion';
 import { useEffect } from 'react';
 import type { Discovery } from '@/lib/discoveries';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import Image from 'next/image';
-import { Badge } from './ui/badge';
+import { Button } from './ui/button';
 
 interface InteractiveDiscoveryCardProps {
   discovery: Discovery;
@@ -15,7 +15,7 @@ interface InteractiveDiscoveryCardProps {
 }
 
 const CARD_SIZE_SMALL = { width: 200, height: 260 };
-const CARD_SIZE_LARGE = { width: 320, height: 400 };
+const CARD_SIZE_LARGE = { width: 350, height: 'auto' };
 
 export default function InteractiveDiscoveryCard({
   discovery,
@@ -100,8 +100,8 @@ export default function InteractiveDiscoveryCard({
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
           <Card className="w-full h-full flex flex-col overflow-hidden shadow-2xl bg-card text-card-foreground">
-            <CardHeader className="p-4">
-              <div className="relative w-full h-32 rounded-md overflow-hidden border mb-2">
+            <CardHeader className="p-4 pb-2">
+               <div className="relative w-full h-40 rounded-md overflow-hidden border mb-2">
                 <Image
                   src={discovery.imageUrl}
                   alt={discovery.title}
@@ -110,18 +110,19 @@ export default function InteractiveDiscoveryCard({
                   data-ai-hint={discovery.imageHint}
                 />
               </div>
-              <CardTitle className="font-headline text-lg font-bold text-primary">
+              <CardTitle className="font-headline text-xl font-bold text-primary">
                 {discovery.title}
               </CardTitle>
-              <CardDescription className="text-xs">{discovery.date}</CardDescription>
+              <CardDescription>{discovery.date}</CardDescription>
             </CardHeader>
-            <CardContent className="flex-grow text-sm text-card-foreground/90 overflow-y-auto p-4 pt-0">
+            <CardContent className="flex-grow text-sm text-card-foreground/90 overflow-y-auto p-4 pt-2">
               <p>{discovery.summary}</p>
             </CardContent>
-            <CardContent className="flex flex-wrap gap-2 p-4 pt-2">
-              <Badge variant="secondary">{discovery.hominidTag}</Badge>
-              <Badge variant="outline">{discovery.typeTag}</Badge>
-            </CardContent>
+            <CardFooter className="flex justify-around p-4 pt-0">
+                <Button variant="outline" size="sm">Descubrimientos</Button>
+                <Button variant="outline" size="sm">Características</Button>
+                <Button variant="outline" size="sm">Lugares</Button>
+            </CardFooter>
           </Card>
         </div>
 

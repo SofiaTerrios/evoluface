@@ -13,10 +13,10 @@ export type Discovery = {
 export const DISCOVERIES: Discovery[] = [
   {
     id: 'footprints-laetoli',
-    title: 'Nuevas huellas de Laetoli revelan más sobre la marcha bípeda',
-    date: 'Publicado: Diciembre 2021',
+    title: 'Huellas de Laetoli',
+    date: 'Publicado: Dic 2021',
     summary:
-      'Un nuevo análisis de las famosas huellas de Laetoli en Tanzania sugiere que más de un individuo de Australopithecus afarensis caminó por allí, mostrando una variabilidad en el tamaño corporal.',
+      'Un análisis de las famosas huellas en Tanzania sugiere que más de un individuo de Australopithecus afarensis caminó por allí, mostrando variabilidad en el tamaño corporal y reforzando la evidencia de bipedismo temprano.',
     hominidTag: 'A. afarensis',
     typeTag: 'Fósil',
     imageUrl: 'https://picsum.photos/seed/footprints/600/400',
@@ -24,10 +24,10 @@ export const DISCOVERIES: Discovery[] = [
   },
   {
     id: 'oldowan-tools-kenya',
-    title: 'Descubren herramientas de piedra de 2.9 millones de años en Kenia',
-    date: 'Publicado: Febrero 2023',
+    title: 'Herramientas de Nyayanga',
+    date: 'Publicado: Feb 2023',
     summary:
-      'El hallazgo de herramientas tipo Oldowanense en Nyayanga, Kenia, retrasa la fecha de esta tecnología y se asocia con el consumo de hipopótamos por parte de homínidos aún no identificados.',
+      'El hallazgo de herramientas Oldowanenses de 2.9 millones de años en Kenia retrasa la fecha de esta tecnología y se asocia con el consumo de hipopótamos por parte de Paranthropus, ampliando el rango de homínidos que usaban herramientas.',
     hominidTag: 'Paranthropus',
     typeTag: 'Herramienta',
     imageUrl: 'https://picsum.photos/seed/stonetools/600/400',
@@ -35,10 +35,10 @@ export const DISCOVERIES: Discovery[] = [
   },
   {
     id: 'dragon-man-cranium',
-    title: 'El "Hombre Dragón": ¿Una nueva especie humana?',
-    date: 'Publicado: Junio 2021',
+    title: 'Cráneo "Hombre Dragón"',
+    date: 'Publicado: Jun 2021',
     summary:
-      'Un cráneo masivo encontrado en China, apodado "Hombre Dragón", podría pertenecer a una nueva especie, Homo longi, que sería un pariente más cercano a Homo sapiens que los neandertales.',
+      'Un cráneo masivo encontrado en China, Homo longi, podría ser un pariente más cercano a los humanos modernos que los neandertales, proponiendo una nueva rama en el árbol evolutivo humano.',
     hominidTag: 'Homo longi',
     typeTag: 'Fósil',
     imageUrl: 'https://picsum.photos/seed/dragonskull/600/400',
@@ -46,10 +46,10 @@ export const DISCOVERIES: Discovery[] = [
   },
   {
     id: 'neanderthal-art-spain',
-    title: 'El arte rupestre más antiguo de Europa fue hecho por neandertales',
-    date: 'Publicado: Febrero 2018',
+    title: 'Arte Neandertal',
+    date: 'Publicado: Feb 2018',
     summary:
-      'Pinturas en cuevas españolas datadas en más de 64,000 años demuestran que los neandertales crearon arte simbólico mucho antes de la llegada de los humanos modernos a Europa.',
+      'Pinturas en cuevas españolas de más de 64,000 años demuestran que los neandertales crearon arte simbólico, usando pigmentos y plantillas de manos, mucho antes de la llegada de los humanos modernos a Europa.',
     hominidTag: 'H. neanderthalensis',
     typeTag: 'Arte',
     imageUrl: 'https://picsum.photos/seed/cavepainting/600/400',
@@ -57,10 +57,10 @@ export const DISCOVERIES: Discovery[] = [
   },
   {
     id: 'denisovan-dna-new-guinea',
-    title: 'ADN denisovano revela una historia compleja en Nueva Guinea',
-    date: 'Publicado: Abril 2019',
+    title: 'ADN Denisovano',
+    date: 'Publicado: Abr 2019',
     summary:
-      'El análisis genético de poblaciones de Nueva Guinea muestra que se cruzaron con al menos dos linajes distintos de denisovanos, uno de los cuales es muy diferente a los encontrados en Siberia.',
+      'El análisis genético en Nueva Guinea muestra que las poblaciones locales se cruzaron con al menos dos linajes distintos de denisovanos, revelando una historia genética mucho más compleja y diversa de lo que se pensaba.',
     hominidTag: 'Denisovanos',
     typeTag: 'Genética',
     imageUrl: 'https://picsum.photos/seed/dnamap/600/400',
@@ -68,10 +68,10 @@ export const DISCOVERIES: Discovery[] = [
   },
   {
     id: 'heidelbergensis-hunting',
-    title: 'Lanzas de Schöningen: evidencia de caza activa hace 300,000 años',
-    date: 'Descubierto: 1994-1998, re-analizado',
+    title: 'Lanzas de Schöningen',
+    date: 'Re-analizado recientemente',
     summary:
-      'Las lanzas de madera perfectamente conservadas encontradas en Alemania demuestran que Homo heidelbergensis era un cazador sofisticado, capaz de planificar y ejecutar cacerías en grupo.',
+      'Lanzas de madera de 300,000 años encontradas en Alemania demuestran que Homo heidelbergensis era un cazador sofisticado, capaz de planificar cacerías en grupo y fabricar armas complejas y equilibradas.',
     hominidTag: 'H. heidelbergensis',
     typeTag: 'Herramienta',
     imageUrl: 'https://picsum.photos/seed/spears/600/400',
