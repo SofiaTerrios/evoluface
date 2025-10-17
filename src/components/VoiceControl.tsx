@@ -50,7 +50,7 @@ const VoiceControl = () => {
             handleVoiceCommand(transcript.toLowerCase());
             resetTranscript();
             SpeechRecognition.stopListening();
-        }, 2000); 
+        }, 1000); 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listening, transcript, isMounted]);
@@ -64,7 +64,7 @@ const VoiceControl = () => {
 
       if (path && path !== router.pathname) {
         router.push(path);
-      } else if (!path || path === "/") {
+      } else {
          toast({
             variant: 'destructive',
             title: 'Comando no reconocido',
