@@ -3,6 +3,8 @@
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { MotionConfig } from "framer-motion"
+import VoiceControl from '@/components/VoiceControl';
+
 
 export default function RootLayout({
   children,
@@ -22,6 +24,7 @@ export default function RootLayout({
         <MotionConfig>
           <main>{children}</main>
         </MotionConfig>
+        <VoiceControl />
         <Toaster />
       </body>
     </html>
