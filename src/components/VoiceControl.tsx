@@ -7,30 +7,22 @@ import { Mic } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import 'regenerator-runtime/runtime';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { interpretNavigationCommand } from '@/ai/flows/interpret-navigation-command';
 
 const VoiceControl = () => {
   const router = useRouter();
   const { toast } = useToast();
   const [isListening, setIsListening] = useState(false);
-  const [isMounted, setIsMounted] = useState(false); // State to track client-side mount
+  const [isMounted, setIsMounted] = useState(false);
   const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const commands = [
-    { command: ['ir a evoluface', 'abrir evoluface'], path: '/evoluface' },
-    { command: ['ir a línea de tiempo', 'abrir línea de tiempo'], path: '/timeline' },
-    { command: ['ir a videos', 'abrir videos', 'ir a cultura'], path: '/cultura' },
-    { command: ['ir a descubrimientos', 'abrir descubrimientos', 'ir a mesa de descubrimientos'], path: '/hominids' },
-    { command: ['ir a arqueología', 'abrir arqueología', 'ir a mesa de arqueología'], path: '/archeology' },
-    { command: ['ir al menú', 'volver al menú', 'ir a inicio'], path: '/' },
-  ];
-
-  useEffect(() => {
-    setIsMounted(true); // Component is mounted, safe to use browser APIs
+   useEffect(() => {
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!isMounted) return; // Don't run this effect on the server
+    if (!isMounted) return;
 
     if (!browserSupportsSpeechRecognition) {
       toast({
@@ -58,26 +50,38 @@ const VoiceControl = () => {
             handleVoiceCommand(transcript.toLowerCase());
             resetTranscript();
             SpeechRecognition.stopListening();
-        }, 1500); 
+        }, 2000); 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listening, transcript, isMounted]);
 
-  const handleVoiceCommand = (command: string) => {
-    const foundCommand = commands.find(c => c.command.some(cmd => command.includes(cmd)));
+  const handleVoiceCommand = async (command: string) => {
+    if (!command) return;
 
-    if (foundCommand) {
-      toast({
-        title: 'Comando reconocido',
-        description: `Navegando a ${foundCommand.path}`,
-      });
-      router.push(foundCommand.path);
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Comando no reconocido',
-        description: `No se encontró una acción para: "${command}"`,
-      });
+    try {
+      const result = await interpretNavigationCommand({ command });
+      const path = result.path;
+
+      if (path && path !== router.pathname) {
+        toast({
+          title: 'Comando reconocido',
+          description: `Navegando a ${path}`,
+        });
+        router.push(path);
+      } else if (!path || path === "/") {
+         toast({
+            variant: 'destructive',
+            title: 'Comando no reconocido',
+            description: `No se encontró una acción para: "${command}"`,
+        });
+      }
+    } catch (error) {
+        console.error("Error interpreting command:", error);
+        toast({
+            variant: 'destructive',
+            title: 'Error de IA',
+            description: 'No se pudo interpretar el comando de voz.',
+        });
     }
   };
   
