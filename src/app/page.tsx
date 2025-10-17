@@ -43,9 +43,9 @@ const LandingPage = () => {
           >
             <Link
               href={item.href}
-              className={`flex items-center justify-center w-32 h-32 rounded-full shadow-lg transition-colors bg-primary text-primary-foreground hover:bg-primary/90`}
+              className={`flex items-center justify-center w-40 h-24 rounded-lg shadow-lg transition-colors bg-primary text-primary-foreground hover:bg-primary/90`}
             >
-              <span className="text-center font-headline">{item.title}</span>
+              <span className="text-center font-headline px-2">{item.title}</span>
             </Link>
           </motion.div>
         ))}
