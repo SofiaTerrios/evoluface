@@ -6,6 +6,7 @@ import { ArrowLeft, Footprints } from 'lucide-react';
 import { HOMINID_STAGES } from '@/lib/hominids';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import TextToSpeechButton from '@/components/TextToSpeechButton';
 
 // Filter out one to make the alternating pattern look good.
 const timelineHominids = HOMINID_STAGES.filter(
@@ -59,7 +60,10 @@ export default function TimelinePage() {
                             <CardDescription>{hominid.years}</CardDescription>
                           </CardHeader>
                           <CardContent>
-                            <p className="text-sm text-card-foreground">{hominid.facialFeatures}</p>
+                            <p className="text-sm text-card-foreground">
+                              {hominid.facialFeatures}
+                              <TextToSpeechButton textToRead={hominid.facialFeatures} />
+                            </p>
                           </CardContent>
                         </Card>
                      </div>

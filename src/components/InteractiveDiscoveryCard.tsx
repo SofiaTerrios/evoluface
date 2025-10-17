@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import type { Discovery } from '@/lib/discoveries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import Image from 'next/image';
+import TextToSpeechButton from './TextToSpeechButton';
 
 interface InteractiveDiscoveryCardProps {
   discovery: Discovery;
@@ -114,7 +115,10 @@ export default function InteractiveDiscoveryCard({
                   data-ai-hint={discovery.imageHint}
                 />
               </div>
-              <p>{discovery.summary}</p>
+              <p>
+                {discovery.summary}
+                <TextToSpeechButton textToRead={discovery.summary} />
+              </p>
             </CardContent>
           </Card>
         </div>

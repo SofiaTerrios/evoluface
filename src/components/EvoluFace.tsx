@@ -22,6 +22,7 @@ import {
   type FetchLatestNewsInput,
   type FetchLatestNewsOutput,
 } from '@/ai/flows/fetch-latest-news';
+import TextToSpeechButton from './TextToSpeechButton';
 
 export type HominidStageWithData = HominidStage & {
   imageUrl: string;
@@ -107,6 +108,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
           </div>
           <blockquote className="text-center italic text-sm text-card-foreground p-4">
             &ldquo;{currentStage.facialFeatures}&rdquo;
+            <TextToSpeechButton textToRead={currentStage.facialFeatures} />
           </blockquote>
         </CardContent>
         <CardFooter className="flex flex-col gap-2 pt-4">
@@ -143,6 +145,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
             </div>
              <p className="text-center p-4 text-sm text-card-foreground">
                 {currentStage.craniumFeatures}
+                 <TextToSpeechButton textToRead={currentStage.craniumFeatures} />
             </p>
           </CardContent>
         </Card>
@@ -165,6 +168,7 @@ export default function EvoluFace({ hominidStages }: EvoluFaceProps) {
           ) : (
             <p className="text-sm text-card-foreground">
               {news?.news}
+              {news?.news && <TextToSpeechButton textToRead={news.news} />}
             </p>
           )}
         </CardContent>

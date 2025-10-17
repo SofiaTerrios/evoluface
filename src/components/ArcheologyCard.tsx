@@ -6,6 +6,7 @@ import type { ArcheologyItem } from '@/lib/archeology-items';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import Image from 'next/image';
 import { Button } from './ui/button';
+import TextToSpeechButton from './TextToSpeechButton';
 
 interface ArcheologyCardProps {
   item: ArcheologyItem;
@@ -116,7 +117,10 @@ export default function ArcheologyCard({
             </CardTitle>
             <CardDescription className="text-xs">{item.period}</CardDescription>
             <CardContent className="flex-grow text-sm text-card-foreground/90 overflow-y-auto p-0 pt-2">
-              <p>{item.description}</p>
+              <p>
+                {item.description}
+                <TextToSpeechButton textToRead={item.description} />
+              </p>
             </CardContent>
             <CardFooter className="flex justify-around p-0 pt-2">
                 <Button variant="outline" size="sm">Descubrimientos</Button>

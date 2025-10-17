@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Smartphone, Video } from 'lucide-react';
 import type { CulturalLayer } from '@/lib/layers';
+import TextToSpeechButton from './TextToSpeechButton';
 
 interface LayeredGalleryProps {
   layers: CulturalLayer[];
@@ -46,6 +47,7 @@ function LayerSection({ layer, index, aspectRatio = 9/16 }: { layer: CulturalLay
             </AspectRatio>
             <p className="mt-4 text-sm text-card-foreground">
               {layer.description}
+              <TextToSpeechButton textToRead={layer.description} />
             </p>
           </CardContent>
         </Card>
