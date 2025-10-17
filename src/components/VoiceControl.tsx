@@ -63,10 +63,6 @@ const VoiceControl = () => {
       const path = result.path;
 
       if (path && path !== router.pathname) {
-        toast({
-          title: 'Comando reconocido',
-          description: `Navegando a ${path}`,
-        });
         router.push(path);
       } else if (!path || path === "/") {
          toast({
