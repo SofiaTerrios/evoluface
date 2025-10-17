@@ -12,6 +12,7 @@ const VoiceControl = () => {
   const router = useRouter();
   const { toast } = useToast();
   const [isListening, setIsListening] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); // State to track client-side mount
   const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -25,6 +26,12 @@ const VoiceControl = () => {
   ];
 
   useEffect(() => {
+    setIsMounted(true); // Component is mounted, safe to use browser APIs
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return; // Don't run this effect on the server
+
     if (!browserSupportsSpeechRecognition) {
       toast({
         variant: 'destructive',
@@ -33,9 +40,11 @@ const VoiceControl = () => {
       });
       return;
     }
-  }, [browserSupportsSpeechRecognition, toast]);
+  }, [isMounted, browserSupportsSpeechRecognition, toast]);
 
   useEffect(() => {
+    if (!isMounted) return;
+
     if (listening !== isListening) {
       setIsListening(listening);
     }
@@ -51,7 +60,8 @@ const VoiceControl = () => {
             SpeechRecognition.stopListening();
         }, 1500); 
     }
-  }, [listening, transcript]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listening, transcript, isMounted]);
 
   const handleVoiceCommand = (command: string) => {
     const foundCommand = commands.find(c => c.command.some(cmd => command.includes(cmd)));
@@ -80,7 +90,7 @@ const VoiceControl = () => {
     }
   };
 
-  if (!browserSupportsSpeechRecognition) {
+  if (!isMounted || !browserSupportsSpeechRecognition) {
     return null;
   }
 
