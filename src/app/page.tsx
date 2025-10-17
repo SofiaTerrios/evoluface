@@ -7,6 +7,7 @@ import Image from 'next/image';
 const menuItems = [
   { id: 1, title: 'EvoluFace', href: '/evoluface' },
   { id: 2, title: 'Linea de Tiempo', href: '/timeline' },
+  { id: 3, title: 'Videos por Capas', href: '/cultura' },
   { id: 4, title: 'Mesa de Descubrimientos', href: '/hominids' },
   { id: 6, title: 'Mesa de Arqueología', href: '/archeology' },
 ];
