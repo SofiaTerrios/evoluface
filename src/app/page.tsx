@@ -77,7 +77,6 @@ const LandingPage = () => {
         >
           HOMÍNIDOS Y HUMANIDAD
         </div>
-         <p className="text-xs text-muted-foreground mt-2">Arrastra hacia arriba</p>
       </motion.div>
 
       <AnimatePresence>
