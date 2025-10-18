@@ -15,8 +15,8 @@ interface ArcheologyCardProps {
   initialPosition: { x: number; y: number };
 }
 
-const CARD_SIZE_SMALL = { width: 200, height: 260 };
-const CARD_SIZE_LARGE = { width: 400, height: 400 };
+const CARD_SIZE_SMALL = { width: 180, height: 240 };
+const CARD_SIZE_LARGE = { width: 320, height: 'auto' };
 
 export default function ArcheologyCard({
   item,
@@ -74,7 +74,7 @@ export default function ArcheologyCard({
   return (
     <motion.div
       drag
-      dragConstraints={{ top: -400, left: -600, right: 600, bottom: 400 }}
+      dragConstraints={{ top: -300, left: -400, right: 400, bottom: 300 }}
       dragElastic={0.2}
       onDragEnd={handleDragEnd}
       className={'absolute cursor-grab active:cursor-grabbing'}
@@ -102,8 +102,8 @@ export default function ArcheologyCard({
           animate={{ opacity: isRevealed ? 1 : 0 }}
           transition={{ duration: 0.3, delay: isRevealed ? 0.3 : 0 }}
         >
-          <div className="w-full h-full flex flex-col overflow-hidden text-card-foreground p-4">
-             <div className="relative w-full h-40 rounded-md overflow-hidden border mb-2">
+          <div className="w-full h-full flex flex-col overflow-hidden text-card-foreground p-3">
+             <div className="relative w-full h-32 rounded-md overflow-hidden border mb-2">
               <Image
                 src={item.imageUrl}
                 alt={item.title}
@@ -112,7 +112,7 @@ export default function ArcheologyCard({
                 data-ai-hint={item.imageHint}
               />
             </div>
-            <CardTitle className="font-headline text-xl font-bold text-primary mt-2">
+            <CardTitle className="font-headline text-lg font-bold text-primary mt-1">
               {item.title}
             </CardTitle>
             <CardDescription className="text-xs">{item.period}</CardDescription>
@@ -123,9 +123,8 @@ export default function ArcheologyCard({
               </p>
             </CardContent>
             <CardFooter className="flex justify-around p-0 pt-2">
-                <Button variant="outline" size="sm">Descubrimientos</Button>
-                <Button variant="outline" size="sm">Características</Button>
-                <Button variant="outline" size="sm">Lugares</Button>
+                <Button variant="outline" size="sm">Detalles</Button>
+                <Button variant="outline" size="sm">Ver más</Button>
             </CardFooter>
           </div>
         </motion.div>

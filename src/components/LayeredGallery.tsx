@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Smartphone, Video } from 'lucide-react';
+import { Smartphone } from 'lucide-react';
 import type { CulturalLayer } from '@/lib/layers';
 import TextToSpeechButton from './TextToSpeechButton';
 
@@ -32,7 +32,7 @@ function LayerSection({ layer, index, aspectRatio = 9/16 }: { layer: CulturalLay
           y: isInView ? 0 : 50,
           transition: 'all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.3s',
         }}
-        className="w-full max-w-sm md:max-w-md"
+        className="w-full max-w-xs"
       >
         <Card className="overflow-hidden shadow-2xl bg-card/80 backdrop-blur-sm border-white/20">
           <CardHeader>
@@ -42,7 +42,7 @@ function LayerSection({ layer, index, aspectRatio = 9/16 }: { layer: CulturalLay
           <CardContent>
             <AspectRatio ratio={aspectRatio} className="bg-muted rounded-lg overflow-hidden">
               <div className="w-full h-full flex items-center justify-center">
-                 {aspectRatio === 16/9 ? <Video className="h-24 w-24 text-muted-foreground/50" /> : <Smartphone className="h-24 w-24 text-muted-foreground/50" />}
+                 <Smartphone className="h-24 w-24 text-muted-foreground/50" />
               </div>
             </AspectRatio>
             <p className="mt-4 text-sm text-card-foreground">
@@ -56,7 +56,7 @@ function LayerSection({ layer, index, aspectRatio = 9/16 }: { layer: CulturalLay
   );
 }
 
-export default function LayeredGallery({ layers, aspectRatio }: LayeredGalleryProps) {
+export default function LayeredGallery({ layers, aspectRatio = 9/16 }: LayeredGalleryProps) {
   return (
     <div className="relative w-full snap-y snap-mandatory h-screen overflow-y-auto">
       {layers.map((layer, index) => (

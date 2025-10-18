@@ -30,7 +30,7 @@ export default function SearchPage() {
   return (
     <div className="relative min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-20 w-full bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto flex items-center p-4">
+        <div className="container mx-auto flex items-center p-4 max-w-md">
           <Button asChild variant="outline" size="icon" className="mr-4">
             <Link href="/">
               <ArrowLeft />
@@ -41,7 +41,7 @@ export default function SearchPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Buscar homínidos, artefactos, descubrimientos..."
+              placeholder="Buscar contenido..."
               className="w-full pl-10"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -49,13 +49,13 @@ export default function SearchPage() {
           </div>
         </div>
       </header>
-      <main className="container mx-auto p-4 sm:p-8">
+      <main className="container mx-auto p-4 sm:p-8 max-w-md">
         {searchTerm && (
           <p className="text-muted-foreground mb-6">
             {filteredResults.length} resultado(s) para &quot;{searchTerm}&quot;
           </p>
         )}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4">
           {filteredResults.map((item, index) => (
             <motion.div
               key={item.id + item.type}

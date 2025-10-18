@@ -15,8 +15,8 @@ interface InteractiveDiscoveryCardProps {
   initialPosition: { x: number; y: number };
 }
 
-const CARD_SIZE_HIDDEN = { width: 160, height: 208 };
-const CARD_SIZE_REVEALED = { width: 200, height: 260 };
+const CARD_SIZE_HIDDEN = { width: 150, height: 195 };
+const CARD_SIZE_REVEALED = { width: 180, height: 234 };
 
 export default function InteractiveDiscoveryCard({
   discovery,
@@ -76,7 +76,7 @@ export default function InteractiveDiscoveryCard({
   return (
     <motion.div
       drag
-      dragConstraints={{ top: -400, left: -600, right: 600, bottom: 400 }}
+      dragConstraints={{ top: -300, left: -400, right: 400, bottom: 300 }}
       dragElastic={0.2}
       onDragEnd={handleDragEnd}
       className="absolute cursor-grab active:cursor-grabbing"
@@ -100,13 +100,13 @@ export default function InteractiveDiscoveryCard({
         >
           <Card className="w-full h-full flex flex-col overflow-hidden shadow-2xl bg-card text-card-foreground">
             <CardHeader className="p-2">
-              <CardTitle className="font-headline text-base font-bold text-primary">
+              <CardTitle className="font-headline text-sm font-bold text-primary leading-tight">
                 {discovery.title}
               </CardTitle>
               <CardDescription className="text-xs">{discovery.date}</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow text-xs text-card-foreground/90 overflow-y-auto p-2 pt-0">
-               <div className="relative w-full h-24 rounded-md overflow-hidden border mb-2">
+               <div className="relative w-full h-20 rounded-md overflow-hidden border mb-1">
                 <Image
                   src={discovery.imageUrl}
                   alt={discovery.title}
@@ -135,7 +135,7 @@ export default function InteractiveDiscoveryCard({
               fill
               className="object-cover opacity-30"
             />
-            <span className="absolute text-stone-200 font-headline text-2xl tracking-widest" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
+            <span className="absolute text-stone-200 font-headline text-xl tracking-widest" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
                 HALLAZGO
             </span>
           </Card>

@@ -23,7 +23,7 @@ export default function HominidsPage() {
   return (
     <main className="container mx-auto p-4 sm:p-8 h-screen w-screen flex flex-col items-center relative">
         <header className="absolute top-0 left-0 w-full p-4 sm:p-8 z-20 flex justify-center">
-             <div className="flex items-center w-full max-w-4xl">
+             <div className="flex items-center w-full max-w-sm md:max-w-md">
                 <Button asChild variant="outline" size="icon" className="mr-4">
                     <Link href="/">
                     <ArrowLeft />
@@ -45,7 +45,7 @@ export default function HominidsPage() {
         <div className="relative w-full h-full flex items-center justify-center">
             <motion.div
                 id="drop-zone"
-                className="relative z-0 flex h-72 w-72 items-center justify-center rounded-full border-2 border-dashed border-primary/50 bg-primary/10"
+                className="relative z-0 flex h-64 w-64 items-center justify-center rounded-full border-2 border-dashed border-primary/50 bg-primary/10"
             >
                 <Lightbulb className="h-16 w-16 text-primary/30" />
                 <span className="absolute bottom-4 text-sm text-primary/50">Zona de Revelación</span>
@@ -59,8 +59,8 @@ export default function HominidsPage() {
                     onRevealToggle={handleRevealToggle}
                     // Distribute cards around the center
                     initialPosition={{ 
-                        x: Math.cos((index / DISCOVERIES.length) * 2 * Math.PI) * 400, 
-                        y: Math.sin((index / DISCOVERIES.length) * 2 * Math.PI) * 250 
+                        x: Math.cos((index / DISCOVERIES.length) * 2 * Math.PI) * 300, 
+                        y: Math.sin((index / DISCOVERIES.length) * 2 * Math.PI) * 200 
                     }}
                 />
             ))}
