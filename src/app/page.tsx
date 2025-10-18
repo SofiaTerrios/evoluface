@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { Search } from 'lucide-react';
 
 const menuItems = [
   { id: 1, title: 'EvoluFace', href: '/evoluface' },
@@ -32,13 +33,14 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-3 gap-8">
         {menuItems.map((item, index) => (
           <motion.div
             key={item.id}
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+            className={index === 4 ? 'col-start-2' : ''}
           >
             <Link
               href={item.href}
@@ -48,6 +50,21 @@ const LandingPage = () => {
             </Link>
           </motion.div>
         ))}
+         <motion.div
+            key="search"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 + menuItems.length * 0.1 }}
+            className="col-start-2"
+          >
+            <Link
+              href="/search"
+              className={`flex flex-col items-center justify-center w-36 h-36 rounded-full shadow-lg transition-colors bg-accent text-accent-foreground hover:bg-accent/90`}
+            >
+              <Search className="h-10 w-10" />
+              <span className="text-center font-headline px-2 mt-2">Buscar</span>
+            </Link>
+          </motion.div>
       </div>
     </main>
   );
