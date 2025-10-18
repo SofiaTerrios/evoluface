@@ -9,10 +9,13 @@ const NAV_COMMAND_INPUT_SCHEMA = z.object({
 export type NavigateCommandInput = z.infer<typeof NAV_COMMAND_INPUT_SCHEMA>;
 
 const NAV_COMMAND_OUTPUT_SCHEMA = z.object({
+  action: z
+    .enum(['navigate', 'search'])
+    .describe('The action to perform: navigate to a page or perform a search.'),
   path: z
     .string()
     .describe(
-      'The destination path to navigate to. Should be one of the available paths.'
+      'The destination path or search query. If action is "navigate", this is a path. If action is "search", this is the search term.'
     ),
 });
 export type NavigateCommandOutput = z.infer<typeof NAV_COMMAND_OUTPUT_SCHEMA>;
@@ -25,19 +28,26 @@ const interpretNavigationCommandFlow = ai.defineFlow(
   },
   async (input) => {
     const { output } = await ai.generate({
-      prompt: `You are a voice command interpreter for a web application about human evolution. Your task is to determine the user's desired navigation destination from their voice command.
+      prompt: `You are a voice command interpreter for a web application about human evolution. Your task is to determine the user's intent from their voice command. The intent can be either to navigate to a specific page or to search for content.
 
-      The available pages and their paths are:
+      The available pages for navigation are:
       - Main Menu: "/"
       - EvoluFace (face evolution): "/evoluface"
       - Timeline: "/timeline"
       - Layered Videos / Culture: "/cultura"
       - Discoveries Table: "/hominids"
       - Archeology Table: "/archeology"
-      
+      - Search Page: "/search"
+
       Analyze the user's command: "${input.command}"
-      
-      Based on the command, determine which path the user wants to navigate to. Respond with ONLY the path. For example, if the user says "take me to the timeline", you should determine the path is "/timeline". If they say "main menu", the path is "/". If the command is unclear or doesn't match any page, determine the path as "/".`,
+
+      1.  If the command clearly matches one of the navigation pages (e.g., "go to timeline", "open main menu", "muéstrame la línea de tiempo"), set the action to "navigate" and the path to the corresponding page path (e.g., "/timeline").
+
+      2.  If the command implies a search (e.g., "search for homo sapiens", "show me neanderthal", "buscar bifaz", "muestra homo sapiens"), set the action to "search" and the path to the search term (e.g., "homo sapiens", "neanderthal", "bifaz").
+
+      3.  If the command is ambiguous or doesn't match any page or a clear search intent, default to navigating to the main menu. Set action to "navigate" and path to "/".
+
+      Respond with ONLY the JSON object matching the output schema.`,
       model: 'googleai/gemini-2.5-flash',
       output: {
         schema: NAV_COMMAND_OUTPUT_SCHEMA,

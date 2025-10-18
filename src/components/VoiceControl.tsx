@@ -50,7 +50,7 @@ const VoiceControl = () => {
             handleVoiceCommand(transcript.toLowerCase());
             resetTranscript();
             SpeechRecognition.stopListening();
-        }, 1000); 
+        }, 1500); 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listening, transcript, isMounted]);
@@ -60,10 +60,13 @@ const VoiceControl = () => {
 
     try {
       const result = await interpretNavigationCommand({ command });
-      const path = result.path;
-
-      if (path && path !== router.pathname) {
-        router.push(path);
+      
+      if (result.action === 'navigate') {
+         if (result.path && result.path !== router.pathname) {
+            router.push(result.path);
+         }
+      } else if (result.action === 'search') {
+        router.push(`/search?q=${encodeURIComponent(result.path)}`);
       } else {
          toast({
             variant: 'destructive',
