@@ -24,16 +24,17 @@ const icons = [
   BrainCircuit,
   Dna,
 ];
-const timelineData = HOMINID_STAGES.map((stage, i) => ({
-  ...stage,
-  icon: icons[i % icons.length],
-}));
 
 interface SpiralTimelineProps {
   stages: HominidStage[];
 }
 
 export default function SpiralTimeline({ stages }: SpiralTimelineProps) {
+  const timelineData = stages.map((stage, i) => ({
+    ...stage,
+    icon: icons[i % icons.length],
+  }));
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState<number | null>(null);
 
@@ -44,7 +45,7 @@ export default function SpiralTimeline({ stages }: SpiralTimelineProps) {
       }
     }, 4000);
     return () => clearInterval(interval);
-  }, [selectedEvent]);
+  }, [selectedEvent, timelineData.length]);
 
   const handleEventClick = (index: number) => {
     if (selectedEvent === index) {
