@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import Image from 'next/image';
 import { Search, Bone, Footprints, Layers, Microscope, HandMetal } from 'lucide-react';
 
@@ -39,21 +39,29 @@ const itemVariants = {
 
 const LandingPage = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const controls = useAnimation();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  const handleDragEnd = async (event: any, info: any) => {
+    if (info.offset.y < -50) {
+      // If dragged up enough
+      await controls.start({ y: -150, transition: { duration: 0.4, ease: 'easeInOut' } });
       setShowMenu(true);
-    }, 1500); // Delay before starting the animation
-
-    return () => clearTimeout(timer);
-  }, []);
+    } else {
+      // Snap back if not dragged enough
+      controls.start({ y: 0, transition: { duration: 0.4, ease: 'easeInOut' } });
+    }
+  };
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 sm:p-8 text-center relative overflow-hidden">
       <motion.div
-        animate={{ y: showMenu ? -100 : 0 }}
-        transition={{ duration: 0.8, ease: 'easeInOut' }}
-        className="flex flex-col items-center"
+        drag="y"
+        dragConstraints={{ top: -150, bottom: 0 }}
+        onDragEnd={handleDragEnd}
+        animate={controls}
+        initial={{ y: 0 }}
+        dragElastic={{ top: 0.8, bottom: 0.1}}
+        className="flex flex-col items-center cursor-grab active:cursor-grabbing z-10"
       >
         <div className="mb-6 h-20 w-full relative">
           <Image
@@ -69,6 +77,7 @@ const LandingPage = () => {
         >
           HOMÍNIDOS Y HUMANIDAD
         </div>
+         <p className="text-xs text-muted-foreground mt-2">Arrastra hacia arriba</p>
       </motion.div>
 
       <AnimatePresence>
@@ -77,7 +86,7 @@ const LandingPage = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="absolute top-1/2 mt-12 flex flex-col items-center gap-6 w-full max-w-xs"
+            className="absolute bottom-10 top-auto flex flex-col items-center gap-4 w-full max-w-xs"
           >
             {menuItems.map((item) => (
               <motion.div
@@ -87,7 +96,7 @@ const LandingPage = () => {
               >
                 <Link
                   href={item.href}
-                  className={`flex items-center justify-start w-full h-16 px-6 rounded-full shadow-lg transition-all duration-300
+                  className={`flex items-center justify-start w-full h-14 px-6 rounded-full shadow-lg transition-all duration-300
                              ${item.title === 'Buscar' 
                                 ? 'bg-accent text-accent-foreground hover:bg-accent/90' 
                                 : 'bg-primary text-primary-foreground hover:bg-primary/90'}
