@@ -52,7 +52,7 @@ const interpretNavigationCommandFlow = ai.defineFlow(
     try {
       const { output } = await ai.generate({
         prompt: prompt,
-        model: googleAI('gemini-1.5-flash-latest'),
+        model: googleAI.model('gemini-1.5-flash-latest'),
         output: {
           schema: NAV_COMMAND_OUTPUT_SCHEMA,
         },

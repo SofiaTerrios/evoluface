@@ -30,7 +30,7 @@ const fetchLatestNewsFlow = ai.defineFlow(
     try {
       const { output } = await ai.generate({
         prompt: prompt,
-        model: googleAI('gemini-1.5-flash-latest'),
+        model: googleAI.model('gemini-1.5-flash-latest'),
         output: {
           schema: FetchLatestNewsOutputSchema,
         },
