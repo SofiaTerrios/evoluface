@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import Image from 'next/image';
 import {
   Search,
@@ -24,25 +24,25 @@ const menuItems = [
 ];
 
 const containerVariants = {
-  hidden: { opacity: 0 },
+  initial: { y: '0%', justifyContent: 'center' },
+  revealed: { y: '-25%', justifyContent: 'flex-start', transition: { type: 'spring', stiffness: 100, damping: 20 } },
+};
+
+const menuContainerVariants = {
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
+    y: 0,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.08,
+      delay: 0.3
     },
   },
 };
 
-const itemVariants = {
+const menuItemVariants = {
   hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-    },
-  },
+  visible: { y: 0, opacity: 1 },
 };
 
 const LandingPage = () => {
@@ -51,66 +51,63 @@ const LandingPage = () => {
   const mainImage = PlaceHolderImages.find(p => p.id === 'main-logo');
 
   const handleDragEnd = async (event: any, info: any) => {
-    if (info.offset.y < -50) {
-      // If dragged up enough
-      await controls.start({
-        y: '-50vh', // Move up by 50% of the viewport height
-        opacity: 0,
-        transition: { duration: 0.4, ease: 'easeInOut' },
-      });
+    if (info.offset.y < -50 && !showMenu) {
       setShowMenu(true);
-    } else {
-      // Snap back if not dragged enough
-      controls.start({ y: 0, opacity: 1, transition: { duration: 0.4, ease: 'easeInOut' } });
+      controls.start('revealed');
+    } else if (info.offset.y > 50 && showMenu) {
+        // This is an example, you might want a button to go back
+        // setShowMenu(false);
+        // controls.start('initial');
+    } else if (!showMenu) {
+        // Snap back if not dragged enough
+        controls.start({ y: 0 });
     }
   };
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 sm:p-8 text-center relative overflow-hidden">
-      <AnimatePresence>
-        {!showMenu && (
-          <motion.div
-            drag="y"
-            dragConstraints={{ top: -300, bottom: 0 }}
-            onDragEnd={handleDragEnd}
-            animate={controls}
-            initial={{ y: 0, opacity: 1 }}
-            exit={{ y: '-50vh', opacity: 0 }}
-            dragElastic={{ top: 0.8, bottom: 0.1 }}
-            className="flex flex-col items-center cursor-grab active:cursor-grabbing z-10"
-          >
-            <div className="mb-6 h-20 w-full relative">
-              {mainImage && (
-                <Image
-                  src={mainImage.imageUrl}
-                  alt={mainImage.description}
-                  data-ai-hint={mainImage.imageHint}
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              )}
-            </div>
-            <div className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm">
-              HOMÍNIDOS Y HUMANIDAD
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        className="absolute inset-0 flex flex-col w-full"
+        variants={containerVariants}
+        initial="initial"
+        animate={controls}
+      >
+        <motion.div
+          drag="y"
+          dragConstraints={{ top: -150, bottom: 0 }}
+          onDragEnd={handleDragEnd}
+          dragElastic={{ top: 0.5, bottom: 0.1 }}
+          className="flex flex-col items-center cursor-grab active:cursor-grabbing z-10 pt-16"
+        >
+          <div className="mb-6 h-20 w-full relative">
+            {mainImage && (
+              <Image
+                src={mainImage.imageUrl}
+                alt={mainImage.description}
+                data-ai-hint={mainImage.imageHint}
+                fill
+                className="object-contain"
+                priority
+              />
+            )}
+          </div>
+          <div className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm">
+            HOMÍNIDOS Y HUMANIDAD
+          </div>
+        </motion.div>
 
-      <AnimatePresence>
         {showMenu && (
           <motion.div
             key="menu"
-            variants={containerVariants}
+            variants={menuContainerVariants}
             initial="hidden"
             animate="visible"
-            className="absolute inset-0 flex flex-col items-center justify-center gap-4 w-full max-w-xs"
+            className="flex flex-col items-center justify-center gap-4 w-full max-w-xs mx-auto mt-12"
           >
             {menuItems.map(item => (
               <motion.div
                 key={item.id}
-                variants={itemVariants}
+                variants={menuItemVariants}
                 className="w-full"
               >
                 <Link
@@ -130,7 +127,7 @@ const LandingPage = () => {
             ))}
           </motion.div>
         )}
-      </AnimatePresence>
+      </motion.div>
     </main>
   );
 };
