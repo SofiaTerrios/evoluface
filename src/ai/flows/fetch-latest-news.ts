@@ -24,14 +24,30 @@ const fetchLatestNewsFlow = ai.defineFlow(
     outputSchema: FetchLatestNewsOutputSchema,
   },
   async (input) => {
-    const { output } = await ai.generate({
-      prompt: `Actúa como un periodista científico. Escribe un único párrafo de estilo noticioso, corto y atractivo (no más de 3-4 frases) sobre un descubrimiento reciente, un hecho interesante y poco conocido, o una actualización científica relevante sobre ${input.hominidName}. Céntrate en una sola pieza de información convincente.`,
-      model: 'googleai/gemini-2.5-flash',
-      output: {
-        schema: FetchLatestNewsOutputSchema,
-      },
-    });
-    return output!;
+    const prompt = `Actúa como un periodista científico. Escribe un único párrafo de estilo noticioso, corto y atractivo (no más de 3-4 frases) sobre un descubrimiento reciente, un hecho interesante y poco conocido, o una actualización científica relevante sobre ${input.hominidName}. Céntrate en una sola pieza de información convincente.`;
+    
+    try {
+      // First attempt with the primary model
+      const { output } = await ai.generate({
+        prompt: prompt,
+        model: 'googleai/gemini-2.5-flash',
+        output: {
+          schema: FetchLatestNewsOutputSchema,
+        },
+      });
+      return output!;
+    } catch (error) {
+      console.warn('Primary model (gemini-2.5-flash) failed. Trying fallback (gemini-pro).', error);
+      // Fallback to a different model if the first one fails
+      const { output } = await ai.generate({
+        prompt: prompt,
+        model: 'googleai/gemini-pro',
+        output: {
+          schema: FetchLatestNewsOutputSchema,
+        },
+      });
+      return output!;
+    }
   }
 );
 
