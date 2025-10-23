@@ -27,8 +27,7 @@ const interpretNavigationCommandFlow = ai.defineFlow(
     outputSchema: NAV_COMMAND_OUTPUT_SCHEMA,
   },
   async (input) => {
-    const { output } = await ai.generate({
-      prompt: `You are a voice command interpreter for a web application about human evolution. Your task is to determine the user's intent from their voice command. The intent can be either to navigate to a specific page or to search for content.
+    const prompt = `You are a voice command interpreter for a web application about human evolution. Your task is to determine the user's intent from their voice command. The intent can be either to navigate to a specific page or to search for content.
 
       The available pages for navigation are:
       - Main Menu: "/"
@@ -47,13 +46,30 @@ const interpretNavigationCommandFlow = ai.defineFlow(
 
       3.  If the command is ambiguous or doesn't match any page or a clear search intent, default to navigating to the main menu. Set action to "navigate" and path to "/".
 
-      Respond with ONLY the JSON object matching the output schema.`,
-      model: 'googleai/gemini-2.5-flash',
-      output: {
-        schema: NAV_COMMAND_OUTPUT_SCHEMA,
-      },
-    });
-    return output!;
+      Respond with ONLY the JSON object matching the output schema.`;
+
+    try {
+      // First attempt with the primary model
+      const { output } = await ai.generate({
+        prompt: prompt,
+        model: 'googleai/gemini-2.5-flash',
+        output: {
+          schema: NAV_COMMAND_OUTPUT_SCHEMA,
+        },
+      });
+      return output!;
+    } catch (error) {
+      console.warn('Primary model (gemini-2.5-flash) failed for voice command. Trying fallback (gemini-pro).', error);
+      // Fallback to a different model if the first one fails
+      const { output } = await ai.generate({
+        prompt: prompt,
+        model: 'googleai/gemini-pro',
+        output: {
+          schema: NAV_COMMAND_OUTPUT_SCHEMA,
+        },
+      });
+      return output!;
+    }
   }
 );
 
