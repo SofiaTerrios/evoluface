@@ -1,8 +1,8 @@
 'use server';
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
 import { googleAI } from '@genkit-ai/google-genai';
+import { z } from 'zod';
 
 const NAV_COMMAND_INPUT_SCHEMA = z.object({
   command: z.string().describe('The voice command spoken by the user.'),
@@ -48,7 +48,7 @@ const interpretNavigationCommandFlow = ai.defineFlow(
       3.  If the command is ambiguous or doesn't match any page or a clear search intent, default to navigating to the main menu. Set action to "navigate" and path to "/".
 
       Respond with ONLY the JSON object matching the output schema.`;
-
+      
     try {
       const { output } = await ai.generate({
         prompt: prompt,

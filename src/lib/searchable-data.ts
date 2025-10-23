@@ -1,16 +1,16 @@
-import { HOMINID_STAGES } from './hominids';
-import { DISCOVERIES } from './discoveries';
-import { ARCHEOLOGY_ITEMS } from './archeology-items';
-import { CULTURAL_LAYERS } from './layers';
+import { HOMINID_STAGES } from "./hominids";
+import { DISCOVERIES } from "./discoveries";
+import { ARCHEOLOGY_ITEMS } from "./archeology-items";
+import { CULTURAL_LAYERS } from "./layers";
 
 export type SearchableItem = {
   id: string;
   title: string;
   subtitle?: string;
   description: string;
-  type: 'Hominid' | 'Discovery' | 'Archeology' | 'Culture';
+  type: "Hominid" | "Discovery" | "Archeology" | "Culture";
   path: string;
-  tags: string[];
+  tags?: string[];
 };
 
 export function getAllSearchableData(): SearchableItem[] {
@@ -19,7 +19,7 @@ export function getAllSearchableData(): SearchableItem[] {
     title: h.name,
     subtitle: h.years,
     description: `${h.facialFeatures} ${h.craniumFeatures}`,
-    type: 'Hominid',
+    type: "Hominid",
     path: `/evoluface`, // Or a path that can focus on this hominid
     tags: [h.name, h.years],
   }));
@@ -29,7 +29,7 @@ export function getAllSearchableData(): SearchableItem[] {
     title: d.title,
     subtitle: d.date,
     description: d.summary,
-    type: 'Discovery',
+    type: "Discovery",
     path: `/hominids`,
     tags: [d.title, d.hominidTag, d.typeTag],
   }));
@@ -39,7 +39,7 @@ export function getAllSearchableData(): SearchableItem[] {
     title: a.title,
     subtitle: a.period,
     description: a.description,
-    type: 'Archeology',
+    type: "Archeology",
     path: `/archeology`,
     tags: [a.title, a.period],
   }));
@@ -49,7 +49,7 @@ export function getAllSearchableData(): SearchableItem[] {
     title: c.title,
     subtitle: c.period,
     description: c.description,
-    type: 'Culture',
+    type: "Culture",
     path: `/cultura`,
     tags: [c.title, c.period],
   }));
