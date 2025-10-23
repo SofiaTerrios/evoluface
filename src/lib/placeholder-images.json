@@ -1,6 +1,12 @@
 {
   "placeholderImages": [
     {
+      "id": "main-logo",
+      "description": "Logotipo de la evolución humana",
+      "imageUrl": "/evolution.png",
+      "imageHint": "human evolution"
+    },
+    {
       "id": "evoluface-australopithecus",
       "description": "A reconstruction of an Australopithecus Afarensis face.",
       "imageUrl": "/australopithecus.jpeg",

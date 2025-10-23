@@ -1,10 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import Image from 'next/image';
-import { Search, Bone, Footprints, Layers, Microscope, HandMetal } from 'lucide-react';
+import {
+  Search,
+  Bone,
+  Footprints,
+  Layers,
+  Microscope,
+  HandMetal,
+} from 'lucide-react';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const menuItems = [
   { id: 1, title: 'EvoluFace', href: '/evoluface', icon: Bone },
@@ -40,11 +48,15 @@ const itemVariants = {
 const LandingPage = () => {
   const [showMenu, setShowMenu] = useState(false);
   const controls = useAnimation();
+  const mainImage = PlaceHolderImages.find(p => p.id === 'main-logo');
 
   const handleDragEnd = async (event: any, info: any) => {
     if (info.offset.y < -50) {
       // If dragged up enough
-      await controls.start({ y: -150, transition: { duration: 0.4, ease: 'easeInOut' } });
+      await controls.start({
+        y: -150,
+        transition: { duration: 0.4, ease: 'easeInOut' },
+      });
       setShowMenu(true);
     } else {
       // Snap back if not dragged enough
@@ -60,21 +72,22 @@ const LandingPage = () => {
         onDragEnd={handleDragEnd}
         animate={controls}
         initial={{ y: 0 }}
-        dragElastic={{ top: 0.8, bottom: 0.1}}
+        dragElastic={{ top: 0.8, bottom: 0.1 }}
         className="flex flex-col items-center cursor-grab active:cursor-grabbing z-10"
       >
         <div className="mb-6 h-20 w-full relative">
-          <Image
-            src="/evolution.png"
-            alt="Evolución humana"
-            fill
-            className="object-contain"
-            priority
-          />
+          {mainImage && (
+            <Image
+              src={mainImage.imageUrl}
+              alt={mainImage.description}
+              data-ai-hint={mainImage.imageHint}
+              fill
+              className="object-contain"
+              priority
+            />
+          )}
         </div>
-        <div
-          className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm"
-        >
+        <div className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm">
           HOMÍNIDOS Y HUMANIDAD
         </div>
       </motion.div>
@@ -87,7 +100,7 @@ const LandingPage = () => {
             animate="visible"
             className="absolute bottom-10 top-auto flex flex-col items-center gap-4 w-full max-w-xs"
           >
-            {menuItems.map((item) => (
+            {menuItems.map(item => (
               <motion.div
                 key={item.id}
                 variants={itemVariants}
@@ -96,9 +109,11 @@ const LandingPage = () => {
                 <Link
                   href={item.href}
                   className={`flex items-center justify-start w-full h-14 px-6 rounded-full shadow-lg transition-all duration-300
-                             ${item.title === 'Buscar' 
-                                ? 'bg-accent text-accent-foreground hover:bg-accent/90' 
-                                : 'bg-primary text-primary-foreground hover:bg-primary/90'}
+                             ${
+                               item.title === 'Buscar'
+                                 ? 'bg-accent text-accent-foreground hover:bg-accent/90'
+                                 : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                             }
                              hover:scale-105 active:scale-100`}
                 >
                   <item.icon className="h-6 w-6 mr-4" />
