@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import Image from 'next/image';
@@ -54,51 +54,58 @@ const LandingPage = () => {
     if (info.offset.y < -50) {
       // If dragged up enough
       await controls.start({
-        y: -150,
+        y: '-50vh', // Move up by 50% of the viewport height
+        opacity: 0,
         transition: { duration: 0.4, ease: 'easeInOut' },
       });
       setShowMenu(true);
     } else {
       // Snap back if not dragged enough
-      controls.start({ y: 0, transition: { duration: 0.4, ease: 'easeInOut' } });
+      controls.start({ y: 0, opacity: 1, transition: { duration: 0.4, ease: 'easeInOut' } });
     }
   };
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 sm:p-8 text-center relative overflow-hidden">
-      <motion.div
-        drag="y"
-        dragConstraints={{ top: -150, bottom: 0 }}
-        onDragEnd={handleDragEnd}
-        animate={controls}
-        initial={{ y: 0 }}
-        dragElastic={{ top: 0.8, bottom: 0.1 }}
-        className="flex flex-col items-center cursor-grab active:cursor-grabbing z-10"
-      >
-        <div className="mb-6 h-20 w-full relative">
-          {mainImage && (
-            <Image
-              src={mainImage.imageUrl}
-              alt={mainImage.description}
-              data-ai-hint={mainImage.imageHint}
-              fill
-              className="object-contain"
-              priority
-            />
-          )}
-        </div>
-        <div className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm">
-          HOMÍNIDOS Y HUMANIDAD
-        </div>
-      </motion.div>
+      <AnimatePresence>
+        {!showMenu && (
+          <motion.div
+            drag="y"
+            dragConstraints={{ top: -300, bottom: 0 }}
+            onDragEnd={handleDragEnd}
+            animate={controls}
+            initial={{ y: 0, opacity: 1 }}
+            exit={{ y: '-50vh', opacity: 0 }}
+            dragElastic={{ top: 0.8, bottom: 0.1 }}
+            className="flex flex-col items-center cursor-grab active:cursor-grabbing z-10"
+          >
+            <div className="mb-6 h-20 w-full relative">
+              {mainImage && (
+                <Image
+                  src={mainImage.imageUrl}
+                  alt={mainImage.description}
+                  data-ai-hint={mainImage.imageHint}
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              )}
+            </div>
+            <div className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm">
+              HOMÍNIDOS Y HUMANIDAD
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showMenu && (
           <motion.div
+            key="menu"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="absolute bottom-10 top-auto flex flex-col items-center gap-4 w-full max-w-xs"
+            className="absolute inset-0 flex flex-col items-center justify-center gap-4 w-full max-w-xs"
           >
             {menuItems.map(item => (
               <motion.div
