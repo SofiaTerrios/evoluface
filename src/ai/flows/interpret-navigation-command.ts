@@ -2,6 +2,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
+import { googleAI } from '@genkit-ai/google-genai';
 
 const NAV_COMMAND_INPUT_SCHEMA = z.object({
   command: z.string().describe('The voice command spoken by the user.'),
@@ -49,26 +50,19 @@ const interpretNavigationCommandFlow = ai.defineFlow(
       Respond with ONLY the JSON object matching the output schema.`;
 
     try {
-      // First attempt with the primary model
       const { output } = await ai.generate({
         prompt: prompt,
-        model: 'googleai/gemini-1.5-flash-latest',
+        model: googleAI('gemini-1.5-flash-latest'),
         output: {
           schema: NAV_COMMAND_OUTPUT_SCHEMA,
         },
       });
       return output!;
     } catch (error) {
-      console.warn('Primary model (gemini-1.5-flash-latest) failed for voice command. Trying fallback (gemini-pro).', error);
-      // Fallback to a different model if the first one fails
-      const { output } = await ai.generate({
-        prompt: prompt,
-        model: 'googleai/gemini-pro',
-        output: {
-          schema: NAV_COMMAND_OUTPUT_SCHEMA,
-        },
-      });
-      return output!;
+       console.error('Error interpreting voice command with gemini-1.5-flash-latest:', error);
+       // A more robust solution could involve a retry or a different model.
+       // For now, we throw an error to be caught by the client.
+       throw new Error('Failed to interpret voice command.');
     }
   }
 );
