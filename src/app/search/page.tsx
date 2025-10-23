@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useState, useMemo, useEffect } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ArrowLeft, Search, LoaderCircle } from 'lucide-react';
-import { SearchableItem } from '@/lib/searchable-data';
-import SearchResultCard from '@/components/SearchResultCard';
-import { motion } from 'framer-motion';
-import { searchContent } from '@/ai/flows/search-content';
+import { useState, useMemo, useEffect, Suspense } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft, Search, LoaderCircle } from "lucide-react";
+import { SearchableItem } from "@/lib/searchable-data";
+import SearchResultCard from "@/components/SearchResultCard";
+import { motion } from "framer-motion";
+import { searchContent } from "@/ai/flows/search-content";
 
-export default function SearchPage() {
+function SearchPage() {
   const searchParams = useSearchParams();
-  const initialQuery = searchParams.get('q') || '';
-  
+  const initialQuery = searchParams.get("q") || "";
+
   const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [results, setResults] = useState<SearchableItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +27,13 @@ export default function SearchPage() {
     setIsLoading(true);
     try {
       const response = await searchContent({ query });
-      setResults(response.results);
+      setResults(
+        response.results.map((item) => ({
+          ...item,
+          tags: [],
+          type: item.type as "Hominid" | "Discovery" | "Archeology" | "Culture",
+        }))
+      );
     } catch (error) {
       console.error("Error performing search:", error);
       setResults([]);
@@ -111,5 +117,13 @@ export default function SearchPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function SearchPageWrapper() {
+  return (
+    <Suspense fallback={<div>Cargando búsqueda...</div>}>
+      <SearchPage />
+    </Suspense>
   );
 }
