@@ -38,9 +38,8 @@ const fetchLatestNewsFlow = ai.defineFlow(
       return output!;
     } catch (error) {
       console.error('Error generating news with gemini-1.5-flash-latest:', error);
-      // If the primary model fails, we could try a fallback, but for now we just re-throw or handle it.
-      // For simplicity, we'll let it fail and be handled by the client.
       // A more robust solution could involve a retry or a different model.
+      // For now, we let it fail and be handled by the client.
       throw new Error('Failed to generate news content.');
     }
   }
