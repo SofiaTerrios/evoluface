@@ -30,14 +30,14 @@ const fetchLatestNewsFlow = ai.defineFlow(
       // First attempt with the primary model
       const { output } = await ai.generate({
         prompt: prompt,
-        model: 'googleai/gemini-2.5-flash',
+        model: 'googleai/gemini-1.5-flash-latest',
         output: {
           schema: FetchLatestNewsOutputSchema,
         },
       });
       return output!;
     } catch (error) {
-      console.warn('Primary model (gemini-2.5-flash) failed. Trying fallback (gemini-pro).', error);
+      console.warn('Primary model (gemini-1.5-flash-latest) failed. Trying fallback (gemini-pro).', error);
       // Fallback to a different model if the first one fails
       const { output } = await ai.generate({
         prompt: prompt,

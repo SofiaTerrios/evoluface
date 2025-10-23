@@ -52,14 +52,14 @@ const interpretNavigationCommandFlow = ai.defineFlow(
       // First attempt with the primary model
       const { output } = await ai.generate({
         prompt: prompt,
-        model: 'googleai/gemini-2.5-flash',
+        model: 'googleai/gemini-1.5-flash-latest',
         output: {
           schema: NAV_COMMAND_OUTPUT_SCHEMA,
         },
       });
       return output!;
     } catch (error) {
-      console.warn('Primary model (gemini-2.5-flash) failed for voice command. Trying fallback (gemini-pro).', error);
+      console.warn('Primary model (gemini-1.5-flash-latest) failed for voice command. Trying fallback (gemini-pro).', error);
       // Fallback to a different model if the first one fails
       const { output } = await ai.generate({
         prompt: prompt,
