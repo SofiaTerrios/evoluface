@@ -61,6 +61,10 @@ const VoiceControl = () => {
     try {
       const result = await interpretNavigationCommand({ command });
       
+      if (!result) {
+        throw new Error("No result from AI");
+      }
+
       if (result.action === 'navigate') {
          if (result.path && result.path !== router.pathname) {
             router.push(result.path);
