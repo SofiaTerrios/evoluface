@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { motion, useAnimation } from 'framer-motion';
-import Image from 'next/image';
+import { useState } from "react";
+import Link from "next/link";
+import { motion, useAnimation } from "framer-motion";
+import Image from "next/image";
 import {
   Search,
   Bone,
@@ -12,18 +12,18 @@ import {
   Microscope,
   HandMetal,
   Camera,
-} from 'lucide-react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import UserProfile from '@/components/UserProfile';
+} from "lucide-react";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+import UserProfile from "@/components/UserProfile";
 
 const menuItems = [
-  { id: 1, title: 'EvoluFace', href: '/evoluface', icon: Bone },
-  { id: 2, title: 'Linea de Tiempo', href: '/timeline', icon: Footprints },
-  { id: 3, title: 'Videos por Capas', href: '/cultura', icon: Layers },
-  { id: 4, title: 'Descubrimientos', href: '/hominids', icon: Microscope },
-  { id: 6, title: 'Arqueología', href: '/archeology', icon: HandMetal },
-  { id: 7, title: 'Cámara IA', href: '/camera', icon: Camera },
-  { id: 5, title: 'Buscar', href: '/search', icon: Search },
+  { id: 1, title: "EvoluFace", href: "/evoluface", icon: Bone },
+  { id: 2, title: "Linea de Tiempo", href: "/timeline", icon: Footprints },
+  { id: 3, title: "Videos por Capas", href: "/cultura", icon: Layers },
+  { id: 4, title: "Descubrimientos", href: "/hominids", icon: Microscope },
+  { id: 6, title: "Arqueología", href: "/archeology", icon: HandMetal },
+  { id: 7, title: "Cámara IA", href: "/camera", icon: Camera },
+  { id: 5, title: "Buscar", href: "/search", icon: Search },
 ];
 
 const containerVariants = {
@@ -38,7 +38,7 @@ const menuContainerVariants = {
     y: 0,
     transition: {
       staggerChildren: 0.08,
-      delay: 0.3
+      delay: 0.3,
     },
   },
 };
@@ -51,17 +51,17 @@ const menuItemVariants = {
 const LandingPage = () => {
   const [showMenu, setShowMenu] = useState(false);
   const controls = useAnimation();
-  const mainImage = PlaceHolderImages.find(p => p.id === 'main-logo');
+  const mainImage = PlaceHolderImages.find((p) => p.id === "main-logo");
 
   const handleDragEnd = async (event: any, info: any) => {
     if (info.offset.y < -50 && !showMenu) {
       setShowMenu(true);
-      controls.start('visible');
+      controls.start("visible");
     } else if (info.offset.y > 50 && showMenu) {
-        // setShowMenu(false);
-        // controls.start('hidden');
+      // setShowMenu(false);
+      // controls.start('hidden');
     } else if (!showMenu) {
-        controls.start({ y: 0 });
+      controls.start({ y: 0 });
     }
   };
 
@@ -71,7 +71,7 @@ const LandingPage = () => {
         <UserProfile />
       </div>
       <motion.div
-        className="w-full h-full flex flex-col items-center justify-center"
+        className="w-full h-full flex flex-col items-center justify-center relative"
         variants={containerVariants}
         initial="hidden"
         animate={controls}
@@ -84,9 +84,9 @@ const LandingPage = () => {
           dragElastic={{ top: 0.5, bottom: 0.1 }}
           className="flex flex-col items-center cursor-grab active:cursor-grabbing z-10 pt-16"
           animate={{ y: showMenu ? -250 : 0 }}
-          transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+          transition={{ type: "spring", stiffness: 100, damping: 20 }}
         >
-          <motion.div 
+          <motion.div
             className="mb-6 flex flex-col items-center"
             animate={{ opacity: showMenu ? 0 : 1 }}
             transition={{ duration: 0.3 }}
@@ -104,7 +104,7 @@ const LandingPage = () => {
               )}
             </div>
             <div className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm mt-2">
-                HOMÍNIDOS Y HUMANIDAD
+              HOMÍNIDOS Y HUMANIDAD
             </div>
           </motion.div>
         </motion.div>
@@ -115,9 +115,9 @@ const LandingPage = () => {
             variants={menuContainerVariants}
             initial="hidden"
             animate="visible"
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center gap-4 w-full max-w-xs mx-auto"
+            className="absolute inset-0 flex flex-col items-center justify-center gap-4 w-full max-w-xs mx-auto"
           >
-            {menuItems.map(item => (
+            {menuItems.map((item) => (
               <motion.div
                 key={item.id}
                 variants={menuItemVariants}
@@ -125,15 +125,16 @@ const LandingPage = () => {
               >
                 <Link
                   href={item.href}
-                  className={`flex items-center justify-start w-full h-14 px-6 rounded-full shadow-lg transition-all duration-300
+                  className={`flex items-center justify-center w-full h-14 px-6 rounded-full shadow-lg transition-all duration-300
                              ${
-                               item.title === 'Buscar' || item.title === 'Cámara IA'
-                                 ? 'bg-accent text-accent-foreground hover:bg-accent/90'
-                                 : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                               item.title === "Buscar" ||
+                               item.title === "Cámara IA"
+                                 ? "bg-accent text-accent-foreground hover:bg-accent/90"
+                                 : "bg-primary text-primary-foreground hover:bg-primary/90"
                              }
                              hover:scale-105 active:scale-100`}
                 >
-                  <item.icon className="h-6 w-6 mr-4" />
+                  <item.icon className="h-6 w-6 mr-3" />
                   <span className="text-lg font-headline">{item.title}</span>
                 </Link>
               </motion.div>
