@@ -1,7 +1,6 @@
 'use server';
 
 import { ai } from '@/ai/genkit';
-import { googleAI } from '@genkit-ai/google-genai';
 import { z } from 'zod';
 
 const NAV_COMMAND_INPUT_SCHEMA = z.object({
@@ -52,7 +51,7 @@ const interpretNavigationCommandFlow = ai.defineFlow(
     try {
       const { output } = await ai.generate({
         prompt: prompt,
-        model: googleAI.model('gemini-1.5-flash-latest'),
+        model: 'googleai/gemini-1.5-flash-latest',
         output: {
           schema: NAV_COMMAND_OUTPUT_SCHEMA,
         },

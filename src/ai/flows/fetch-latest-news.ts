@@ -2,7 +2,6 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { googleAI } from '@genkit-ai/google-genai';
 
 const FetchLatestNewsInputSchema = z.object({
   hominidName: z.string().describe('The name of the hominid species.'),
@@ -30,7 +29,7 @@ const fetchLatestNewsFlow = ai.defineFlow(
     try {
       const { output } = await ai.generate({
         prompt: prompt,
-        model: googleAI.model('gemini-1.5-flash-latest'),
+        model: 'googleai/gemini-1.5-flash-latest',
         output: {
           schema: FetchLatestNewsOutputSchema,
         },
