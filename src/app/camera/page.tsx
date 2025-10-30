@@ -7,7 +7,6 @@ import { Camera, LoaderCircle, AlertTriangle, ArrowLeft, Zap } from 'lucide-reac
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import UserProfile from '@/components/UserProfile';
 import Link from 'next/link';
 import { identifyContentFromImage } from '@/ai/flows/identify-content-from-image';
 import { cn } from '@/lib/utils';
@@ -156,7 +155,6 @@ export default function CameraPage() {
             </p>
           </div>
         </div>
-        <UserProfile />
       </header>
 
       <div className="w-full max-w-md flex-grow flex flex-col items-center justify-center">

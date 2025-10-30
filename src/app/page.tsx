@@ -79,15 +79,15 @@ const LandingPage = () => {
       >
         <motion.div
           drag="y"
-          dragConstraints={{ top: -150, bottom: 0 }}
+          dragConstraints={{ top: -250, bottom: 0 }}
           onDragEnd={handleDragEnd}
           dragElastic={{ top: 0.5, bottom: 0.1 }}
           className="flex flex-col items-center cursor-grab active:cursor-grabbing z-10 pt-16"
-          animate={{ y: showMenu ? -150 : 0 }}
+          animate={{ y: showMenu ? -250 : 0 }}
           transition={{ type: 'spring', stiffness: 100, damping: 20 }}
         >
           <motion.div 
-            className="mb-6"
+            className="mb-6 flex flex-col items-center"
             animate={{ opacity: showMenu ? 0 : 1 }}
             transition={{ duration: 0.3 }}
           >
@@ -103,7 +103,7 @@ const LandingPage = () => {
                 />
               )}
             </div>
-            <div className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm">
+            <div className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm mt-2">
                 HOMÍNIDOS Y HUMANIDAD
             </div>
           </motion.div>
@@ -115,7 +115,7 @@ const LandingPage = () => {
             variants={menuContainerVariants}
             initial="hidden"
             animate="visible"
-            className="flex flex-col items-center justify-center gap-4 w-full max-w-xs mx-auto mt-12"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center gap-4 w-full max-w-xs mx-auto"
           >
             {menuItems.map(item => (
               <motion.div
