@@ -115,7 +115,7 @@ const LandingPage = () => {
             variants={menuContainerVariants}
             initial="hidden"
             animate="visible"
-            className="absolute inset-0 flex flex-col items-center justify-center gap-4 w-full max-w-xs mx-auto pt-20"
+            className="absolute flex flex-col items-center justify-center gap-4 w-full max-w-xs mx-auto pt-20"
           >
             {menuItems.map((item) => (
               <motion.div
