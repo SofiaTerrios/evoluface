@@ -20,14 +20,12 @@ const NAV_COMMAND_OUTPUT_SCHEMA = z.object({
 });
 export type NavigateCommandOutput = z.infer<typeof NAV_COMMAND_OUTPUT_SCHEMA>;
 
-const interpretNavigationCommandFlow = ai.defineFlow(
-  {
-    name: 'interpretNavigationCommandFlow',
-    inputSchema: NAV_COMMAND_INPUT_SCHEMA,
-    outputSchema: NAV_COMMAND_OUTPUT_SCHEMA,
-  },
-  async (input) => {
-    const prompt = `You are a voice command interpreter for a web application about human evolution. Your task is to determine the user's intent from their voice command. The intent can be either to navigate to a specific page or to search for content.
+
+const navigationPrompt = ai.definePrompt({
+    name: 'interpretNavigationPrompt',
+    input: { schema: NAV_COMMAND_INPUT_SCHEMA },
+    output: { schema: NAV_COMMAND_OUTPUT_SCHEMA },
+    prompt: `You are a voice command interpreter for a web application about human evolution. Your task is to determine the user's intent from their voice command. The intent can be either to navigate to a specific page or to search for content.
 
       The available pages for navigation are:
       - Main Menu: "/"
@@ -38,7 +36,7 @@ const interpretNavigationCommandFlow = ai.defineFlow(
       - Archeology Table: "/archeology"
       - Search Page: "/search"
 
-      Analyze the user's command: "${input.command}"
+      Analyze the user's command: "{{command}}"
 
       1.  If the command clearly matches one of the navigation pages (e.g., "go to timeline", "open main menu", "muéstrame la línea de tiempo"), set the action to "navigate" and the path to the corresponding page path (e.g., "/timeline").
 
@@ -46,20 +44,23 @@ const interpretNavigationCommandFlow = ai.defineFlow(
 
       3.  If the command is ambiguous or doesn't match any page or a clear search intent, default to navigating to the main menu. Set action to "navigate" and path to "/".
 
-      Respond with ONLY the JSON object matching the output schema.`;
+      Respond with ONLY the JSON object matching the output schema.`
+});
 
+
+const interpretNavigationCommandFlow = ai.defineFlow(
+  {
+    name: 'interpretNavigationCommandFlow',
+    inputSchema: NAV_COMMAND_INPUT_SCHEMA,
+    outputSchema: NAV_COMMAND_OUTPUT_SCHEMA,
+  },
+  async (input) => {
     try {
-      const { output } = await ai.generate({
-        prompt: prompt,
-        model: 'googleai/gemini-1.5-flash-latest',
-        output: {
-          schema: NAV_COMMAND_OUTPUT_SCHEMA,
-        },
-      });
+      const { output } = await navigationPrompt(input);
       return output!;
     } catch (error) {
       console.error(
-        'Error interpreting voice command with gemini-1.5-flash-latest:',
+        'Error interpreting voice command:',
         error
       );
        // A more robust solution could involve a retry or a different model.

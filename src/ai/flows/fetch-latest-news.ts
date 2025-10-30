@@ -17,6 +17,15 @@ const FetchLatestNewsOutputSchema = z.object({
 });
 export type FetchLatestNewsOutput = z.infer<typeof FetchLatestNewsOutputSchema>;
 
+
+const newsPrompt = ai.definePrompt({
+    name: 'fetchNewsPrompt',
+    input: { schema: FetchLatestNewsInputSchema },
+    output: { schema: FetchLatestNewsOutputSchema },
+    prompt: `Actúa como un periodista científico. Escribe un único párrafo de estilo noticioso, corto y atractivo (no más de 3-4 frases) sobre un descubrimiento reciente, un hecho interesante y poco conocido, o una actualización científica relevante sobre {{hominidName}}. Céntrate en una sola pieza de información convincente.`
+});
+
+
 const fetchLatestNewsFlow = ai.defineFlow(
   {
     name: 'fetchLatestNewsFlow',
@@ -24,20 +33,11 @@ const fetchLatestNewsFlow = ai.defineFlow(
     outputSchema: FetchLatestNewsOutputSchema,
   },
   async (input) => {
-    const prompt = `Actúa como un periodista científico. Escribe un único párrafo de estilo noticioso, corto y atractivo (no más de 3-4 frases) sobre un descubrimiento reciente, un hecho interesante y poco conocido, o una actualización científica relevante sobre ${input.hominidName}. Céntrate en una sola pieza de información convincente.`;
-    
     try {
-      const { output } = await ai.generate({
-        prompt: prompt,
-        model: 'googleai/gemini-1.5-flash-latest',
-        output: {
-          schema: FetchLatestNewsOutputSchema,
-        },
-      });
+      const { output } = await newsPrompt(input);
       return output!;
     } catch (error) {
-      console.error('Error generating news with gemini-1.5-flash-latest:', error);
-      // A more robust solution could involve a retry or a different model.
+      console.error('Error generating news content:', error);
       // For now, we let it fail and be handled by the client.
       throw new Error('Failed to generate news content.');
     }
