@@ -92,21 +92,16 @@ const VoiceControl = () => {
     if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
     }
-    if (transcript) {
-        timeoutRef.current = setTimeout(() => {
-            processCommand(transcript.toLowerCase());
-        }, 1000); // Wait 1 second after user stops talking
+    if (transcript && !listening) { // Process only when listening stops
+        processCommand(transcript.toLowerCase());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transcript]);
+  }, [transcript, listening]);
 
 
   const handleToggleListening = () => {
     if (listening) {
       SpeechRecognition.stopListening();
-      if(transcript) {
-        processCommand(transcript.toLowerCase());
-      }
     } else {
       resetTranscript();
       SpeechRecognition.startListening({ continuous: false, language: 'es-ES' });
