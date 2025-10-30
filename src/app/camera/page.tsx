@@ -3,23 +3,28 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Camera, LoaderCircle, AlertTriangle, ArrowLeft } from 'lucide-react';
+import { Camera, LoaderCircle, AlertTriangle, ArrowLeft, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
 import UserProfile from '@/components/UserProfile';
 import Link from 'next/link';
 import { identifyContentFromImage } from '@/ai/flows/identify-content-from-image';
+import { cn } from '@/lib/utils';
 
 export default function CameraPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  const [isFlashlightOn, setIsFlashlightOn] = useState(false);
+  const [isFlashlightSupported, setIsFlashlightSupported] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
   useEffect(() => {
+    let stream: MediaStream;
+
     const getCameraPermission = async () => {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         setHasCameraPermission(false);
@@ -32,13 +37,21 @@ export default function CameraPage() {
       }
 
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: 'environment' },
         });
         setHasCameraPermission(true);
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
+
+        // Check for flashlight support
+        const track = stream.getVideoTracks()[0];
+        const capabilities = track.getCapabilities();
+        if (capabilities.torch) {
+          setIsFlashlightSupported(true);
+        }
+
       } catch (error) {
         console.error('Error al acceder a la cámara:', error);
         setHasCameraPermission(false);
@@ -54,8 +67,7 @@ export default function CameraPage() {
 
     return () => {
       // Cleanup: stop video stream when component unmounts
-      if (videoRef.current && videoRef.current.srcObject) {
-        const stream = videoRef.current.srcObject as MediaStream;
+      if (stream) {
         stream.getTracks().forEach(track => track.stop());
       }
     }
@@ -101,6 +113,29 @@ export default function CameraPage() {
       setIsLoading(false);
     }
   };
+
+  const handleToggleFlashlight = async () => {
+    if (!videoRef.current || !videoRef.current.srcObject || !isFlashlightSupported) return;
+
+    const stream = videoRef.current.srcObject as MediaStream;
+    const track = stream.getVideoTracks()[0];
+    const newFlashlightState = !isFlashlightOn;
+
+    try {
+      await track.applyConstraints({
+        advanced: [{ torch: newFlashlightState }],
+      });
+      setIsFlashlightOn(newFlashlightState);
+    } catch (error) {
+      console.error('Error al controlar la linterna:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error de la linterna',
+        description: 'No se pudo cambiar el estado de la linterna.',
+      });
+    }
+  };
+
 
   return (
     <main className="container mx-auto p-4 sm:p-8 h-screen w-screen flex flex-col items-center relative">
@@ -153,6 +188,19 @@ export default function CameraPage() {
             <div className="absolute inset-0 bg-black/30 flex items-center justify-center pointer-events-none">
                 <div className="w-3/4 h-1/2 border-4 border-dashed border-white/50 rounded-lg"></div>
             </div>
+
+            {isFlashlightSupported && (
+               <div className="absolute top-4 right-4">
+                <Button 
+                    size="icon" 
+                    onClick={handleToggleFlashlight}
+                    className={cn("rounded-full transition-colors", isFlashlightOn ? "bg-amber-400 text-amber-900 hover:bg-amber-500" : "bg-black/50 text-white hover:bg-black/70")}
+                >
+                    <Zap className="h-5 w-5" />
+                    <span className="sr-only">Toggle Flashlight</span>
+                </Button>
+            </div>
+            )}
         </div>
 
         <motion.div
