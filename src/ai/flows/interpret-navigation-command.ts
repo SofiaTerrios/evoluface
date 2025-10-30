@@ -48,7 +48,7 @@ const interpretNavigationCommandFlow = ai.defineFlow(
       3.  If the command is ambiguous or doesn't match any page or a clear search intent, default to navigating to the main menu. Set action to "navigate" and path to "/".
 
       Respond with ONLY the JSON object matching the output schema.`;
-      
+
     try {
       const { output } = await ai.generate({
         prompt: prompt,
@@ -59,7 +59,10 @@ const interpretNavigationCommandFlow = ai.defineFlow(
       });
       return output!;
     } catch (error) {
-       console.error('Error interpreting voice command with gemini-1.5-flash-latest:', error);
+      console.error(
+        'Error interpreting voice command with gemini-1.5-flash-latest:',
+        error
+      );
        // A more robust solution could involve a retry or a different model.
        // For now, we throw an error to be caught by the client.
        throw new Error('Failed to interpret voice command.');
