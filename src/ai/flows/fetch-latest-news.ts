@@ -33,14 +33,8 @@ const fetchLatestNewsFlow = ai.defineFlow(
     outputSchema: FetchLatestNewsOutputSchema,
   },
   async (input) => {
-    try {
-      const { output } = await newsPrompt(input);
-      return output!;
-    } catch (error) {
-      console.error('Error generating news content:', error);
-      // For now, we let it fail and be handled by the client.
-      throw new Error('Failed to generate news content.');
-    }
+    const { output } = await newsPrompt(input);
+    return output!;
   }
 );
 

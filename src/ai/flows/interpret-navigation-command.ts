@@ -29,16 +29,16 @@ const navigationPrompt = ai.definePrompt({
 
       The available pages are:
       - Main Menu: "/" (commands: "menú principal", "inicio", "home", "main menu")
-      - EvoluFace: "/evoluface" (commands: "evoluface", "ver rostros", "face evolution")
-      - Timeline: "/timeline" (commands: "línea de tiempo", "timeline", "ver cronología")
-      - Culture Gallery: "/cultura" (commands: "cultura", "galería", "videos")
-      - Discoveries Table: "/hominids" (commands: "descubrimientos", "hallazgos", "discoveries")
-      - Archeology Table: "/archeology" (commands: "arqueología", "artefactos", "archeology")
+      - EvoluFace: "/evoluface" (commands: "evoluface", "ver rostros", "face evolution", "mostrar caras")
+      - Timeline: "/timeline" (commands: "línea de tiempo", "timeline", "ver cronología", "ir a la línea de tiempo")
+      - Culture Gallery: "/cultura" (commands: "cultura", "galería", "videos", "abrir cultura")
+      - Discoveries Table: "/hominids" (commands: "descubrimientos", "hallazgos", "discoveries", "ver descubrimientos")
+      - Archeology Table: "/archeology" (commands: "arqueología", "artefactos", "archeology", "mostrar arqueología")
       - Search Page: "/search" (commands: "buscar", "encontrar", "search")
 
       Analyze the user's command: "{{command}}"
 
-      1.  **Navigation**: If the command clearly matches one of the pages (e.g., "go to timeline", "open main menu", "muéstrame la línea de tiempo", "quiero ver los descubrimientos"), set action to "navigate" and path to the corresponding page path (e.g., "/timeline"). Be flexible with phrasing.
+      1.  **Navigation**: If the command clearly matches one of the pages (e.g., "go to timeline", "open main menu", "muéstrame la línea de tiempo", "quiero ver los descubrimientos"), set action to "navigate" and path to the corresponding page path (e.g., "/timeline"). Be flexible with phrasing and synonyms like "mostrar", "abrir", "ir a", "llévame a".
 
       2.  **Search**: If the command implies a search (e.g., "search for homo sapiens", "show me neanderthal", "buscar bifaz", "encuentra a lucy"), set action to "search" and path to the core search term (e.g., "homo sapiens", "neanderthal", "bifaz", "lucy").
 
@@ -55,18 +55,8 @@ const interpretNavigationCommandFlow = ai.defineFlow(
     outputSchema: NAV_COMMAND_OUTPUT_SCHEMA,
   },
   async (input) => {
-    try {
-      const { output } = await navigationPrompt(input);
-      return output!;
-    } catch (error) {
-      console.error(
-        'Error interpreting voice command:',
-        error
-      );
-       // A more robust solution could involve a retry or a different model.
-       // For now, we throw an error to be caught by the client.
-       throw new Error('Failed to interpret voice command.');
-    }
+    const { output } = await navigationPrompt(input);
+    return output!;
   }
 );
 

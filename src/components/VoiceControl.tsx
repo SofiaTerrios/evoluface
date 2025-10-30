@@ -23,14 +23,14 @@ const VoiceControl = () => {
     resetTranscript,
   } = useSpeechRecognition();
   
-  const lastProcessedTranscript = useRef('');
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  // Stop listening when the user navigates to a new page
   useEffect(() => {
-    // Stop listening when navigating to a new page
     if (listening) {
       SpeechRecognition.stopListening();
     }
@@ -51,53 +51,65 @@ const VoiceControl = () => {
   }, [isMounted, browserSupportsSpeechRecognition, toast]);
 
 
-  const handleVoiceCommand = async (command: string) => {
-    if (!command || command === lastProcessedTranscript.current) return;
+  const processCommand = async (command: string) => {
+      if (!command) return;
 
-    lastProcessedTranscript.current = command;
+      try {
+        const result = await interpretNavigationCommand({ command });
 
-    try {
-      const result = await interpretNavigationCommand({ command });
-
-      if (!result) {
-        throw new Error('No result from AI');
-      }
-
-      if (result.action === 'navigate') {
-        if (result.path && result.path !== router.pathname) {
-          router.push(result.path);
+        if (!result) {
+          throw new Error('No result from AI');
         }
-      } else if (result.action === 'search') {
-        router.push(`/search?q=${encodeURIComponent(result.path)}`);
-      } else {
+
+        if (result.action === 'navigate') {
+          if (result.path && result.path !== pathname) {
+            router.push(result.path);
+          }
+        } else if (result.action === 'search') {
+          if (pathname.startsWith('/search')) {
+            // If already on search page, just update query param without full navigation
+            const newUrl = `/search?q=${encodeURIComponent(result.path)}`;
+            window.history.pushState({ ...window.history.state, as: newUrl, url: newUrl }, '', newUrl);
+            window.dispatchEvent(new PopStateEvent('popstate'));
+          } else {
+             router.push(`/search?q=${encodeURIComponent(result.path)}`);
+          }
+        }
+      } catch (error) {
+        console.error('Error interpreting command:', error);
         toast({
           variant: 'destructive',
-          title: 'Comando no reconocido',
-          description: `No se encontró una acción para: "${command}"`,
+          title: 'Error de IA',
+          description: 'No se pudo interpretar el comando de voz.',
         });
+      } finally {
+          resetTranscript();
       }
-    } catch (error) {
-      console.error('Error interpreting command:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Error de IA',
-        description: 'No se pudo interpretar el comando de voz.',
-      });
-    } finally {
-        resetTranscript();
-    }
   };
+
+  // Effect to process transcript after user stops talking
+  useEffect(() => {
+    if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+    }
+    if (transcript) {
+        timeoutRef.current = setTimeout(() => {
+            processCommand(transcript.toLowerCase());
+        }, 1000); // Wait 1 second after user stops talking
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transcript]);
+
 
   const handleToggleListening = () => {
     if (listening) {
       SpeechRecognition.stopListening();
       if(transcript) {
-        handleVoiceCommand(transcript.toLowerCase());
+        processCommand(transcript.toLowerCase());
       }
     } else {
-      lastProcessedTranscript.current = '';
       resetTranscript();
-      SpeechRecognition.startListening({ continuous: true, language: 'es-ES' });
+      SpeechRecognition.startListening({ continuous: false, language: 'es-ES' });
     }
   };
 
