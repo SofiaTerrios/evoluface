@@ -2,7 +2,6 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { googleAI } from '@genkit-ai/google-genai';
 
 const NAV_COMMAND_INPUT_SCHEMA = z.object({
   command: z.string().describe('The voice command spoken by the user.'),
@@ -26,7 +25,7 @@ const navigationPrompt = ai.definePrompt({
     name: 'interpretNavigationPrompt',
     input: { schema: NAV_COMMAND_INPUT_SCHEMA },
     output: { schema: NAV_COMMAND_OUTPUT_SCHEMA },
-    prompt: `You are an expert voice command interpreter for a web application about human evolution. Your task is to quickly and accurately determine the user's intent from their voice command. The intent can be to navigate to a page or to search.
+    prompt: `You are an expert voice command interpreter for a web application about human evolution. Your task is to quickly and accurately determine the user's intent from their voice command. The intent can be to navigate a page or to search.
 
       The available pages are:
       - Main Menu: "/" (commands: "menú principal", "inicio", "home", "main menu")
