@@ -1,12 +1,13 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useContext, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Smartphone } from 'lucide-react';
 import type { CulturalLayer } from '@/lib/layers';
 import TextToSpeechButton from './TextToSpeechButton';
+import { KnowledgeContext } from '@/context/KnowledgeContext';
 
 interface LayeredGalleryProps {
   layers: CulturalLayer[];
@@ -15,9 +16,16 @@ interface LayeredGalleryProps {
 
 function LayerSection({ layer, index, aspectRatio = 9/16 }: { layer: CulturalLayer; index: number, aspectRatio?: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
-
+  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const { increaseKnowledge, hasBeenSeen, markAsSeen } = useContext(KnowledgeContext);
   const layerColors = ['bg-[#6b4a39]', 'bg-[#8c6d5b]', 'bg-[#a1887f]', 'bg-[#bcaaa4]'];
+
+  useEffect(() => {
+    if (isInView && !hasBeenSeen(layer.id)) {
+      increaseKnowledge(3);
+      markAsSeen(layer.id);
+    }
+  }, [isInView, layer.id, increaseKnowledge, hasBeenSeen, markAsSeen]);
 
   return (
     <section

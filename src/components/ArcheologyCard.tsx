@@ -1,12 +1,13 @@
 'use client';
 
 import { motion, useAnimation, PanInfo } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import type { ArcheologyItem } from '@/lib/archeology-items';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import TextToSpeechButton from './TextToSpeechButton';
+import { KnowledgeContext } from '@/context/KnowledgeContext';
 
 interface ArcheologyCardProps {
   item: ArcheologyItem;
@@ -25,6 +26,7 @@ export default function ArcheologyCard({
   initialPosition,
 }: ArcheologyCardProps) {
   const controls = useAnimation();
+  const { increaseKnowledge } = useContext(KnowledgeContext);
 
   useEffect(() => {
     if (isRevealed) {
@@ -64,11 +66,11 @@ export default function ArcheologyCard({
   }
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (isPointInDropZone(info)) {
-        onRevealToggle(item.id, true);
-    } else {
-        onRevealToggle(item.id, false);
+    const shouldReveal = isPointInDropZone(info);
+    if (shouldReveal && !isRevealed) {
+        increaseKnowledge(5);
     }
+    onRevealToggle(item.id, shouldReveal);
   };
 
   return (

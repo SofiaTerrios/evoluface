@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useContext } from 'react';
 import {
   Popover,
   PopoverContent,
@@ -10,9 +10,10 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import { User, BookOpen } from 'lucide-react';
+import { KnowledgeContext } from '@/context/KnowledgeContext';
 
 export default function UserProfile() {
-  const [knowledge, setKnowledge] = useState(40);
+  const { knowledge } = useContext(KnowledgeContext);
 
   return (
     <Popover>

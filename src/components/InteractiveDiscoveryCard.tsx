@@ -2,11 +2,12 @@
 'use client';
 
 import { motion, useAnimation, PanInfo } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import type { Discovery } from '@/lib/discoveries';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import Image from 'next/image';
 import TextToSpeechButton from './TextToSpeechButton';
+import { KnowledgeContext } from '@/context/KnowledgeContext';
 
 interface InteractiveDiscoveryCardProps {
   discovery: Discovery;
@@ -25,6 +26,7 @@ export default function InteractiveDiscoveryCard({
   initialPosition,
 }: InteractiveDiscoveryCardProps) {
   const controls = useAnimation();
+  const { increaseKnowledge } = useContext(KnowledgeContext);
 
   useEffect(() => {
     if (isRevealed) {
@@ -66,11 +68,11 @@ export default function InteractiveDiscoveryCard({
   }
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (isPointInDropZone(info)) {
-        onRevealToggle(discovery.id, true);
-    } else {
-        onRevealToggle(discovery.id, false);
+    const shouldReveal = isPointInDropZone(info);
+    if (shouldReveal && !isRevealed) {
+      increaseKnowledge(5);
     }
+    onRevealToggle(discovery.id, shouldReveal);
   };
 
   return (

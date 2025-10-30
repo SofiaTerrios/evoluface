@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { MotionConfig } from "framer-motion"
 import VoiceControl from '@/components/VoiceControl';
+import { KnowledgeProvider } from '@/context/KnowledgeContext';
 
 
 export default function RootLayout({
@@ -21,11 +22,13 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <MotionConfig>
-          <main>{children}</main>
-        </MotionConfig>
-        <VoiceControl />
-        <Toaster />
+        <KnowledgeProvider>
+          <MotionConfig>
+            <main>{children}</main>
+          </MotionConfig>
+          <VoiceControl />
+          <Toaster />
+        </KnowledgeProvider>
       </body>
     </html>
   );
