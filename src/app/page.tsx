@@ -13,6 +13,7 @@ import {
   HandMetal,
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import UserProfile from '@/components/UserProfile';
 
 const menuItems = [
   { id: 1, title: 'EvoluFace', href: '/evoluface', icon: Bone },
@@ -24,8 +25,8 @@ const menuItems = [
 ];
 
 const containerVariants = {
-  initial: { y: '0%', justifyContent: 'center' },
-  revealed: { y: '-25%', justifyContent: 'flex-start', transition: { type: 'spring', stiffness: 100, damping: 20 } },
+  hidden: { y: 0 },
+  visible: { y: 0 },
 };
 
 const menuContainerVariants = {
@@ -53,24 +54,26 @@ const LandingPage = () => {
   const handleDragEnd = async (event: any, info: any) => {
     if (info.offset.y < -50 && !showMenu) {
       setShowMenu(true);
-      controls.start('revealed');
+      controls.start('visible');
     } else if (info.offset.y > 50 && showMenu) {
-        // This is an example, you might want a button to go back
         // setShowMenu(false);
-        // controls.start('initial');
+        // controls.start('hidden');
     } else if (!showMenu) {
-        // Snap back if not dragged enough
         controls.start({ y: 0 });
     }
   };
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 sm:p-8 text-center relative overflow-hidden">
+      <div className="absolute top-4 right-4 z-20">
+        <UserProfile />
+      </div>
       <motion.div
-        className="absolute inset-0 flex flex-col w-full"
+        className="w-full h-full flex flex-col items-center justify-center"
         variants={containerVariants}
-        initial="initial"
+        initial="hidden"
         animate={controls}
+        onAnimationComplete={() => {}}
       >
         <motion.div
           drag="y"
@@ -78,6 +81,8 @@ const LandingPage = () => {
           onDragEnd={handleDragEnd}
           dragElastic={{ top: 0.5, bottom: 0.1 }}
           className="flex flex-col items-center cursor-grab active:cursor-grabbing z-10 pt-16"
+          animate={{ y: showMenu ? -150 : 0 }}
+          transition={{ type: 'spring', stiffness: 100, damping: 20 }}
         >
           <div className="mb-6 h-20 w-full relative">
             {mainImage && (
