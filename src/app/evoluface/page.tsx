@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import UserProfile from '@/components/UserProfile';
 
 export default function EvoluFacePage() {
   const [hominidStagesWithData, setHominidStagesWithData] = useState<HominidStageWithData[]>([]);
@@ -37,18 +38,21 @@ export default function EvoluFacePage() {
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 sm:p-8">
-      <div className="w-full max-w-md md:max-w-lg flex items-center mb-8">
-         <Button asChild variant="outline" size="icon" className="mr-4">
-          <Link href="/">
-            <ArrowLeft />
-            <span className="sr-only">Volver al Menú</span>
-          </Link>
-        </Button>
-        <div className="text-center flex-grow">
-            <h1 className="text-4xl md:text-5xl font-headline font-bold tracking-tight text-primary">
-            EvoluFace
-            </h1>
-        </div>
+      <div className="w-full max-w-md md:max-w-lg flex items-center justify-between mb-8">
+         <div className="flex items-center">
+            <Button asChild variant="outline" size="icon" className="mr-4">
+            <Link href="/">
+                <ArrowLeft />
+                <span className="sr-only">Volver al Menú</span>
+            </Link>
+            </Button>
+            <div className="text-left flex-grow">
+                <h1 className="text-4xl md:text-5xl font-headline font-bold tracking-tight text-primary">
+                EvoluFace
+                </h1>
+            </div>
+         </div>
+         <UserProfile />
       </div>
       <EvoluFace hominidStages={hominidStagesWithData} />
     </main>

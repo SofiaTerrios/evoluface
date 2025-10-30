@@ -10,6 +10,7 @@ import { SearchableItem } from "@/lib/searchable-data";
 import SearchResultCard from "@/components/SearchResultCard";
 import { motion } from "framer-motion";
 import { searchContent } from "@/ai/flows/search-content";
+import UserProfile from "@/components/UserProfile";
 
 function SearchPage() {
   const searchParams = useSearchParams();
@@ -61,23 +62,26 @@ function SearchPage() {
   return (
     <div className="relative min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-20 w-full bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto flex items-center p-4 max-w-xs md:max-w-md">
-          <Button asChild variant="outline" size="icon" className="mr-4">
-            <Link href="/">
-              <ArrowLeft />
-              <span className="sr-only">Volver al Menú</span>
-            </Link>
-          </Button>
-          <form onSubmit={handleFormSubmit} className="relative flex-grow">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Buscar contenido..."
-              className="w-full pl-10"
-              value={searchTerm}
-              onChange={handleInputChange}
-            />
-          </form>
+        <div className="container mx-auto flex items-center justify-between p-4">
+          <div className="flex items-center flex-grow max-w-xs md:max-w-md">
+            <Button asChild variant="outline" size="icon" className="mr-4">
+              <Link href="/">
+                <ArrowLeft />
+                <span className="sr-only">Volver al Menú</span>
+              </Link>
+            </Button>
+            <form onSubmit={handleFormSubmit} className="relative flex-grow">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Buscar contenido..."
+                className="w-full pl-10"
+                value={searchTerm}
+                onChange={handleInputChange}
+              />
+            </form>
+          </div>
+           <UserProfile />
         </div>
       </header>
       <main className="container mx-auto p-4 sm:p-8 max-w-xs md:max-w-md">

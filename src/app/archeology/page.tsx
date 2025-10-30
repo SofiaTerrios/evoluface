@@ -8,6 +8,7 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import UserProfile from '@/components/UserProfile';
 
 export default function ArcheologyPage() {
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
@@ -23,7 +24,7 @@ export default function ArcheologyPage() {
 
   return (
     <main className="container mx-auto p-4 sm:p-8 h-screen w-screen flex flex-col items-center relative">
-        <header className="absolute top-0 left-0 w-full p-4 sm:p-8 z-20 flex justify-center">
+        <header className="absolute top-0 left-0 w-full p-4 sm:p-8 z-20 flex justify-between items-center">
              <div className="flex items-center w-full max-w-sm md:max-w-md">
                 <Button asChild variant="outline" size="icon" className="mr-4">
                     <Link href="/">
@@ -40,6 +41,7 @@ export default function ArcheologyPage() {
                     </p>
                 </div>
             </div>
+            <UserProfile />
         </header>
 
         <div className="relative w-full h-full flex items-center justify-center">
