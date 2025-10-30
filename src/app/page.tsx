@@ -11,6 +11,7 @@ import {
   Layers,
   Microscope,
   HandMetal,
+  Camera,
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import UserProfile from '@/components/UserProfile';
@@ -21,6 +22,7 @@ const menuItems = [
   { id: 3, title: 'Videos por Capas', href: '/cultura', icon: Layers },
   { id: 4, title: 'Descubrimientos', href: '/hominids', icon: Microscope },
   { id: 6, title: 'Arqueología', href: '/archeology', icon: HandMetal },
+  { id: 7, title: 'Cámara IA', href: '/camera', icon: Camera },
   { id: 5, title: 'Buscar', href: '/search', icon: Search },
 ];
 
@@ -125,7 +127,7 @@ const LandingPage = () => {
                   href={item.href}
                   className={`flex items-center justify-start w-full h-14 px-6 rounded-full shadow-lg transition-all duration-300
                              ${
-                               item.title === 'Buscar'
+                               item.title === 'Buscar' || item.title === 'Cámara IA'
                                  ? 'bg-accent text-accent-foreground hover:bg-accent/90'
                                  : 'bg-primary text-primary-foreground hover:bg-primary/90'
                              }
