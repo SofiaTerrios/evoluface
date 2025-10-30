@@ -2,6 +2,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
+import { googleAI } from '@genkit-ai/google-genai';
 
 const NAV_COMMAND_INPUT_SCHEMA = z.object({
   command: z.string().describe('The voice command spoken by the user.'),
@@ -25,26 +26,26 @@ const navigationPrompt = ai.definePrompt({
     name: 'interpretNavigationPrompt',
     input: { schema: NAV_COMMAND_INPUT_SCHEMA },
     output: { schema: NAV_COMMAND_OUTPUT_SCHEMA },
-    prompt: `You are a voice command interpreter for a web application about human evolution. Your task is to determine the user's intent from their voice command. The intent can be either to navigate to a specific page or to search for content.
+    prompt: `You are an expert voice command interpreter for a web application about human evolution. Your task is to quickly and accurately determine the user's intent from their voice command. The intent can be to navigate to a page or to search.
 
-      The available pages for navigation are:
-      - Main Menu: "/"
-      - EvoluFace (face evolution): "/evoluface"
-      - Timeline: "/timeline"
-      - Layered Videos / Culture: "/cultura"
-      - Discoveries Table: "/hominids"
-      - Archeology Table: "/archeology"
-      - Search Page: "/search"
+      The available pages are:
+      - Main Menu: "/" (commands: "menú principal", "inicio", "home", "main menu")
+      - EvoluFace: "/evoluface" (commands: "evoluface", "ver rostros", "face evolution")
+      - Timeline: "/timeline" (commands: "línea de tiempo", "timeline", "ver cronología")
+      - Culture Gallery: "/cultura" (commands: "cultura", "galería", "videos")
+      - Discoveries Table: "/hominids" (commands: "descubrimientos", "hallazgos", "discoveries")
+      - Archeology Table: "/archeology" (commands: "arqueología", "artefactos", "archeology")
+      - Search Page: "/search" (commands: "buscar", "encontrar", "search")
 
       Analyze the user's command: "{{command}}"
 
-      1.  If the command clearly matches one of the navigation pages (e.g., "go to timeline", "open main menu", "muéstrame la línea de tiempo"), set the action to "navigate" and the path to the corresponding page path (e.g., "/timeline").
+      1.  **Navigation**: If the command clearly matches one of the pages (e.g., "go to timeline", "open main menu", "muéstrame la línea de tiempo", "quiero ver los descubrimientos"), set action to "navigate" and path to the corresponding page path (e.g., "/timeline"). Be flexible with phrasing.
 
-      2.  If the command implies a search (e.g., "search for homo sapiens", "show me neanderthal", "buscar bifaz", "muestra homo sapiens"), set the action to "search" and the path to the search term (e.g., "homo sapiens", "neanderthal", "bifaz").
+      2.  **Search**: If the command implies a search (e.g., "search for homo sapiens", "show me neanderthal", "buscar bifaz", "encuentra a lucy"), set action to "search" and path to the core search term (e.g., "homo sapiens", "neanderthal", "bifaz", "lucy").
 
-      3.  If the command is ambiguous or doesn't match any page or a clear search intent, default to navigating to the main menu. Set action to "navigate" and path to "/".
+      3.  **Default**: If the command is ambiguous or doesn't fit, default to navigating to the main menu. Set action to "navigate" and path to "/".
 
-      Respond with ONLY the JSON object matching the output schema.`
+      Respond ONLY with the JSON object. Be fast and precise.`
 });
 
 

@@ -1,25 +1,41 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Mic } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import 'regenerator-runtime/runtime';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from 'react-speech-recognition';
 import { interpretNavigationCommand } from '@/ai/flows/interpret-navigation-command';
 
 const VoiceControl = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { toast } = useToast();
-  const [isListening, setIsListening] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const { transcript, listening, browserSupportsSpeechRecognition, resetTranscript } = useSpeechRecognition();
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition();
+  
+  const lastProcessedTranscript = useRef('');
 
-   useEffect(() => {
+  useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    // Stop listening when navigating to a new page
+    if (listening) {
+      SpeechRecognition.stopListening();
+    }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   useEffect(() => {
     if (!isMounted) return;
@@ -34,66 +50,54 @@ const VoiceControl = () => {
     }
   }, [isMounted, browserSupportsSpeechRecognition, toast]);
 
-  useEffect(() => {
-    if (!isMounted) return;
-
-    if (listening !== isListening) {
-      setIsListening(listening);
-    }
-    
-    if (transcript) {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
-        
-        timeoutRef.current = setTimeout(() => {
-            handleVoiceCommand(transcript.toLowerCase());
-            resetTranscript();
-            SpeechRecognition.stopListening();
-        }, 1500); 
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listening, transcript, isMounted]);
 
   const handleVoiceCommand = async (command: string) => {
-    if (!command) return;
+    if (!command || command === lastProcessedTranscript.current) return;
+
+    lastProcessedTranscript.current = command;
 
     try {
       const result = await interpretNavigationCommand({ command });
-      
+
       if (!result) {
-        throw new Error("No result from AI");
+        throw new Error('No result from AI');
       }
 
       if (result.action === 'navigate') {
-         if (result.path && result.path !== router.pathname) {
-            router.push(result.path);
-         }
+        if (result.path && result.path !== router.pathname) {
+          router.push(result.path);
+        }
       } else if (result.action === 'search') {
         router.push(`/search?q=${encodeURIComponent(result.path)}`);
       } else {
-         toast({
-            variant: 'destructive',
-            title: 'Comando no reconocido',
-            description: `No se encontró una acción para: "${command}"`,
+        toast({
+          variant: 'destructive',
+          title: 'Comando no reconocido',
+          description: `No se encontró una acción para: "${command}"`,
         });
       }
     } catch (error) {
-        console.error("Error interpreting command:", error);
-        toast({
-            variant: 'destructive',
-            title: 'Error de IA',
-            description: 'No se pudo interpretar el comando de voz.',
-        });
+      console.error('Error interpreting command:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error de IA',
+        description: 'No se pudo interpretar el comando de voz.',
+      });
+    } finally {
+        resetTranscript();
     }
   };
-  
+
   const handleToggleListening = () => {
     if (listening) {
       SpeechRecognition.stopListening();
+      if(transcript) {
+        handleVoiceCommand(transcript.toLowerCase());
+      }
     } else {
+      lastProcessedTranscript.current = '';
       resetTranscript();
-      SpeechRecognition.startListening({ continuous: false, language: 'es-ES' });
+      SpeechRecognition.startListening({ continuous: true, language: 'es-ES' });
     }
   };
 
@@ -111,20 +115,21 @@ const VoiceControl = () => {
       <button
         onClick={handleToggleListening}
         className={`relative flex h-16 w-16 items-center justify-center rounded-full text-white shadow-lg transition-colors duration-300 ${
-          isListening ? 'bg-red-500' : 'bg-primary'
+          listening ? 'bg-red-500' : 'bg-primary'
         }`}
         aria-label="Activar control por voz"
       >
-        {isListening && (
+        {listening && (
           <motion.div
             className="absolute inset-0 rounded-full border-4 border-red-300"
             animate={{
-              scale: [1, 1.4, 1],
-              opacity: [0.5, 1, 0.5],
+              scale: [1, 1.6, 1],
+              opacity: [0.7, 1, 0.7],
             }}
             transition={{
-              duration: 1.5,
+              duration: 1.2,
               repeat: Infinity,
+              ease: "easeInOut"
             }}
           />
         )}
