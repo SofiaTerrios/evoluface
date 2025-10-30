@@ -84,21 +84,27 @@ const LandingPage = () => {
           animate={{ y: showMenu ? -150 : 0 }}
           transition={{ type: 'spring', stiffness: 100, damping: 20 }}
         >
-          <div className="mb-6 h-20 w-full relative">
-            {mainImage && (
-              <Image
-                src={mainImage.imageUrl}
-                alt={mainImage.description}
-                data-ai-hint={mainImage.imageHint}
-                fill
-                className="object-contain"
-                priority
-              />
-            )}
-          </div>
-          <div className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm">
-            HOMÍNIDOS Y HUMANIDAD
-          </div>
+          <motion.div 
+            className="mb-6"
+            animate={{ opacity: showMenu ? 0 : 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="h-20 w-full relative">
+              {mainImage && (
+                <Image
+                  src={mainImage.imageUrl}
+                  alt={mainImage.description}
+                  data-ai-hint={mainImage.imageHint}
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              )}
+            </div>
+            <div className="bg-card text-card-foreground font-headline py-2 px-5 rounded-lg shadow-lg text-sm">
+                HOMÍNIDOS Y HUMANIDAD
+            </div>
+          </motion.div>
         </motion.div>
 
         {showMenu && (
