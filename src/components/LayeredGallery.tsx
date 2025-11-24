@@ -1,24 +1,44 @@
-'use client';
+"use client";
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, useContext, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Smartphone } from 'lucide-react';
-import type { CulturalLayer } from '@/lib/layers';
-import TextToSpeechButton from './TextToSpeechButton';
-import { KnowledgeContext } from '@/context/KnowledgeContext';
+import { motion, useInView } from "framer-motion";
+import { useRef, useContext, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Smartphone } from "lucide-react";
+import type { CulturalLayer } from "@/lib/layers";
+import TextToSpeechButton from "./TextToSpeechButton";
+import { KnowledgeContext } from "@/context/KnowledgeContext";
 
 interface LayeredGalleryProps {
   layers: CulturalLayer[];
   aspectRatio?: number;
 }
 
-function LayerSection({ layer, index, aspectRatio = 9/16 }: { layer: CulturalLayer; index: number, aspectRatio?: number }) {
+function LayerSection({
+  layer,
+  index,
+  aspectRatio = 9 / 16,
+}: {
+  layer: CulturalLayer;
+  index: number;
+  aspectRatio?: number;
+}) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
-  const { increaseKnowledge, hasBeenSeen, markAsSeen } = useContext(KnowledgeContext);
-  const layerColors = ['bg-[#6b4a39]', 'bg-[#8c6d5b]', 'bg-[#a1887f]', 'bg-[#bcaaa4]'];
+  const { increaseKnowledge, hasBeenSeen, markAsSeen } =
+    useContext(KnowledgeContext);
+  const layerColors = [
+    "bg-[#6b4a39]",
+    "bg-[#8c6d5b]",
+    "bg-[#a1887f]",
+    "bg-[#bcaaa4]",
+  ];
 
   useEffect(() => {
     if (isInView && !hasBeenSeen(layer.id)) {
@@ -38,20 +58,43 @@ function LayerSection({ layer, index, aspectRatio = 9/16 }: { layer: CulturalLay
         style={{
           opacity: isInView ? 1 : 0,
           y: isInView ? 0 : 50,
-          transition: 'all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.3s',
+          transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.3s",
         }}
         className="w-full max-w-xs"
       >
         <Card className="overflow-hidden shadow-2xl bg-card/80 backdrop-blur-sm border-white/20">
           <CardHeader>
-            <CardTitle className="font-headline text-2xl text-primary">{layer.title}</CardTitle>
-            <CardDescription className="text-card-foreground/80">{layer.period}</CardDescription>
+            <CardTitle className="font-headline text-2xl text-primary">
+              {layer.title}
+            </CardTitle>
+            <CardDescription className="text-card-foreground/80">
+              {layer.period}
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <AspectRatio ratio={aspectRatio} className="bg-muted rounded-lg overflow-hidden">
-              <div className="w-full h-full flex items-center justify-center">
-                 <Smartphone className="h-24 w-24 text-muted-foreground/50" />
-              </div>
+            <AspectRatio
+              ratio={aspectRatio}
+              className="bg-muted rounded-lg overflow-hidden"
+            >
+              {layer.videoUrl ? (
+                <iframe
+                  src={layer.videoUrl}
+                  title={layer.title}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : layer.imageUrl ? (
+                <img
+                  src={layer.imageUrl}
+                  alt={layer.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <Smartphone className="h-24 w-24 text-muted-foreground/50" />
+                </div>
+              )}
             </AspectRatio>
             <p className="mt-4 text-sm text-card-foreground">
               {layer.description}
@@ -64,11 +107,19 @@ function LayerSection({ layer, index, aspectRatio = 9/16 }: { layer: CulturalLay
   );
 }
 
-export default function LayeredGallery({ layers, aspectRatio = 9/16 }: LayeredGalleryProps) {
+export default function LayeredGallery({
+  layers,
+  aspectRatio = 9 / 16,
+}: LayeredGalleryProps) {
   return (
     <div className="relative w-full snap-y snap-mandatory h-screen overflow-y-auto">
       {layers.map((layer, index) => (
-        <LayerSection key={layer.id} layer={layer} index={index} aspectRatio={aspectRatio} />
+        <LayerSection
+          key={layer.id}
+          layer={layer}
+          index={index}
+          aspectRatio={aspectRatio}
+        />
       ))}
     </div>
   );
