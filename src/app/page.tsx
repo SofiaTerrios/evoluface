@@ -12,17 +12,19 @@ import {
   Microscope,
   HandMetal,
   Camera,
+  LogIn,
 } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import UserProfile from "@/components/UserProfile";
+import { Button } from "@/components/ui/button";
 
 const menuItems = [
   { id: 1, title: "EvoluFace", href: "/evoluface", icon: Bone },
   { id: 2, title: "Linea de Tiempo", href: "/timeline", icon: Footprints },
   { id: 3, title: "Videos por Capas", href: "/cultura", icon: Layers },
-  { id: 4, title: "Descubrimientos", href: "/hominids", icon: Microscope },
-  { id: 6, title: "Arqueología", href: "/archeology", icon: HandMetal },
-  { id: 7, title: "Cámara IA", href: "/camera", icon: Camera },
+  // { id: 4, title: "Descubrimientos", href: "/hominids", icon: Microscope },
+  // { id: 6, title: "Arqueología", href: "/archeology", icon: HandMetal },
+  // { id: 7, title: "Cámara IA", href: "/camera", icon: Camera },
   { id: 5, title: "Buscar", href: "/search", icon: Search },
 ];
 
@@ -67,7 +69,13 @@ const LandingPage = () => {
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-4 sm:p-8 text-center relative overflow-hidden">
-      <div className="absolute top-4 right-4 z-20">
+      <div className="absolute top-4 right-4 z-20 flex gap-2">
+        <Button asChild variant="outline" size="icon">
+          <Link href="/login">
+            <LogIn className="h-4 w-4" />
+            <span className="sr-only">Iniciar Sesión</span>
+          </Link>
+        </Button>
         <UserProfile />
       </div>
       <motion.div
@@ -91,7 +99,7 @@ const LandingPage = () => {
             animate={{ opacity: showMenu ? 0 : 1 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="h-20 w-full relative">
+            <div className="h-28 w-full relative">
               {mainImage && (
                 <Image
                   src={mainImage.imageUrl}
