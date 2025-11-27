@@ -1,13 +1,20 @@
-'use client';
+"use client";
 
-import { motion, useAnimation, PanInfo } from 'framer-motion';
-import { useEffect, useContext } from 'react';
-import type { ArcheologyItem } from '@/lib/archeology-items';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
-import Image from 'next/image';
-import { Button } from './ui/button';
-import TextToSpeechButton from './TextToSpeechButton';
-import { KnowledgeContext } from '@/context/KnowledgeContext';
+import { motion, useAnimation, PanInfo } from "framer-motion";
+import { useEffect, useContext } from "react";
+import type { ArcheologyItem } from "@/lib/archeology-items";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import Image from "next/image";
+import { Button } from "./ui/button";
+import TextToSpeechButton from "./TextToSpeechButton";
+import { KnowledgeContext } from "@/context/KnowledgeContext";
 
 interface ArcheologyCardProps {
   item: ArcheologyItem;
@@ -17,7 +24,7 @@ interface ArcheologyCardProps {
 }
 
 const CARD_SIZE_SMALL = { width: 180, height: 240 };
-const CARD_SIZE_LARGE = { width: 320, height: 'auto' };
+const CARD_SIZE_LARGE = { width: 320, height: "auto" };
 
 export default function ArcheologyCard({
   item,
@@ -36,22 +43,22 @@ export default function ArcheologyCard({
         width: CARD_SIZE_LARGE.width,
         height: CARD_SIZE_LARGE.height,
         zIndex: 10,
-        transition: { duration: 0.6, type: 'spring' },
+        transition: { duration: 0.6, type: "spring" },
       });
     } else {
-       controls.start({
+      controls.start({
         x: initialPosition.x,
         y: initialPosition.y,
         width: CARD_SIZE_SMALL.width,
         height: CARD_SIZE_SMALL.height,
         zIndex: 1,
-        transition: { duration: 0.6, type: 'spring' },
+        transition: { duration: 0.6, type: "spring" },
       });
     }
   }, [isRevealed, controls, initialPosition.x, initialPosition.y]);
-  
+
   const isPointInDropZone = (info: PanInfo) => {
-    const dropZone = document.getElementById('drop-zone');
+    const dropZone = document.getElementById("drop-zone");
     if (!dropZone) return false;
 
     const dropZoneRect = dropZone.getBoundingClientRect();
@@ -63,12 +70,15 @@ export default function ArcheologyCard({
       y > dropZoneRect.top &&
       y < dropZoneRect.bottom
     );
-  }
+  };
 
-  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDragEnd = (
+    event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
     const shouldReveal = isPointInDropZone(info);
     if (shouldReveal && !isRevealed) {
-        increaseKnowledge(5);
+      increaseKnowledge(5);
     }
     onRevealToggle(item.id, shouldReveal);
   };
@@ -79,7 +89,7 @@ export default function ArcheologyCard({
       dragConstraints={{ top: -300, left: -400, right: 400, bottom: 300 }}
       dragElastic={0.2}
       onDragEnd={handleDragEnd}
-      className={'absolute cursor-grab active:cursor-grabbing'}
+      className={"absolute cursor-grab active:cursor-grabbing"}
       style={{
         width: CARD_SIZE_SMALL.width,
         height: CARD_SIZE_SMALL.height,
@@ -89,12 +99,12 @@ export default function ArcheologyCard({
     >
       <Card className="w-full h-full shadow-lg border-4 border-primary/80 flex items-center justify-center relative overflow-hidden rounded-lg">
         {/* Background texture always visible */}
-        <Image 
-          src="/stone-texture.png"
+        <Image
+          src="https://media.istockphoto.com/id/1304154697/photo/dark-brown-wooden-texture-background-empty-template.jpg?s=612x612&w=0&k=20&c=nFco4pNLsAIEXORJOCDjJcALksD_D2yV8HaB4FSI7ew="
           alt="Artefacto sin revelar"
           fill
           className="object-cover opacity-80"
-          data-ai-hint="stone texture"
+          data-ai-hint="wooden texture"
         />
 
         {/* Revealed Content with fade animation */}
@@ -105,7 +115,7 @@ export default function ArcheologyCard({
           transition={{ duration: 0.3, delay: isRevealed ? 0.3 : 0 }}
         >
           <div className="w-full h-full flex flex-col overflow-hidden text-card-foreground p-3">
-             <div className="relative w-full h-32 rounded-md overflow-hidden border mb-2">
+            <div className="relative w-full h-32 rounded-md overflow-hidden border mb-2">
               <Image
                 src={item.imageUrl}
                 alt={item.title}
@@ -125,8 +135,12 @@ export default function ArcheologyCard({
               </p>
             </CardContent>
             <CardFooter className="flex justify-around p-0 pt-2">
-                <Button variant="outline" size="sm">Detalles</Button>
-                <Button variant="outline" size="sm">Ver más</Button>
+              <Button variant="outline" size="sm">
+                Detalles
+              </Button>
+              <Button variant="outline" size="sm">
+                Ver más
+              </Button>
             </CardFooter>
           </div>
         </motion.div>
