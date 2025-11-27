@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { MotionConfig } from "framer-motion";
 import VoiceControl from "@/components/VoiceControl";
 import { KnowledgeProvider } from "@/context/KnowledgeContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function RootLayout({
   children,
@@ -31,13 +32,15 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <KnowledgeProvider>
-          <MotionConfig>
-            <main>{children}</main>
-          </MotionConfig>
-          {/* <VoiceControl /> */}
-          <Toaster />
-        </KnowledgeProvider>
+        <AuthProvider>
+          <KnowledgeProvider>
+            <MotionConfig>
+              <main>{children}</main>
+            </MotionConfig>
+            <VoiceControl />
+            <Toaster />
+          </KnowledgeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
